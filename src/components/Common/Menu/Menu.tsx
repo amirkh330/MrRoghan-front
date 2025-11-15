@@ -69,7 +69,7 @@ const _CustomerMenu = [
 
 const _ShopMenu = [
   { title: "داشبورد", link: "/shop/dashboard" },
-  { title: "ایجاد رسید", link: "/shop/dashboard" },
+  { title: "ایجاد رسید", link: "/shop/create-order" },
   { title: "مشتریان من", link: "/shop/customers" },
   { title: "آمار", link: "/shop/reports" },
   { title: "خروج", link: "/logout" },
