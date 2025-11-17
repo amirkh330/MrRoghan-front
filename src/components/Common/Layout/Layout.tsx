@@ -3,10 +3,14 @@ import { Outlet } from "react-router-dom";
 import { Header } from "../Header/Header";
 
 export const Layout = () => {
-
-
   return (
-    <Box maxWidth="400px" width="100%" bg="amir.mainBg" height="100dvh">
+    <Box
+      maxWidth="400px"
+      width="100%"
+      bg="amir.mainBg"
+      height="100dvh"
+      overflow={"auto"}
+    >
       <Header />
       <Outlet />
     </Box>
