@@ -13,16 +13,17 @@ import { Navigate, RouteObject } from "react-router-dom";
 
 const PrivateRoute = ({ element }: { element: JSX.Element }) => {
   const { isAuth } = useAuthStore();
-  if (!isAuth) {
+  if (isAuth) {
     return isAuth ? element : <Navigate to="/login" replace />;
   }
+  return element
 };
 
 export const allRoutes: Array<RouteObject> = [
   { path: "/", element: <Home /> },
   { path: "/login", element: <LoginPage /> },
   { path: "/register", element: <Register /> },
-  
+
   { path: "*", element: <NotFound /> },
 
   // Customer //

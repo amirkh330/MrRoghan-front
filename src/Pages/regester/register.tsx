@@ -9,6 +9,7 @@ import {
   Input,
   VStack,
   Text,
+  Textarea,
 } from "@chakra-ui/react";
 import { useRegister } from "./register.biz";
 import { persianToEnglishNumbers } from "@/utils/convertNumber/ConvertNumber";
@@ -19,7 +20,7 @@ export const Register = () => {
   return (
     <Box
       width="100%"
-      minH="100dvh"
+      minH="80dvh"
       bg="amir.mainBg"
       color="amir.common"
       px="4"
@@ -27,6 +28,10 @@ export const Register = () => {
     >
       <Text fontSize="22px" fontWeight="bold" mb="6" color="amir.primary">
         ثبت‌نام مغازه‌دار
+      </Text>
+      <Text mt="3" fontSize="15px" mb="6">
+        شما بعد از ثبت نام موفق به مغازه‌داری خود وارد شوید و از تمام امکانات
+        سایت استفاده کنید
       </Text>
 
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -86,7 +91,7 @@ export const Register = () => {
           {/* آدرس مغازه */}
           <FormControl isInvalid={!!errors.shopAddress}>
             <FormLabel>آدرس مغازه</FormLabel>
-            <Input
+            <Textarea
               {...register("shopAddress")}
               placeholder="آدرس کامل مغازه"
               bg="amir.secondaryBg"
