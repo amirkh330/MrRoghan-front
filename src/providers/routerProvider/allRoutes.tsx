@@ -5,7 +5,9 @@ import { ShopCreateOrder } from "@/Pages/[shop]/shopCreateOrder/shopCreateOrder"
 import { ShopCustomers } from "@/Pages/[shop]/shopCustomers/shopCustomers";
 import { ShopDashboard } from "@/Pages/[shop]/shopDashboard/shopDashboard";
 import { ShopReports } from "@/Pages/[shop]/shopReport/shopReport";
+import Home from "@/Pages/home/home";
 import { LoginPage } from "@/Pages/login/login";
+import { Register } from "@/Pages/regester/register";
 import useAuthStore from "@/store/authStore";
 import { Navigate, RouteObject } from "react-router-dom";
 
@@ -17,9 +19,11 @@ const PrivateRoute = ({ element }: { element: JSX.Element }) => {
 };
 
 export const allRoutes: Array<RouteObject> = [
+  { path: "/", element: <Home /> },
   { path: "/login", element: <LoginPage /> },
+  { path: "/register", element: <Register /> },
+  
   { path: "*", element: <NotFound /> },
-
 
   // Customer //
   {
@@ -31,7 +35,6 @@ export const allRoutes: Array<RouteObject> = [
     element: <PrivateRoute element={<CustomerReports />} />,
   },
 
-  
   // SHOP //
   {
     path: "/shop/dashboard",
