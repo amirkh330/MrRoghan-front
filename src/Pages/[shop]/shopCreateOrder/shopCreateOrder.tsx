@@ -16,7 +16,7 @@ import {
 import { Plus, Trash } from "@phosphor-icons/react";
 import { useShopCreateOrder } from "./shopCreateOrder.biz";
 import { persianToEnglishNumbers } from "@/utils/convertNumber/ConvertNumber";
-import { Toman } from "@/utils/Toman/Toman";
+import { formatNumber, Toman } from "@/utils/Toman/Toman";
 
 export const ShopCreateOrder = () => {
   const {
@@ -232,7 +232,3 @@ export const ShopCreateOrder = () => {
   );
 };
 
-const formatNumber = (num: number | string) => {
-  if (!num) return "";
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-};

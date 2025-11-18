@@ -13,6 +13,9 @@ export const customTheme = extendTheme({
     },
   },
   components: {
+    HStack: { defaultProps: { spacing: 0, margin: 0 } },
+    VStack: { defaultProps: { spacing: 0, margin: 0 } },
+    Stack: { defaultProps: { spacing: 0, margin: 0 } },
     Button: {
       baseStyle: {
         borderRadius: "8px",

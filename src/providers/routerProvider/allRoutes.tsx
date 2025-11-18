@@ -16,7 +16,7 @@ const PrivateRoute = ({ element }: { element: JSX.Element }) => {
   if (isAuth) {
     return isAuth ? element : <Navigate to="/login" replace />;
   }
-  return element
+  return element;
 };
 
 export const allRoutes: Array<RouteObject> = [

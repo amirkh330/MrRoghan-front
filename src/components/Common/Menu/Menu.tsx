@@ -73,4 +73,6 @@ const _ShopMenu = [
   { title: "مشتریان من", link: "/shop/customers" },
   { title: "آمار", link: "/shop/reports" },
   { title: "خروج", link: "/logout" },
+  // customer primitive section
+  { title: "داشبورد مشتری", link: "/customer/dashboard" },
 ];
