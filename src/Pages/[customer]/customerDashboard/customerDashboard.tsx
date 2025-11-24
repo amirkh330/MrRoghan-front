@@ -222,7 +222,7 @@ export const CustomerDashboard = () => {
       </MotionBox>
 
       {/* ------------------- عنوان لیست ------------------- */}
-      <Text fontWeight="700" fontSize="lg" mb="3">
+      <Text fontWeight="700" fontSize="lg" my="4">
         سوابق سرویس‌ها
       </Text>
 

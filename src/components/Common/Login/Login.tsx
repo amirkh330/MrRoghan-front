@@ -20,8 +20,8 @@ interface ILogin {
 export const Login = ({ isOpen = true, onOpen, onClose }: ILogin) => {
   const {
     handleSetPhoneNumber,
-    email,
-    setEmail,
+    phoneNumber,
+    setPhoneNumber,
     otp,
     loading,
     setLoading,
@@ -33,38 +33,36 @@ export const Login = ({ isOpen = true, onOpen, onClose }: ILogin) => {
     setErrorMessage,
   } = useLogin(onClose);
 
-  if (!isOpen) return null;
-
   return (
-    // <BottomSheet
-    //   title="login"
-    //   isOpen={isOpen}
-    //   onOpen={onOpen}
-    //   onClose={() => {
-    //     onClose();
-    //     handleReset();
-    //   }}
-    // >
-    step === "email" ? (
-      <PhoneNumberStep
-        phoneNumber={email}
-        setPhoneNumber={setEmail}
-        errorMessage={errorMessage}
-        loading={loading}
-        setLoading={setLoading}
-        setErrorMessage={setErrorMessage}
-        handleSetPhoneNumber={handleSetPhoneNumber}
-      />
-    ) : (
-      <OtpStep
-        otp={otp}
-        setOtp={setOtp}
-        handleSendOtp={handleVerifyOtp}
-        loading={loading}
-        setLoading={setLoading}
-      />
-    )
-    // </BottomSheet>
+    <BottomSheet
+      title="ورود"
+      isOpen={isOpen}
+      onOpen={onOpen}
+      onClose={() => {
+        onClose();
+        handleReset();
+      }}
+    >
+      {step === "phoneNumber" ? (
+        <PhoneNumberStep
+          loading={loading}
+          phoneNumber={phoneNumber}
+          setLoading={setLoading}
+          setPhoneNumber={setPhoneNumber}
+          errorMessage={errorMessage}
+          setErrorMessage={setErrorMessage}
+          handleSetPhoneNumber={handleSetPhoneNumber}
+        />
+      ) : (
+        <OtpStep
+          otp={otp}
+          setOtp={setOtp}
+          loading={loading}
+          setLoading={setLoading}
+          handleSendOtp={handleVerifyOtp}
+        />
+      )}
+    </BottomSheet>
   );
 };
 const PhoneNumberStep = ({
@@ -76,7 +74,7 @@ const PhoneNumberStep = ({
   loading,
 }: any) => {
   return (
-    <Box color="amir.mainBg" p="4">
+    <Box color="amir.mainBg" p="4" display="flex" flexDirection="column" gap={"18px"}>
       <Flex mb="4" justifyContent={"center"}>
         <Text color={"amir.common"}>لطفا شماره موبایل خود را وارد کنید</Text>
       </Flex>
@@ -137,15 +135,15 @@ const OtpStep = ({ otp, setOtp, handleSendOtp, loading }: any) => {
             _focusVisible={{ borderColor: "amir.primary" }}
             color={"amir.common"}
           />
-          <PinInputField
+          {/* <PinInputField
             _focusVisible={{ borderColor: "amir.primary" }}
             color={"amir.common"}
-          />
+          /> */}
         </PinInput>
       </HStack>
       <Button
         my="2"
-        isDisabled={otp.length !== 5}
+        isDisabled={otp.length !== 4}
         isLoading={loading}
         bg={"amir.primary"}
         w={"100%"}

@@ -5,7 +5,7 @@ import Menu from "../Menu/Menu";
 
 export const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isAuth, logout } = useAuthStore();
+  const { isAuth, logout, fullName } = useAuthStore();
   const toast = useToast();
   const handleLogout = () => {
     logout();
@@ -15,6 +15,7 @@ export const Header = () => {
       position: "top",
     });
   };
+
   return (
     <Flex
       justifyContent="space-between"
@@ -23,21 +24,17 @@ export const Header = () => {
       color="amir.common"
       p={4}
     >
-      {/* {isAuth ? (
-        <Box m={0} onClick={handleLogout}>
-          خروج
-        </Box>
-      ) : (
-        <Box onClick={onOpen} m={0}>
-          ورود
-        </Box>
-      )} */}
       <Flex m="0" alignItems="center" gap="2">
         <Menu />
+        {isAuth && (
+          <Box>
+            <Text fontSize="sm">{fullName}</Text>
+          </Box>
+        )}
       </Flex>
       <Text>مستر روغن</Text>
 
-      <Login isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+      {/* <Login isOpen={isOpen} onOpen={onOpen} onClose={onClose} /> */}
     </Flex>
   );
 };

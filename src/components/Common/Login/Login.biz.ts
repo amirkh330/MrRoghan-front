@@ -1,45 +1,37 @@
 import useAuthStore from "@/store/authStore";
-import { emailRegex } from "@/utils/Regex/Regex";
+import { BaseURL } from "@/utils/common";
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const useLogin = (onClose: () => void) => {
   const toast = useToast();
   const [otp, setOtp] = useState("");
-  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
   const [serverOtpKey, setServerOtpKey] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [step, setStep] = useState<"email" | "otp">("email");
+  const [step, setStep] = useState<"phoneNumber" | "otp">("phoneNumber");
   const { loginUser } = useAuthStore();
 
   const handleSendOtp = async () => {
-    // setLoading(true);
-    // handleLogin();
-    setStep("otp");
-    // axios
-    //   .post(
-    //     `${
-    //       import.meta.env.VITE_APP_BASE_URL
-    //     }authorization/login-whit-otp/create-otp/`,
-    //     {
-    //       email,
-    //     }
-    //   )
-    //   .then(({ data }) => {
-    //     setServerOtpKey(data);
-    //     // handleLogin();
-    //     setStep("otp");
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   })
-    //   .finally(() => {
-    //     setLoading(false);
-    //   });
+    setLoading(true);
+    axios
+      .post(`${BaseURL}auth/send-otp`, {
+        phoneNumber,
+      })
+      .then(({ data }) => {
+        setServerOtpKey(data);
+        setStep("otp");
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const handleSetPhoneNumber = () => {
@@ -48,52 +40,55 @@ export const useLogin = (onClose: () => void) => {
 
   const handleReset = () => {
     setErrorMessage("");
-    setEmail("");
-    setStep("email");
+    setPhoneNumber("");
+    setStep("phoneNumber");
     setOtp("");
   };
   const handleVerifyOtp = async () => {
-    // if("user" == "customer"){
-    navigate("/home");
-    // }
-
-    // setLoading(true);
-
-    // axios
-    //   .post(
-    //     `${
-    //       import.meta.env.VITE_APP_BASE_URL
-    //     }authorization/login-whit-otp/validate-otp/`,
-    //     {
-    //       code: otp,
-    //       email,
-    //     }
-    //   )
-    //   .then(({ data }) => {
-    //     toast({
-    //       title: "Welcome dear",
-    //       description: "Login successfully",
-    //       status: "success",
-    //       position: "top",
-    //     });
-    //     loginUser({ access: data.access, refresh: data.refresh });
-    //     onClose();
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   })
-    //   .finally(() => {
-    //     setLoading(false);
-    //   });
+    setLoading(true);
+    axios
+      .post(`${BaseURL}auth/verify-otp`, {
+        code: otp,
+        phoneNumber,
+      })
+      .then(({ data }) => {
+        const role = data.data.user.role;
+        const shopName = data.data.user.shopName;
+        const fullName =
+          data.data.user.firstName + " " + data.data.user.lastName;
+        toast({
+          title: ` ${fullName} عزیز `,
+          description: "ورود با موفقت انجام شد، خوش آمدید",
+          status: "success",
+          position: "top",
+        });
+        loginUser({
+          access: data.access,
+          refresh: "",
+          fullName,
+          role,
+          phoneNumber: data.data.user.phoneNumber,
+          ...(shopName && { shopName }),
+        });
+        onClose();
+        if (role === "customer") return navigate("/customer/dashboard");
+        navigate("/shop/dashboard");
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return {
     otp,
     step,
-    email,
+    phoneNumber,
     setOtp,
     loading,
-    setEmail,
+    setPhoneNumber,
     setLoading,
     handleReset,
     errorMessage,

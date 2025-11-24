@@ -1,15 +1,26 @@
 "use client";
 
-import { Box, Button, Flex, Image, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Image,
+  Text,
+  useDisclosure,
+  VStack,
+} from "@chakra-ui/react";
 import { Bell, Toolbox, FileDashed as File } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import Logo from "@/images/logo.png";
 import { Link } from "react-router-dom";
+import { Login } from "@/components/Common/Login/Login";
 
 const MotionBox = motion(Box);
 const MotionFlex = motion(Flex);
 
 export default function Home() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Box
       width="100%"
@@ -32,7 +43,9 @@ export default function Home() {
         <Text fontSize="28px" color="amir.primary">
           سرویس خودرو، ساده‌تر از همیشه
         </Text>
-
+        <Button my="4" w="full" bgColor={"amir.primary"} onClick={onOpen}>
+          ورود
+        </Button>
         <Text mt="3" fontSize="15px" color="amir.secondaryVariant">
           ثبت و مدیریت سرویس‌های دوره‌ای، تعویض روغن، لاستیک و هر چیزی که خودروت
           نیاز داره. یادآوری‌ها هم به صورت SMS برات ارسال میشه.
@@ -92,6 +105,7 @@ export default function Home() {
           ثبت نام به عنوان مغازه‌دار
         </Button>
       </MotionBox>
+      {isOpen && <Login isOpen={isOpen} onOpen={onOpen} onClose={onClose} />}
     </Box>
   );
 }

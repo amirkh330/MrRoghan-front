@@ -18,8 +18,8 @@ const BottomSheet = ({ title, children, isOpen, onClose }: IBottomSheet) => {
               p="6"
               justifyContent="space-between"
               alignItems="center"
-              mb="4"
-              pb="4"
+              // mb="4"
+              pb="2"
             >
               <Text fontWeight={500} fontSize={"16px"} color={"amir.common"}>
                 {title}

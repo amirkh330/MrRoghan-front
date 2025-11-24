@@ -1,5 +1,6 @@
 import useAuthStore from "@/store/authStore";
 import {
+  Box,
   CloseButton,
   Divider,
   Drawer,
@@ -13,11 +14,25 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { List } from "@phosphor-icons/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Login } from "../Login/Login";
 
 const Menu = () => {
+  const navigate = useNavigate();
+  const { isAuth, logout, role, fullName, shopName, phoneNumber } =
+    useAuthStore();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const menuItems = 1 !== 1 ? _CustomerMenu : _ShopMenu;
+  const {
+    isOpen: loginIsOpen,
+    onOpen: loginOnOpen,
+    onClose: loginOnClose,
+  } = useDisclosure();
+
+  const menuItems = isAuth
+    ? role === "customer"
+      ? [..._CustomerMenu, ..._PublicMenu]
+      : [..._ShopMenu, ..._PublicMenu]
+    : _PublicMenu;
   return (
     <>
       <Icon as={List} size={18} onClick={onOpen} />
@@ -39,22 +54,84 @@ const Menu = () => {
           </Flex>
 
           <DrawerBody mx="0" textAlign={"right"}>
-            <VStack align="start" spacing={4}>
-              <Divider borderColor={"amir.primary"} />
-              {menuItems?.map((item) => (
-                <Link
-                  key={item.title}
-                  to={item.link}
-                  onClick={onClose}
-                  style={{ fontSize: "14px" }}
+            {isAuth ? (
+              <VStack align="start" spacing={4}>
+                <Box
+                  p="2"
+                  m="2"
+                  w="100%"
+                  mx="auto"
+                  textAlign="center"
+                  borderRadius={"8px"}
+                  bgColor={"amir.secondaryBg"}
                 >
-                  {item.title}
-                </Link>
-              ))}
-            </VStack>
+                  <Text fontSize={"14px"} fontWeight={600} mb="2">
+                    {fullName}
+                  </Text>
+                  <Text fontSize={"12px"} fontWeight={400}>
+                    {shopName ?? phoneNumber}
+                  </Text>
+                </Box>
+                <Divider borderColor={"amir.primary"} />
+
+                {menuItems?.map((item) => (
+                  <Link
+                    key={item.title}
+                    to={item.link}
+                    onClick={onClose}
+                    style={{ fontSize: "14px" }}
+                  >
+                    {item.title}
+                  </Link>
+                ))}
+                <Text
+                  mx={"auto"}
+                  fontSize={"14px"}
+                  onClick={() => {
+                    logout();
+                    onClose();
+                    navigate("/");
+                  }}
+                >
+                  خروج
+                </Text>
+              </VStack>
+            ) : (
+              <VStack align="start" spacing={4}>
+                <Box
+                  p="2"
+                  m="2"
+                  w="100%"
+                  mx="auto"
+                  fontSize="14px"
+                  textAlign="center"
+                  borderRadius="8px"
+                  bgColor="amir.secondaryBg"
+                  onClick={() => {
+                    loginOnOpen();
+                    onClose();
+                  }}
+                >
+                  ورود
+                </Box>
+                <Divider borderColor={"amir.primary"} />
+
+                {menuItems?.map((item) => (
+                  <Link
+                    key={item.title}
+                    to={item.link}
+                    onClick={onClose}
+                    style={{ fontSize: "14px" }}
+                  >
+                    {item.title}
+                  </Link>
+                ))}
+              </VStack>
+            )}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
+      <Login isOpen={loginIsOpen} onOpen={loginOnOpen} onClose={loginOnClose} />
     </>
   );
 };
@@ -64,15 +141,17 @@ export default Menu;
 const _CustomerMenu = [
   { title: "داشبورد", link: "/customer/dashboard" },
   { title: "آمار", link: "/customer/reports" },
-  { title: "خروج", link: "/logout" },
 ];
 
 const _ShopMenu = [
   { title: "داشبورد", link: "/shop/dashboard" },
+  { title: "آمار", link: "/shop/reports" },
   { title: "ایجاد رسید", link: "/shop/create-order" },
   { title: "مشتریان من", link: "/shop/customers" },
-  { title: "آمار", link: "/shop/reports" },
-  { title: "خروج", link: "/logout" },
-  // customer primitive section
-  { title: "داشبورد مشتری", link: "/customer/dashboard" },
+];
+
+const _PublicMenu = [
+  { title: "درباره من مستر روغن", link: "/" },
+  { title: "پلن‌های مستر روغن", link: "/" },
+  { title: "تماس با ما", link: "/" },
 ];
