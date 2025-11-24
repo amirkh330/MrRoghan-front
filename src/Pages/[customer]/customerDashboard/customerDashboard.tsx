@@ -1,26 +1,22 @@
+import { EmptyState } from "@/components/Common/EmptyState/EmptyState";
+import { OrderCard } from "@/components/CoreComponents/OrderCard/orderCard";
 import { formatNumber } from "@/utils/Toman/Toman";
 import {
   Box,
-  Text,
-  VStack,
   HStack,
   Icon,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
   Spinner,
+  Text,
+  VStack
 } from "@chakra-ui/react";
 import {
   Calendar,
   RoadHorizon,
-  Stethoscope,
-  Storefront,
-  Wrench,
+  Storefront
 } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useCustomerReports } from "../customerReports/customerReports.biz";
 const MotionBox = motion(Box);
 
 // Mock – اطلاعات سرویس بعدی
@@ -82,10 +78,10 @@ export const CustomerDashboard = () => {
     soon: "orange.300",
     ok: "amir.secondaryBg",
   };
+  const { data, isLoading } = useCustomerReports();
 
   return (
     <Box p="4" color="amir.common">
-      {/* ------------------- کارت سرویس بعدی ------------------- */}
       <MotionBox
         p="5"
         bg="amir.secondaryBg"
@@ -221,90 +217,18 @@ export const CustomerDashboard = () => {
         )}
       </MotionBox>
 
-      {/* ------------------- عنوان لیست ------------------- */}
       <Text fontWeight="700" fontSize="lg" my="4">
         سوابق سرویس‌ها
       </Text>
 
-      {/* ------------------- لیست با Infinite Scroll ------------------- */}
       <VStack spacing="4">
-        {items.map((item) => (
-          <MotionBox
-            key={item.id}
-            p="5"
-            bg="amir.secondaryBg"
-            borderRadius="16px"
-            shadow="md"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            w="100%"
-          >
-            {/* عنوان */}
-            <HStack justify="space-between" mb="2">
-              <Text fontWeight="700">سرویس #{item.id}</Text>
-              <Text fontSize="sm" color="amir.secondaryVariant">
-                {item.date}
-              </Text>
-            </HStack>
-
-            {/* ردیف کیلومتر + مبلغ */}
-            <HStack justify="space-between" mb="3">
-              <VStack spacing="0" align="start" mx="0">
-                <Text fontSize="xs" color="amir.secondaryVariant">
-                  کیلومتر
-                </Text>
-                <Text fontWeight="600">{item.km}</Text>
-              </VStack>
-
-              <VStack spacing="0" align="end" mx="0">
-                <Text fontSize="xs" color="amir.secondaryVariant">
-                  مبلغ
-                </Text>
-                <Text fontWeight="600">{item.price}</Text>
-              </VStack>
-            </HStack>
-
-            {/* آکاردئون */}
-            <Accordion >
-              <AccordionItem border="none">
-                <AccordionButton
-                  bg="amir.mainBg"
-                  borderRadius="10px"
-                  _expanded={{ bg: "amir.mainBg" }}
-                  py="2"
-                >
-                  <Box flex="1" textAlign="left" fontWeight="600">
-                    جزئیات
-                  </Box>
-                  <AccordionIcon />
-                </AccordionButton>
-
-                <AccordionPanel pb={4}>
-                  <Text fontWeight="600" mb="2">
-                    قطعات تعویض‌شده:
-                  </Text>
-
-                  {item.parts.map((p, idx) => (
-                    <HStack key={idx} justify="space-between" mb="1">
-                      <Text>{p.title}</Text>
-                      <Text color="amir.secondaryVariant">{p.price} تومان</Text>
-                    </HStack>
-                  ))}
-
-                  <Text mt="3" fontWeight="600">
-                    توضیحات:
-                  </Text>
-                  <Text color="amir.secondaryVariant">{item.note}</Text>
-                </AccordionPanel>
-              </AccordionItem>
-            </Accordion>
-          </MotionBox>
-        ))}
-
-        {/* Loader for infinite scroll */}
-        <Box ref={loaderRef} py="4">
-          <Spinner color="amir.primary" />
-        </Box>
+        {isLoading ? (
+          <Spinner />
+        ) : data?.data?.length ? (
+          data.data.map((item) => <OrderCard key={item.id} item={item} />)
+        ) : (
+          <EmptyState />
+        )}
       </VStack>
     </Box>
   );

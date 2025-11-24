@@ -15,8 +15,15 @@ import { useRegister } from "./register.biz";
 import { persianToEnglishNumbers } from "@/utils/convertNumber/ConvertNumber";
 
 export const Register = () => {
-  const { handleSubmit, register, errors, isSubmitting, onSubmit, setValue } =
-    useRegister();
+  const {
+    handleSubmit,
+    register,
+    errors,
+    isSubmitting,
+    onSubmit,
+    setValue,
+    loading,
+  } = useRegister();
   return (
     <Box
       width="100%"
@@ -61,19 +68,19 @@ export const Register = () => {
           </FormControl>
 
           {/* تلفن */}
-          <FormControl isInvalid={!!errors.phone}>
+          <FormControl isInvalid={!!errors.phoneNumber}>
             <FormLabel>شماره تلفن</FormLabel>
             <Input
-              {...register("phone")}
+              {...register("phoneNumber")}
               onChange={(e) =>
-                setValue("phone", persianToEnglishNumbers(e.target.value))
+                setValue("phoneNumber", persianToEnglishNumbers(e.target.value))
               }
               placeholder="مثلاً 09123456789"
               bg="amir.secondaryBg"
               border="1px solid #555"
               inputMode="numeric"
             />
-            <FormErrorMessage>{errors.phone?.message}</FormErrorMessage>
+            <FormErrorMessage>{errors.phoneNumber?.message}</FormErrorMessage>
           </FormControl>
 
           {/* اسم مغازه */}
@@ -89,15 +96,15 @@ export const Register = () => {
           </FormControl>
 
           {/* آدرس مغازه */}
-          <FormControl isInvalid={!!errors.shopAddress}>
+          <FormControl isInvalid={!!errors.address}>
             <FormLabel>آدرس مغازه</FormLabel>
             <Textarea
-              {...register("shopAddress")}
+              {...register("address")}
               placeholder="آدرس کامل مغازه"
               bg="amir.secondaryBg"
               border="1px solid #555"
             />
-            <FormErrorMessage>{errors.shopAddress?.message}</FormErrorMessage>
+            <FormErrorMessage>{errors.address?.message}</FormErrorMessage>
           </FormControl>
 
           {/* دکمه ثبت */}
@@ -108,7 +115,7 @@ export const Register = () => {
             color="black"
             fontWeight="bold"
             size="lg"
-            isLoading={isSubmitting}
+            isLoading={loading}
             _hover={{ bg: "#ffca3a" }}
           >
             ثبت‌نام
