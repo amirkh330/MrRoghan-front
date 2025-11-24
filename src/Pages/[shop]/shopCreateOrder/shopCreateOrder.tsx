@@ -20,6 +20,7 @@ import { persianToEnglishNumbers } from "@/utils/convertNumber/ConvertNumber";
 import { formatNumber } from "@/utils/Toman/Toman";
 import { Trash } from "@phosphor-icons/react";
 import { useShopCreateOrder } from "./shopCreateOrder.biz";
+import { UsageEnum } from "@/utils/common";
 
 export const ShopCreateOrder = () => {
   const {
@@ -220,9 +221,9 @@ export const ShopCreateOrder = () => {
               placeholder="انتخاب کنید"
               bg="amir.secondaryBg"
             >
-              <option value="short">کم</option>
-              <option value="medium">متوسط</option>
-              <option value="high">زیاد</option>
+              <option value={UsageEnum.SHORT}>کم</option>
+              <option value={UsageEnum.MEDIUM}>متوسط</option>
+              <option value={UsageEnum.LONG}>زیاد</option>
             </Select>
             <FormErrorMessage>{errors.usage?.message}</FormErrorMessage>
           </FormControl>
