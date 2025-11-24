@@ -10,6 +10,7 @@ import {
 import { Calendar, Plus, Toolbox, User } from "@phosphor-icons/react";
 import { CalendarCheck } from "@phosphor-icons/react/dist/ssr";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const MotionBox = motion(Box);
 
@@ -30,6 +31,8 @@ export const ShopDashboard = () => {
     <Box p="4" color="amir.common" minH="0dvh">
       {/* Quick Action */}
       <Button
+        as={Link}
+        to={"/shop/create-order"}
         w="100%"
         bg="amir.primary"
         color="black"

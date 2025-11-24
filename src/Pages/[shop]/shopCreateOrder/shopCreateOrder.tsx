@@ -7,22 +7,26 @@ import {
   HStack,
   IconButton,
   Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
   Select,
   Text,
   Textarea,
   VStack,
 } from "@chakra-ui/react";
 
-import { Plus, Trash } from "@phosphor-icons/react";
-import { useShopCreateOrder } from "./shopCreateOrder.biz";
 import { persianToEnglishNumbers } from "@/utils/convertNumber/ConvertNumber";
-import { formatNumber, Toman } from "@/utils/Toman/Toman";
+import { formatNumber } from "@/utils/Toman/Toman";
+import { Trash } from "@phosphor-icons/react";
+import { useShopCreateOrder } from "./shopCreateOrder.biz";
 
 export const ShopCreateOrder = () => {
   const {
     append,
     remove,
     fields,
+    instrumentList,
     register,
     isSubmitting,
     handleSubmit,
@@ -30,6 +34,8 @@ export const ShopCreateOrder = () => {
     errors,
     onSubmit,
     setValue,
+    vehiclesList,
+    isPending,
   } = useShopCreateOrder();
 
   return (
@@ -41,47 +47,63 @@ export const ShopCreateOrder = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <VStack spacing="5">
           {/* شماره مشتری */}
-          <FormControl isInvalid={!!errors.customerPhone}>
+          <FormControl isInvalid={!!errors.phoneNumber}>
             <FormLabel>شماره مشتری</FormLabel>
             <Input
-              {...register("customerPhone")}
+              {...register("phoneNumber")}
+              maxLength={11}
+              onChange={(e) =>
+                setValue("phoneNumber", persianToEnglishNumbers(e.target.value))
+              }
               placeholder="09123456789"
               bg="amir.secondaryBg"
             />
-            <FormErrorMessage>{errors.customerPhone?.message}</FormErrorMessage>
+            <FormErrorMessage>{errors.phoneNumber?.message}</FormErrorMessage>
           </FormControl>
 
           {/* نام */}
-          <FormControl isInvalid={!!errors.firstName}>
+          <FormControl isInvalid={!!errors.customer_firstName}>
             <FormLabel>نام مشتری (اختیاری)</FormLabel>
             <Input
-              {...register("firstName")}
+              {...register("customer_firstName")}
               placeholder="نام"
               bg="amir.secondaryBg"
             />
-            <FormErrorMessage>{errors.firstName?.message}</FormErrorMessage>
+            <FormErrorMessage>
+              {errors.customer_firstName?.message}
+            </FormErrorMessage>
           </FormControl>
 
           {/* نام خانوادگی */}
-          <FormControl isInvalid={!!errors.lastName}>
+          <FormControl isInvalid={!!errors.customer_lastName}>
             <FormLabel>نام خانوادگی مشتری (اختیاری)</FormLabel>
             <Input
-              {...register("lastName")}
+              {...register("customer_lastName")}
               placeholder="نام خانوادگی"
               bg="amir.secondaryBg"
             />
-            <FormErrorMessage>{errors.lastName?.message}</FormErrorMessage>
+            <FormErrorMessage>
+              {errors.customer_lastName?.message}
+            </FormErrorMessage>
           </FormControl>
 
           {/* نام خودرو */}
-          <FormControl isInvalid={!!errors.carName}>
+          <FormControl isInvalid={!!errors.vehicle}>
             <FormLabel>نام خودرو</FormLabel>
-            <Input
-              {...register("carName")}
-              placeholder="مثلاً پژو 206"
+            <Select
+              {...register("vehicle")}
+              placeholder="انتخاب کنید"
               bg="amir.secondaryBg"
-            />
-            <FormErrorMessage>{errors.carName?.message}</FormErrorMessage>
+            >
+              {vehiclesList?.data?.map((vehicle) => {
+                return (
+                  <option key={vehicle.id} value={vehicle.id}>
+                    {vehicle.title} hg
+                  </option>
+                );
+              })}
+            </Select>
+            <FormErrorMessage>{errors.vehicle?.message}</FormErrorMessage>
           </FormControl>
 
           {/* قطعات تعویض‌شده */}
@@ -96,21 +118,22 @@ export const ShopCreateOrder = () => {
               bg="amir.secondaryBg"
               mb={3}
               onChange={(e) => {
-                const value = e.target.value;
-                if (!value) return;
+                const id = Number(e.target.value);
+                if (!id) return;
 
-                append({ title: value });
+                const item = instrumentList?.data?.find((i) => i.id === id);
+                if (!item) return;
+
+                append(item);
               }}
             >
-              <option value="روغن موتور">روغن موتور</option>
-              <option value="فیلتر روغن">فیلتر روغن</option>
-              <option value="فیلتر هوا">فیلتر هوا</option>
-              <option value="فیلتر کابین">فیلتر کابین</option>
-              <option value="شمع">شمع</option>
-              <option value="لنت جلو">لنت جلو</option>
-              <option value="لنت عقب">لنت عقب</option>
-              <option value="لاستیک">لاستیک</option>
-              <option value="ضدیخ">ضدیخ</option>
+              {instrumentList?.data?.map((instrument) => {
+                return (
+                  <option key={instrument.id} value={instrument.id}>
+                    {instrument.title}
+                  </option>
+                );
+              })}
             </Select>
 
             {/* فهرست انتخاب‌شده‌ها */}
@@ -138,33 +161,55 @@ export const ShopCreateOrder = () => {
           </Box>
 
           {/* کیلومتر فعلی */}
-          <FormControl isInvalid={!!errors.currentKm}>
+          <FormControl isInvalid={!!errors.currentDistance}>
             <FormLabel>کیلومتر فعلی</FormLabel>
-            <Input
-              {...register("currentKm")}
-              onChange={(e) =>
-                setValue("currentKm", persianToEnglishNumbers(e.target.value))
-              }
-              placeholder="مثلاً 150000"
-              bg="amir.secondaryBg"
-              inputMode="numeric"
-            />
-            <FormErrorMessage>{errors.currentKm?.message}</FormErrorMessage>
+            <InputGroup>
+              <InputRightElement pointerEvents="none" mx="2">
+                km
+              </InputRightElement>
+              <Input
+                {...register("currentDistance")}
+                value={formatNumber(watch("currentDistance"))}
+                onChange={(e) => {
+                  const raw = persianToEnglishNumbers(e.target.value).replace(
+                    /,/g,
+                    ""
+                  );
+                  setValue("currentDistance", raw);
+                }}
+                placeholder="مثلاً 150000"
+                bg="amir.secondaryBg"
+                inputMode="numeric"
+              />
+            </InputGroup>
+            <FormErrorMessage>
+              {errors.currentDistance?.message}
+            </FormErrorMessage>
           </FormControl>
 
           {/* کیلومتر بعدی */}
-          <FormControl isInvalid={!!errors.nextKm}>
+          <FormControl isInvalid={!!errors.nextDistance}>
             <FormLabel>کیلومتر بعدی</FormLabel>
-            <Input
-              {...register("nextKm")}
-              onChange={(e) =>
-                setValue("nextKm", persianToEnglishNumbers(e.target.value))
-              }
-              placeholder="مثلاً 160000"
-              bg="amir.secondaryBg"
-              inputMode="numeric"
-            />
-            <FormErrorMessage>{errors.nextKm?.message}</FormErrorMessage>
+            <InputGroup>
+              <InputRightElement pointerEvents="none" mx="2">
+                km
+              </InputRightElement>
+              <Input
+                {...register("nextDistance")}
+                value={formatNumber(watch("nextDistance"))}
+                onChange={(e) => {
+                  const raw = persianToEnglishNumbers(e.target.value).replace(
+                    /,/g,
+                    ""
+                  );
+                  setValue("nextDistance", raw);
+                }}
+                placeholder="مثلاً 160000"
+                bg="amir.secondaryBg"
+                inputMode="numeric"
+              />
+            </InputGroup>
+            <FormErrorMessage>{errors.nextDistance?.message}</FormErrorMessage>
           </FormControl>
 
           {/* میزان استفاده از ماشین */}
@@ -175,7 +220,7 @@ export const ShopCreateOrder = () => {
               placeholder="انتخاب کنید"
               bg="amir.secondaryBg"
             >
-              <option value="low">کم</option>
+              <option value="short">کم</option>
               <option value="medium">متوسط</option>
               <option value="high">زیاد</option>
             </Select>
@@ -186,7 +231,7 @@ export const ShopCreateOrder = () => {
           <FormControl>
             <FormLabel>توضیحات برای دفعه بعدی</FormLabel>
             <Textarea
-              {...register("notes")}
+              {...register("description")}
               placeholder="یادداشت..."
               bg="amir.secondaryBg"
               rows={3}
@@ -194,23 +239,28 @@ export const ShopCreateOrder = () => {
           </FormControl>
 
           {/* مبلغ نهایی */}
-          <FormControl isInvalid={!!errors.amount}>
+          <FormControl isInvalid={!!errors.price}>
             <FormLabel>مبلغ نهایی</FormLabel>
-            <Input
-              {...register("amount")}
-              value={formatNumber(watch("amount"))}
-              onChange={(e) => {
-                const raw = persianToEnglishNumbers(e.target.value).replace(
-                  /,/g,
-                  ""
-                );
-                setValue("amount", raw);
-              }}
-              placeholder="مثلاً 450000"
-              bg="amir.secondaryBg"
-              inputMode="numeric"
-            />
-            <FormErrorMessage>{errors.amount?.message}</FormErrorMessage>
+            <InputGroup>
+              <InputRightElement pointerEvents="none" mx="4">
+                تومان
+              </InputRightElement>
+              <Input
+                {...register("price")}
+                value={formatNumber(watch("price"))}
+                onChange={(e) => {
+                  const raw = persianToEnglishNumbers(e.target.value).replace(
+                    /,/g,
+                    ""
+                  );
+                  setValue("price", raw);
+                }}
+                placeholder="مثلاً 450000"
+                bg="amir.secondaryBg"
+                inputMode="numeric"
+              />
+            </InputGroup>
+            <FormErrorMessage>{errors.price?.message}</FormErrorMessage>
           </FormControl>
 
           {/* دکمه ثبت */}
@@ -221,7 +271,7 @@ export const ShopCreateOrder = () => {
             color="black"
             fontWeight="bold"
             size="lg"
-            isLoading={isSubmitting}
+            isLoading={isPending}
             _hover={{ bg: "#ffca3a" }}
           >
             ثبت اوردر
@@ -231,4 +281,3 @@ export const ShopCreateOrder = () => {
     </Box>
   );
 };
-

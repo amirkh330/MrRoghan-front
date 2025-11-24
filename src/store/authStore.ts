@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface AuthState {
-  access: string;
+  accessToken: string;
   refresh: string;
   fullName: string;
   role: string;
@@ -10,14 +10,14 @@ interface AuthState {
   shopName?: string;
   isAuth: boolean;
   loginUser: ({
-    access,
+    accessToken,
     refresh,
     fullName,
     phoneNumber,
     role,
     shopName,
   }: {
-    access: string;
+    accessToken: string;
     refresh: string;
     fullName: string;
     phoneNumber: string;
@@ -31,13 +31,13 @@ const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       isAuth: false,
-      access: "",
+      accessToken: "",
       refresh: "",
       fullName: "",
       role: "",
       phoneNumber: "",
       loginUser: ({
-        access,
+        accessToken,
         refresh,
         fullName,
         phoneNumber,
@@ -46,7 +46,7 @@ const useAuthStore = create<AuthState>()(
       }) => {
         set({
           isAuth: true,
-          access,
+          accessToken,
           refresh,
           fullName,
           phoneNumber,
@@ -58,7 +58,7 @@ const useAuthStore = create<AuthState>()(
       logout: () => {
         set({
           isAuth: false,
-          access: "",
+          accessToken: "",
           refresh: "",
           fullName: "",
           role: "",
@@ -70,7 +70,6 @@ const useAuthStore = create<AuthState>()(
     }),
     {
       name: "auth-storage",
-      // getStorage: () => localStorage,
     }
   )
 );

@@ -63,7 +63,7 @@ export const useLogin = (onClose: () => void) => {
           position: "top",
         });
         loginUser({
-          access: data.access,
+          accessToken: data.data.accessToken,
           refresh: "",
           fullName,
           role,

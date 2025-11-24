@@ -1,53 +1,22 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useFieldArray, useForm } from "react-hook-form";
 import * as yup from "yup";
-
-const schema = yup.object({
-  customerPhone: yup
-    .string()
-    .required("شماره مشتری الزامی است")
-    .matches(/^09\d{9}$/, "شماره مشتری معتبر نیست"),
-
-  firstName: yup.string().optional(),
-  lastName: yup.string().optional(),
-
-  carName: yup.string().required("نام خودرو الزامی است"),
-
-  parts: yup.array().of(
-    yup.object({
-      title: yup.string().required("نام قطعه الزامی است"),
-    })
-  ),
-
-  currentKm: yup
-    .number()
-    .typeError("باید عدد باشد")
-    .required("کیلومتر فعلی الزامی است")
-    .min(100, "کم‌تر از 100 معتبر نیست")
-    .max(300000, "کیلومتر معتبر نیست"),
-
-  nextKm: yup
-    .number()
-    .typeError("باید عدد باشد")
-    .required("کیلومتر بعدی الزامی است")
-    .moreThan(yup.ref("currentKm"), "کیلومتر بعدی باید بزرگ‌تر از فعلی باشد"),
-
-  usage: yup.string().required("میزان استفاده الزامی است"),
-
-  notes: yup.string().optional(),
-
-  amount: yup
-    .number()
-    .typeError("باید عدد باشد")
-    .required("مبلغ الزامی است")
-    .min(10000, "مبلغ معتبر نیست"),
-});
-
-type FormType = yup.InferType<typeof schema>;
+import { useGetVehicles } from "../query/getVehicle";
+import { useGetInstrument } from "../query/getInstrument";
+import { ICreateOrderDto, useCreateOrder } from "../query/postCreateOrder";
+import { useToast } from "@chakra-ui/react";
+import { title } from "process";
 
 export const useShopCreateOrder = () => {
+  const toast = useToast();
+
+  const { data: vehiclesList } = useGetVehicles();
+  const { data: instrumentList } = useGetInstrument();
+  const { mutateAsync: createOrderApi, isPending } = useCreateOrder();
+
   const {
     register,
+    reset,
     control,
     handleSubmit,
     setValue,
@@ -57,17 +26,32 @@ export const useShopCreateOrder = () => {
     resolver: yupResolver(schema),
     mode: "onChange",
     defaultValues: {
-      parts: [],
+      instrument: [],
     },
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "parts",
+    name: "instrument",
   });
 
   const onSubmit = (data: FormType) => {
-    console.log("📦 Order Created:", data);
+    const payload = {
+      ...data,
+      instrument: data?.instrument?.map((item) => item.id),
+      price: data.price.replace(/,/g, ""),
+      vehicle: Number(data.vehicle),
+      currentDistance: data.currentDistance.replace(/,/g, ""),
+      nextDistance: data.nextDistance.replace(/,/g, ""),
+    };
+    createOrderApi(payload as any).then(() => {
+      reset()
+      toast({
+        title: "سرویس با موفقیت ثبت شد",
+        status: "success",
+        position: "top",
+      });
+    });
   };
 
   return {
@@ -82,5 +66,45 @@ export const useShopCreateOrder = () => {
     remove,
     watch,
     onSubmit,
+    vehiclesList,
+    isPending,
+    instrumentList,
   };
 };
+
+const schema = yup.object({
+  phoneNumber: yup
+    .string()
+    .required("شماره مشتری الزامی است")
+    .matches(/^09\d{9}$/, "شماره مشتری معتبر نیست"),
+
+  customer_firstName: yup.string().optional(),
+  customer_lastName: yup.string().optional(),
+
+  vehicle: yup.string().required("نام خودرو الزامی است"),
+
+  instrument: yup.array().of(
+    yup.object({
+      id: yup.number().required("نام قطعه الزامی است"),
+      title: yup.string().required("نام قطعه الزامی است"),
+    })
+  ),
+
+  currentDistance: yup
+    .string()
+    .typeError("باید عدد باشد")
+    .required("کیلومتر فعلی الزامی است"),
+
+  nextDistance: yup
+    .string()
+    .typeError("باید عدد باشد")
+    .required("کیلومتر بعدی الزامی است"),
+
+  usage: yup.string().required("میزان استفاده الزامی است"),
+
+  description: yup.string().optional(),
+
+  price: yup.string().typeError("باید عدد باشد").required("مبلغ الزامی است"),
+});
+
+type FormType = yup.InferType<typeof schema>;
