@@ -13,7 +13,7 @@ export const Layout = () => {
       height="100dvh"
     >
       <Header />
-      <Box flex="1" overflow="auto">
+      <Box flex="1" overflow="auto" w={"full"}>
         <Outlet />
       </Box>
       <Footer />

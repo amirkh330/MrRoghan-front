@@ -8,7 +8,13 @@ import {
   Button,
   HStack,
 } from "@chakra-ui/react";
-import { Calendar, Plus, Toolbox, User } from "@phosphor-icons/react";
+import {
+  Calendar,
+  CurrencyDollar,
+  Plus,
+  Toolbox,
+  User,
+} from "@phosphor-icons/react";
 import { CalendarCheck } from "@phosphor-icons/react/dist/ssr";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -19,132 +25,170 @@ const MotionBox = motion(Box);
 const customersCount = 120;
 const servicesToday = 5;
 const servicesWeek = 18;
-const overdueCustomers = 2;
 
-const upcomingServices = [
-  { name: "علی رضایی", nextService: "۲۵۰۰ کیلومتر بعدی", status: "active" },
-  { name: "سعید کاظمی", nextService: "۳۰۰ کیلومتر بعدی", status: "pending" },
-  { name: "مریم احمدی", nextService: "۱۰۰۰ کیلومتر بعدی", status: "warning" },
+const stats = [
+  {
+    label: "تعداد کل مشتریان",
+    value: customersCount,
+    icon: User,
+  },
+  {
+    label: "سرویس‌های امروز",
+    value: servicesToday,
+    icon: Toolbox,
+  },
+  {
+    label: "سرویس‌های هفته",
+    value: servicesWeek,
+    icon: Calendar,
+  },
+  {
+    label: "سرویس‌های ماهانه",
+    value: servicesWeek,
+    icon: Calendar,
+  },
 ];
-
 export const ShopDashboard = () => {
   return (
     <Box p="4" color="amir.common" minH="0dvh">
-      {/* Quick Action */}
+      <HStack spacing="2" mb="6" w="100%" flexWrap="wrap">
+        {stats.map((item, index) => (
+          <MotionBox
+            key={index}
+            bg="amir.secondaryBg"
+            w="48%"
+            m="0"
+            p="5"
+            borderRadius="18px"
+            shadow="md"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, delay: index * 0.08 }}
+          >
+            <Flex justify="space-between" align="center">
+              <Flex direction="column" m="0" w={"100%"}>
+                <Text fontSize="sm" color="amir.secondary">
+                  {item.label}
+                </Text>
+                <Flex
+                  alignItems="center"
+                  justifyContent="space-between"
+                  w="100%"
+                  mt="4"
+                >
+                  <Text
+                    fontSize="2xl"
+                    fontWeight="700"
+                    color="amir.common"
+                    mt="1"
+                  >
+                    {item.value}
+                  </Text>
+
+                  <Flex
+                    bg="amir.secondary"
+                    w="50px"
+                    h="50px"
+                    borderRadius="14px"
+                    align="center"
+                    justify="center"
+                    shadow="sm"
+                    m="0"
+                  >
+                    <Icon as={item.icon} color="white" />
+                  </Flex>
+                </Flex>
+              </Flex>
+            </Flex>
+          </MotionBox>
+        ))}
+      </HStack>
+
+      <MotionBox
+        bg="amir.secondaryBg"
+        w="100%"
+        p="5"
+        mb="6"
+        borderRadius="18px"
+        shadow="md"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35, delay: 2 * 0.08 }}
+      >
+        <Flex justify="space-between" align="center">
+          <Flex direction="column" m="0">
+            <Text fontSize="sm" color="amir.secondary">
+              درآمد روزانه
+            </Text>
+            <Text fontSize="2xl" fontWeight="700" color="amir.common" mt="1">
+              ۲/۵۰۰۰/۰۰۰ تومان
+            </Text>
+          </Flex>
+
+          <Flex
+            bg="amir.secondary"
+            w="50px"
+            h="50px"
+            borderRadius="14px"
+            align="center"
+            justify="center"
+            shadow="sm"
+            m="0"
+          >
+            <Icon as={CurrencyDollar} size={28} color="white" />
+          </Flex>
+        </Flex>
+      </MotionBox>
+
+      <MotionBox
+        bg="amir.secondaryBg"
+        w="100%"
+        p="5"
+        mb="6"
+        borderRadius="18px"
+        shadow="md"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35, delay: 2 * 0.08 }}
+      >
+        <Flex justify="space-between" align="center">
+          <Flex direction="column" m="0">
+            <Text fontSize="sm" color="amir.secondary">
+              درآمد ماهانه
+            </Text>
+            <Text fontSize="2xl" fontWeight="700" color="amir.common" mt="1">
+              ۲۵/۵۰۰۰/۰۰۰ تومان
+            </Text>
+          </Flex>
+
+          <Flex
+            bg="amir.secondary"
+            w="50px"
+            h="50px"
+            borderRadius="14px"
+            align="center"
+            justify="center"
+            shadow="sm"
+            m="0"
+          >
+            <Icon as={CurrencyDollar} size={28} color="white" />
+          </Flex>
+        </Flex>
+      </MotionBox>
+
       <Button
         as={Link}
         to={RouteConst.shopCreateOrder}
         w="100%"
-        bg="amir.primary"
-        color="black"
+        bg="amir.accent"
+        color="white"
         mb="6"
+        textAlign="center"
         borderRadius="20px"
         size="lg"
       >
-        ساخت سرویس جدید
+        + ساخت سرویس جدید 
       </Button>
-
-      {/* Summary Cards */}
-      <VStack spacing="4" mb="6">
-        {/* تعداد مشتریان */}
-        <MotionBox
-          bgGradient="linear(to-r, #252422, #403D39)"
-          w="100%"
-          p="5"
-          borderRadius="20px"
-          shadow="md"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <Flex align="center">
-            <Text fontSize="sm">تعداد مشتریان</Text>
-            <Icon as={User} w={6} h={6} mr="3" color="#FFB703" />
-          </Flex>
-          <Text fontWeight="700" fontSize="2xl">
-            {customersCount}
-          </Text>
-        </MotionBox>
-
-        {/* سرویس امروز */}
-        <MotionBox
-          bgGradient="linear(to-r, #252422, #403D39)"
-          w="100%"
-          p="5"
-          borderRadius="20px"
-          shadow="md"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.1 }}
-        >
-          <Flex align="center">
-            <Text fontSize="sm">سرویس امروز</Text>
-            <Icon as={Toolbox} w={6} h={6} mr="3" color="#FFB703" />
-          </Flex>
-          <Text fontWeight="700" fontSize="2xl">
-            {servicesToday}
-          </Text>
-        </MotionBox>
-
-        {/* سرویس هفته */}
-        <MotionBox
-          bgGradient="linear(to-r, #252422, #403D39)"
-          w="100%"
-          p="5"
-          borderRadius="20px"
-          shadow="md"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.2 }}
-        >
-          <Flex align="center">
-            <Text fontSize="sm">سرویس هفته</Text>
-            <Icon as={Calendar} w={6} h={6} mr="3" color="#FFB703" />
-          </Flex>
-          <Text fontWeight="700" fontSize="2xl">
-            {servicesWeek}
-          </Text>
-        </MotionBox>
-      </VStack>
-
-      {/* Upcoming Services */}
-      <Text fontWeight="600" mb="2">
-        سرویس‌های نزدیک
-      </Text>
-      <VStack spacing="3">
-        {upcomingServices.map((item, idx) => (
-          <Box
-            key={idx}
-            w="100%"
-            p="4"
-            bg="amir.secondaryBg"
-            borderRadius="16px"
-            shadow="sm"
-            _hover={{ shadow: "md" }}
-          >
-            <Flex justify="space-between" align="center">
-              <VStack align="flex-start" spacing="0">
-                <Text fontWeight="600">{item.name}</Text>
-                <Text fontSize="sm" color="amir.secondaryVariant">
-                  {item.nextService}
-                </Text>
-              </VStack>
-              <Box
-                w="12px"
-                h="12px"
-                borderRadius="full"
-                bg={
-                  item.status === "active"
-                    ? "green.400"
-                    : item.status === "pending"
-                    ? "orange.400"
-                    : "red.400"
-                }
-              />
-            </Flex>
-          </Box>
-        ))}
-      </VStack>
     </Box>
   );
 };
