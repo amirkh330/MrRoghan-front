@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { BaseURL } from "@/utils/common";
 import { useToast } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { RouteConst } from "@/utils/allRoutes.type";
 
 type FormType = yup.InferType<typeof schema>;
 
@@ -13,6 +14,7 @@ export const useRegister = () => {
   const navigate = useNavigate();
   const toast = useToast();
   const [loading, setLoading] = useState(false);
+  const [search] = useSearchParams(window.location.href);
 
   const {
     register,
@@ -24,6 +26,12 @@ export const useRegister = () => {
     mode: "onChange",
   });
 
+  useEffect(() => {
+    if (search.get("phoneNumber")) {
+      setValue("phoneNumber", search.get("phoneNumber") as string);
+    }
+  }, [search]);
+
   const onSubmit = (data: FormType) => {
     setLoading(true);
     axios
@@ -31,10 +39,11 @@ export const useRegister = () => {
       .then(() => {
         toast({
           title: "ثبت نام با موفقیت انجام شد",
+          description: "لطفا مجدد وارد شوید",
           status: "success",
           position: "top",
         });
-        navigate("/login");
+        navigate(RouteConst.login);
       })
       .finally(() => setLoading(false));
   };

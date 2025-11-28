@@ -28,7 +28,16 @@ export const useLogin = (onClose: () => void) => {
         setStep("otp");
       })
       .catch((err) => {
-        console.log(err);
+        if (err.status == 406) {
+          onClose();
+          toast({
+            title: "شما ثبت نام نکردید!",
+            description: "لطفا برای استفاده از سرویس ثبت نام کنید.",
+            status: "warning",
+            position: "top",
+          });
+          navigate(RouteConst.register + "?phoneNumber=" + phoneNumber);
+        }
       })
       .finally(() => {
         setLoading(false);

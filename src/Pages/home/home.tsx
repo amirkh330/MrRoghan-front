@@ -75,16 +75,17 @@ export default function Home() {
         animate={{ opacity: 1, y: 0 }}
       >
         <Button
-          as={Link}
-          to="/login"
+          // as={Link}
+          // to="/login"
           mx="4"
-          w={"90%"}
           px="3"
           py="6"
+          w="90%"
           color={"white"}
           border={"1px solid"}
-          borderColor={"amir.primary"}
           bgColor={"amir.accent"}
+          onClick={() => onOpen()}
+          borderColor={"amir.primary"}
         >
           ثبت نام / ورود
         </Button>
