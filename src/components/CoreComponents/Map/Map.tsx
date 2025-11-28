@@ -1,7 +1,7 @@
-import { Button, Text } from "@chakra-ui/react";
+import { Button, Icon, Text } from "@chakra-ui/react";
+import { PingPong } from "@phosphor-icons/react";
 import { LatLngExpression } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import debounce from "lodash.debounce";
 import { useEffect, useState } from "react";
 import {
   MapContainer,
@@ -12,6 +12,16 @@ import {
   useMapEvents,
 } from "react-leaflet";
 import { Link } from "react-router-dom";
+
+import L from "leaflet";
+import ping from "./pin.png";
+import "leaflet/dist/leaflet.css";
+
+const customMarker = new L.Icon({
+  iconUrl: ping, // مسیر عکس آیکون
+  iconSize: [32, 32], // اندازه آیکون
+  iconAnchor: [16, 32], // نقطه اتصال (پایین وسط)
+});
 
 const Map = ({
   height = "200px",
@@ -49,7 +59,7 @@ const Map = ({
       },
     });
 
-    return <Marker position={position} />;
+    return <Marker position={position} icon={customMarker} />;
   };
   const MapBoundsLogger = ({ onBoundsChange }: any) => {
     const map = useMap();
@@ -122,7 +132,7 @@ const Map = ({
         }}
       />
       {/* <Marker position={[lat, lng] as LatLngExpression}>
-        <Popup>مکان شما اینجاست!</Popup>
+        // <Popup>مکان شما اینجاست!</Popup>
       </Marker> */}
     </MapContainer>
   );

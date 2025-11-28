@@ -9,48 +9,75 @@ import Home from "@/Pages/home/home";
 import { LoginPage } from "@/Pages/login/login";
 import { Register } from "@/Pages/regester/register";
 import useAuthStore from "@/store/authStore";
+import { RoleEnum } from "@/utils/common";
 import { Navigate, RouteObject } from "react-router-dom";
+import { RouteConst } from "@/utils/allRoutes.type";
 
-const PrivateRoute = ({ element }: { element: JSX.Element }) => {
-  const { isAuth } = useAuthStore();
-  if (isAuth) {
-    return isAuth ? element : <Navigate to="/login" replace />;
-  }
+const PrivateRoute = ({
+  element,
+  acceptRole,
+}: {
+  element: JSX.Element;
+  acceptRole: RoleEnum;
+}) => {
+  const { isAuth, role } = useAuthStore();
+
+  if (!isAuth) return <Navigate to="/" replace />;
+  if (acceptRole != role) return <Navigate to="/" replace />;
+
   return element;
 };
 
 export const allRoutes: Array<RouteObject> = [
-  { path: "/", element: <Home /> },
-  { path: "/login", element: <LoginPage /> },
-  { path: "/register", element: <Register /> },
+  { path: RouteConst.home, element: <Home /> },
+  { path: RouteConst.login, element: <LoginPage /> },
+  { path: RouteConst.register, element: <Register /> },
 
   { path: "*", element: <NotFound /> },
 
   // Customer //
   {
-    path: "/customer/dashboard",
-    element: <PrivateRoute element={<CustomerDashboard />} />,
+    path: RouteConst.customerDashboard,
+    element: (
+      <PrivateRoute
+        element={<CustomerDashboard />}
+        acceptRole={RoleEnum.CUSTOMER}
+      />
+    ),
   },
   {
-    path: "/customer/reports",
-    element: <PrivateRoute element={<CustomerReports />} />,
+    path: RouteConst.customerReports,
+    element: (
+      <PrivateRoute
+        element={<CustomerReports />}
+        acceptRole={RoleEnum.CUSTOMER}
+      />
+    ),
   },
 
   // SHOP //
   {
-    path: "/shop/dashboard",
-    element: <PrivateRoute element={<ShopDashboard />} />,
+    path: RouteConst.shopDashboard,
+    element: (
+      <PrivateRoute element={<ShopDashboard />} acceptRole={RoleEnum.SHOP} />
+    ),
   },
   {
-    path: "/shop/create-order",
-    element: <PrivateRoute element={<ShopCreateOrder />} />,
+    path: RouteConst.shopCreateOrder,
+    element: (
+      <PrivateRoute element={<ShopCreateOrder />} acceptRole={RoleEnum.SHOP} />
+    ),
   },
   {
-    path: "/shop/reports",
-    element: <PrivateRoute element={<ShopReports />} />,
+    path: RouteConst.shopReports,
+    element: (
+      <PrivateRoute element={<ShopReports />} acceptRole={RoleEnum.SHOP} />
+    ),
   },
   {
-    path: "/shop/customers",
-    element: <PrivateRoute element={<ShopCustomers />} />,
+    path: RouteConst.shopCustomers,
+    element: (
+      <PrivateRoute element={<ShopCustomers />} acceptRole={RoleEnum.SHOP} />
+    ),
   },
 ];

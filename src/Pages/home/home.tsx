@@ -1,3 +1,6 @@
+// Completely Rebuilt Mobile-App Style UI (Material 3 Inspired)
+// Fresh layout, modern mobile navigation, card stacks, floating action button
+
 "use client";
 
 import {
@@ -6,10 +9,13 @@ import {
   Flex,
   Image,
   Text,
-  useDisclosure,
   VStack,
+  HStack,
+  useDisclosure,
+  IconButton,
+  Divider,
 } from "@chakra-ui/react";
-import { Bell, Toolbox, FileDashed as File } from "@phosphor-icons/react";
+import { Bell, Toolbox, File, Plus } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import Logo from "@/images/logo.png";
 import { Link } from "react-router-dom";
@@ -22,124 +28,95 @@ export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Box
-      width="100%"
-      minH="90dvh"
-      bg="amir.mainBg"
-      color="amir.common"
-      px="4"
-      pb="8"
-    >
-      {/* Hero Section */}
+    <Box width="100%" minH="80dvh" bg="amir.mainBg" color="amir.common">
+      {/* HERO */}
       <MotionFlex
         direction="column"
         align="center"
         textAlign="center"
-        mt="8"
-        initial={{ opacity: 0, y: 20 }}
+        px="6"
+        mt="4"
+        initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
       >
-        <Text fontSize="28px" color="amir.primary">
-          سرویس خودرو، ساده‌تر از همیشه
-        </Text>
-        <Button my="4" w="full" bgColor={"amir.primary"} onClick={onOpen}>
-          ورود
-        </Button>
-        <Text mt="3" fontSize="15px" color="amir.secondaryVariant">
-          ثبت و مدیریت سرویس‌های دوره‌ای، تعویض روغن، لاستیک و هر چیزی که خودروت
-          نیاز داره. یادآوری‌ها هم به صورت SMS برات ارسال میشه.
+        <Image src={Logo} h="110px" opacity={0.9} />
+
+        <Text fontSize="26px" fontWeight="700" mt="4" color="amir.common">
+          مدیریت سرویس‌ها با یک لمس
         </Text>
 
-        {/* Hero Illustration */}
-        <MotionBox
-          mt="6"
-          width="200px"
-          height="180px"
-          bg="amir.secondaryBg"
-          borderRadius="16px"
-          animate={{ y: [0, -6, 0] }}
-          transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-          children={<Image src={Logo} h={"180px"} />}
-        />
+        <Text fontSize="15px" color="amir.secondary" mt="2" maxW="320px">
+          با ما مدیریت سرویس‌های خودروی شما را به صورت آنلاین انجام دهید.
+        </Text>
       </MotionFlex>
 
-      {/* Features Section */}
-      <VStack spacing="5" mt="12">
-        <FeatureItem
-          icon={<Bell size={24} />}
-          title="یادآوری سرویس با SMS"
-          desc="زمان تعویض روغن یا سرویس دوره‌ای رو فراموش نمی‌کنی."
+      {/* FEATURE CARDS STACK */}
+      <VStack spacing="4" mt="10" px="5">
+        <FeatureCard
+          icon={<Bell size={28} />}
+          title="یادآوری هوشمند"
+          desc="یادآوری هوشمند برای سرویس‌های شما."
         />
-
-        <FeatureItem
-          icon={<File size={24} />}
-          title="کارتکس کامل خودرو"
-          desc=" تمام سوابق تعمیرات و سرویس‌ها همیشه همراهت. و هیچی از قلم نمیافته."
+        <FeatureCard
+          icon={<File size={28} />}
+          title="کارتکس دیجیتال"
+          desc="همه سوابق خودرو همیشه همراه شماست."
         />
-
-        <FeatureItem
-          icon={<Toolbox size={24} />}
-          title="ویژه مشتری و مغازه‌دار"
-          desc="هر دو سمت، هم مدیریت راحت و هم سابقه قابل مشاهده."
+        <FeatureCard
+          icon={<Toolbox size={28} />}
+          title="مخصوص راننده و تعمیرکار"
+          desc="هر دو سمت یک پنل واضح و ساده دارند."
         />
       </VStack>
-
-      {/* CTA Button */}
-      <MotionBox
-        mt="12"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.6 }}
+      <MotionFlex
+        mt="auto"
+        py={6}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
       >
         <Button
-          width="100%"
-          bg="amir.primary"
-          color="black"
-          fontWeight="bold"
-          size="lg"
-          _hover={{ bg: "#ffca3a" }}
           as={Link}
-          to={"/register"}
+          to="/login"
+          mx="4"
+          w={"90%"}
+          px="3"
+          py="6"
+          color={"white"}
+          border={"1px solid"}
+          borderColor={"amir.primary"}
+          bgColor={"amir.accent"}
         >
-          ثبت نام به عنوان مغازه‌دار
+          ثبت نام / ورود
         </Button>
-      </MotionBox>
+      </MotionFlex>
       {isOpen && <Login isOpen={isOpen} onOpen={onOpen} onClose={onClose} />}
     </Box>
   );
 }
 
-function FeatureItem({
-  icon,
-  title,
-  desc,
-}: {
-  icon: any;
-  title: string;
-  desc: string;
-}) {
+function FeatureCard({ icon, title, desc }: any) {
   return (
-    <MotionFlex
-      width="100%"
+    <MotionBox
       bg="amir.secondaryBg"
-      borderRadius="12px"
-      p="4"
-      align="center"
-      gap="3"
-      initial={{ opacity: 0, x: -20 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.4 }}
+      borderRadius="22px"
+      w="100%"
+      py="5"
+      px="3"
+      border="1px solid"
+      borderColor="amir.secondaryVariant"
+      whileTap={{ scale: 0.98 }}
     >
-      <Box color="amir.primary">{icon}</Box>
-      <Box>
-        <Text fontWeight="600" color="amir.common">
-          {title}
-        </Text>
-        <Text fontSize="13px" color="amir.secondaryVariant">
-          {desc}
-        </Text>
-      </Box>
-    </MotionFlex>
+      <HStack justify="flex-start" align="center">
+        <Box color="amir.common">{icon}</Box>
+        <VStack alignItems={"start"} w="80%" flexWrap={"nowrap"}>
+          <Text fontWeight="700" fontSize="17px" color="amir.common">
+            {title}
+          </Text>
+          <Text fontSize="14px" mt="1" color="amir.secondary">
+            {desc}
+          </Text>
+        </VStack>
+      </HStack>
+    </MotionBox>
   );
 }

@@ -59,4 +59,10 @@ const schema = yup.object({
     .matches(/^09\d{9}$/, "شماره موبایل معتبر نیست"),
   shopName: yup.string().required("نام مغازه الزامی است"),
   address: yup.string().required("آدرس مغازه الزامی است"),
+  location: yup
+    .object({
+      lat: yup.number().required("عرض جغرافیایی الزامی است"),
+      lng: yup.number().required("طول جغرافیایی الزامی است"),
+    })
+    .required("موقعیت الزامی است"),
 });

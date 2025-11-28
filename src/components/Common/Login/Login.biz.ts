@@ -1,4 +1,5 @@
 import useAuthStore from "@/store/authStore";
+import { RouteConst } from "@/utils/allRoutes.type";
 import { BaseURL } from "@/utils/common";
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
@@ -71,8 +72,8 @@ export const useLogin = (onClose: () => void) => {
           ...(shopName && { shopName }),
         });
         onClose();
-        if (role === "customer") return navigate("/customer/dashboard");
-        navigate("/shop/dashboard");
+        if (role === "customer") return navigate(RouteConst.customerDashboard);
+        navigate(RouteConst.shopDashboard);
       })
       .catch((err) => {
         console.log(err);

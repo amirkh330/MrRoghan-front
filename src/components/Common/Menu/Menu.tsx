@@ -16,6 +16,7 @@ import {
 import { List } from "@phosphor-icons/react";
 import { Link, useNavigate } from "react-router-dom";
 import { Login } from "../Login/Login";
+import { RouteConst } from "@/utils/allRoutes.type";
 
 const Menu = () => {
   const navigate = useNavigate();
@@ -139,19 +140,18 @@ const Menu = () => {
 export default Menu;
 
 const _CustomerMenu = [
-  { title: "داشبورد", link: "/customer/dashboard" },
-  { title: "آمار", link: "/customer/reports" },
+  { title: "داشبورد", link: RouteConst.customerDashboard },
+  { title: "آمار", link: RouteConst.customerReports },
 ];
 
 const _ShopMenu = [
-  { title: "داشبورد", link: "/shop/dashboard" },
-  { title: "آمار", link: "/shop/reports" },
-  { title: "ایجاد رسید", link: "/shop/create-order" },
-  { title: "مشتریان من", link: "/shop/customers" },
+  { title: "داشبورد", link: RouteConst.shopCustomers },
+  { title: "آمار", link: RouteConst.shopReports },
+  { title: "ایجاد رسید", link: RouteConst.shopCreateOrder },
+  { title: "مشتریان من", link: RouteConst.shopCustomers },
 ];
 
 const _PublicMenu = [
-  { title: "درباره من مستر روغن", link: "/" },
-  { title: "پلن‌های مستر روغن", link: "/" },
-  { title: "تماس با ما", link: "/" },
+  { title: "خدمات ما", link: RouteConst.services },
+  { title: "تماس با ما", link: RouteConst.contactUs },
 ];

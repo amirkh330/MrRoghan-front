@@ -23,6 +23,15 @@ export const Header = () => {
       bg="amir.secondaryBg"
       color="amir.common"
       p={4}
+      w="full"
+      //
+      justify="space-between"
+      align="center"
+      px="5"
+      py="4"
+      position="sticky"
+      top="0"
+      zIndex={10}
     >
       <Flex m="0" alignItems="center" gap="2">
         <Menu />

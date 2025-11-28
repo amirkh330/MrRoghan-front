@@ -14,3 +14,9 @@ export enum UsageEnum {
   MEDIUM = "medium",
   LONG = "long",
 }
+
+export enum RoleEnum {
+  CUSTOMER = "customer",
+  ADMIN = "admin",
+  SHOP = "shop",
+}

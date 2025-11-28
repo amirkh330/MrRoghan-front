@@ -1,3 +1,4 @@
+import { RoleEnum } from "@/utils/common";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -21,7 +22,7 @@ interface AuthState {
     refresh: string;
     fullName: string;
     phoneNumber: string;
-    role: string;
+    role: RoleEnum;
     shopName?: string;
   }) => void;
   logout: () => void;

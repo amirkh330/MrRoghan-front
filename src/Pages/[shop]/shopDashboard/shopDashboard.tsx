@@ -1,3 +1,4 @@
+import { RouteConst } from "@/utils/allRoutes.type";
 import {
   Box,
   Text,
@@ -32,7 +33,7 @@ export const ShopDashboard = () => {
       {/* Quick Action */}
       <Button
         as={Link}
-        to={"/shop/create-order"}
+        to={RouteConst.shopCreateOrder}
         w="100%"
         bg="amir.primary"
         color="black"

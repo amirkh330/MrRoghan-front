@@ -13,6 +13,8 @@ import {
 } from "@chakra-ui/react";
 import { useRegister } from "./register.biz";
 import { persianToEnglishNumbers } from "@/utils/convertNumber/ConvertNumber";
+import Map from "@/components/CoreComponents/Map/Map";
+import { set } from "react-hook-form";
 
 export const Register = () => {
   const {
@@ -105,6 +107,12 @@ export const Register = () => {
               border="1px solid #555"
             />
             <FormErrorMessage>{errors.address?.message}</FormErrorMessage>
+          </FormControl>
+
+          <FormControl isInvalid={!!errors.location}>
+            <FormLabel>موقعیت مغازه</FormLabel>
+            <Map setNewPin={(e) => setValue("location", e as any)} />
+            <FormErrorMessage>{errors.location?.message}</FormErrorMessage>
           </FormControl>
 
           {/* دکمه ثبت */}
