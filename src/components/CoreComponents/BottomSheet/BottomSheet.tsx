@@ -4,16 +4,23 @@ interface IBottomSheet {
   title: string;
   children: React.ReactNode;
   isOpen: boolean;
+  showCloseButton?: boolean;
   onOpen: () => void;
   onClose: () => void;
 }
-const BottomSheet = ({ title, children, isOpen, onClose }: IBottomSheet) => {
+const BottomSheet = ({
+  title,
+  children,
+  isOpen,
+  onClose,
+  showCloseButton = true,
+}: IBottomSheet) => {
   if (!isOpen) return null;
   return (
     <>
-      <Box textAlign="center" p="6" maxW={"400px"} >
-        <Slide direction="bottom" in={isOpen} style={{ zIndex: 20 }} >
-          <Box bg={"amir.mainBg"} boxShadow="md" borderTopRadius="md" >
+      <Box textAlign="center" p="6" maxW={"400px"}>
+        <Slide direction="bottom" in={isOpen} style={{ zIndex: 20 }}>
+          <Box bg={"amir.mainBg"} boxShadow="md" borderTopRadius="md">
             <Flex
               p="6"
               justifyContent="space-between"
@@ -24,9 +31,11 @@ const BottomSheet = ({ title, children, isOpen, onClose }: IBottomSheet) => {
               <Text fontWeight={500} fontSize={"16px"} color={"amir.common"}>
                 {title}
               </Text>
-              <CloseButton onClick={onClose} color={"amir.common"} />
+              {showCloseButton && (
+                <CloseButton onClick={onClose} color={"amir.common"} />
+              )}
             </Flex>
-            <Box >{children}</Box>
+            <Box>{children}</Box>
           </Box>
         </Slide>
       </Box>

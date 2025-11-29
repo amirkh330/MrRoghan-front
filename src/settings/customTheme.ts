@@ -1,4 +1,5 @@
 import { extendTheme } from "@chakra-ui/react";
+import { color } from "framer-motion";
 
 export const customTheme = extendTheme({
   direction: "rtl",
@@ -6,7 +7,7 @@ export const customTheme = extendTheme({
     amir: {
       mainBg: "#d5dadf",
       secondaryBg: "#e7eaefff",
-      primary: "#A6B0C3",
+      primary: "#3FBD6E",
       secondary: "#6E7685",
       secondaryVariant: "#777b82",
       common: "#1A1A1A",

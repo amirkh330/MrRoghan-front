@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -11,6 +12,8 @@ import {
   InputLeftElement,
   InputRightElement,
   Select,
+  Spacer,
+  Switch,
   Text,
   Textarea,
   VStack,
@@ -18,9 +21,11 @@ import {
 
 import { persianToEnglishNumbers } from "@/utils/convertNumber/ConvertNumber";
 import { formatNumber } from "@/utils/Toman/Toman";
-import { Trash } from "@phosphor-icons/react";
+import { Trash, TrashSimple } from "@phosphor-icons/react";
 import { useShopCreateOrder } from "./shopCreateOrder.biz";
 import { UsageEnum } from "@/utils/common";
+import BottomSheet from "@/components/CoreComponents/BottomSheet/BottomSheet";
+import { useState } from "react";
 
 export const ShopCreateOrder = () => {
   const {
@@ -37,6 +42,15 @@ export const ShopCreateOrder = () => {
     setValue,
     vehiclesList,
     isPending,
+    isOpen,
+    onOpen,
+    onClose,
+    phoneNumber,
+    setPhoneNumber,
+    handleSelectPhoneNumber,
+    isOpenPhoneNumber,
+    onOpenPhoneNumber,
+    onClosePhoneNumber,
   } = useShopCreateOrder();
 
   return (
@@ -278,7 +292,207 @@ export const ShopCreateOrder = () => {
             ثبت اوردر
           </Button>
         </VStack>
+        <BottomSheetReminder
+          isOpen={isOpen}
+          onOpen={onOpen}
+          onClose={onClose}
+        />
       </form>
+      <BottomSheetPhoneNumber
+        onOpen={onOpenPhoneNumber}
+        isOpen={isOpenPhoneNumber}
+        setPhoneNumber={setPhoneNumber}
+        phoneNumber={phoneNumber}
+        isPending={isPending}
+        handleSelectPhoneNumber={handleSelectPhoneNumber}
+      />
     </Box>
   );
 };
+
+const BottomSheetPhoneNumber = ({
+  onOpen,
+  isOpen,
+  setPhoneNumber,
+  phoneNumber,
+  isPending,
+  handleSelectPhoneNumber,
+}: any) => {
+  return (
+    <BottomSheet
+      onOpen={onOpen}
+      isOpen={isOpen}
+      onClose={() => {}}
+      showCloseButton={false}
+      title="انتخاب شماره مشتری"
+    >
+      <Box
+        // color="amir.mainBg"
+        p="4"
+        display="flex"
+        flexDirection="column"
+        gap={"18px"}
+      >
+        <Flex mt="4" mx="0" flexDirection={"column"} gap="12px">
+          <Text color={"amir.common"} textAlign={"start"} fontSize={"16px"}>
+            لطفا شماره موبایل مشتری را وارد کنید
+          </Text>
+          <Text color={"amir.common"} textAlign={"start"} fontSize={"12px"}>
+            مثال : ۰۹۱۲۳۴۵۶۷۸۹
+          </Text>
+        </Flex>
+        <Input
+          maxLength={11}
+          onChange={(e) =>
+            setPhoneNumber(persianToEnglishNumbers(e.target.value))
+          }
+          value={phoneNumber}
+          placeholder="09123456789"
+          bg="amir.secondaryBg"
+        />
+        <Button
+          bg="amir.primary"
+          color={"white"}
+          disabled={isPending || !/^09\d{9}$/.test(phoneNumber)}
+          onClick={handleSelectPhoneNumber}
+        >
+          ایجاد سرویس
+        </Button>
+      </Box>
+    </BottomSheet>
+  );
+};
+
+const REMINDER_TYPES = [
+  "تعویض سرویس دوره ای",
+  "تعویض قطعات مصرفی",
+  "تعویض قطعات اصلی",
+];
+
+const months = Array.from({ length: 6 }, (_, i) => i + 1);
+
+export default function BottomSheetReminder({ onOpen, isOpen, onClose }: any) {
+  const [needReminder, setNeedReminder] = useState(false);
+  const [reminders, setReminders] = useState<
+    { type: string; period: number }[]
+  >([]);
+
+  // local fields for the "add new" row
+  const [newType, setNewType] = useState("");
+  const [newPeriod, setNewPeriod] = useState<number | "">("");
+
+  const addReminder = () => {
+    if (!newType || !newPeriod) return; // require both
+    if (reminders.length >= 3) return;
+    setReminders((r) => [...r, { type: newType, period: Number(newPeriod) }]);
+    setNewType("");
+    setNewPeriod("");
+  };
+
+  const deleteReminder = (index: number) => {
+    setReminders((r) => r.filter((_, i) => i !== index));
+  };
+
+  return (
+    <BottomSheet
+      onOpen={onOpen}
+      isOpen={isOpen}
+      onClose={onClose}
+      showCloseButton={false}
+      title="یادآوری"
+    >
+      <Box p="4" display="flex" flexDirection="column" gap="18px">
+        <FormControl display="flex" alignItems="center">
+          <FormLabel mb="0">
+            آیا برای این سرویس نیاز به یادآوری دارید؟
+          </FormLabel>
+          <Switch
+            isChecked={needReminder}
+            onChange={(e) => setNeedReminder(e.target.checked)}
+          />
+        </FormControl>
+
+        {needReminder && (
+          <>
+            {/* add new reminder row */}
+            <Flex gap="10px" alignItems="center">
+              <Select
+                placeholder="نوع یادآوری را انتخاب کنید"
+                value={newType}
+                onChange={(e) => setNewType(e.target.value)}
+              >
+                {REMINDER_TYPES.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
+              </Select>
+
+              <Select
+                placeholder="دوره زمانی (ماه)"
+                value={newPeriod as any}
+                onChange={(e) =>
+                  setNewPeriod(e.target.value ? Number(e.target.value) : "")
+                }
+              >
+                {months.map((m) => (
+                  <option key={m} value={m}>
+                    {m} ماه
+                  </option>
+                ))}
+              </Select>
+
+              <Button
+                bg="amir.primary"
+                color="white"
+                onClick={addReminder}
+                isDisabled={!newType || !newPeriod || reminders.length >= 3}
+              >
+                افزودن
+              </Button>
+            </Flex>
+
+            {/* list of reminders (one row each) */}
+            <Box display="flex" flexDirection="column" gap="8px">
+              {reminders.map((item, index) => (
+                <Flex
+                  key={index}
+                  p="3"
+                  borderWidth="1px"
+                  borderRadius="md"
+                  alignItems="center"
+                  gap="4"
+                >
+                  <Text flexBasis="60%">{item.type}</Text>
+                  <Text>{item.period} ماه</Text>
+                  <Spacer />
+                  <IconButton
+                    aria-label="حذف"
+                    icon={<TrashSimple />}
+                    size="sm"
+                    onClick={() => deleteReminder(index)}
+                  />
+                </Flex>
+              ))}
+            </Box>
+
+            {/* show message when max reached */}
+            {reminders.length >= 3 && (
+              <Text color="gray.500" fontSize="sm">
+                حداکثر ۳ یادآوری مجاز است
+              </Text>
+            )}
+          </>
+        )}
+
+        <Button
+          bg="amir.primary"
+          color="white"
+          onClick={() => onClose(reminders)}
+        >
+          ذخیره
+        </Button>
+      </Box>
+    </BottomSheet>
+  );
+}

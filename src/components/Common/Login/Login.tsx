@@ -100,6 +100,7 @@ const PhoneNumberStep = ({
       )}
       <Button
         bg={"amir.primary"}
+        color={"white"}
         w={"100%"}
         onClick={handleSetPhoneNumber}
         isLoading={loading}
@@ -146,6 +147,7 @@ const OtpStep = ({ otp, setOtp, handleSendOtp, loading }: any) => {
         isDisabled={otp.length !== 4}
         isLoading={loading}
         bg={"amir.primary"}
+        color={"white"} 
         w={"100%"}
         onClick={handleSendOtp}
       >

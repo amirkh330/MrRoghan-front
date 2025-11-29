@@ -4,14 +4,19 @@ import * as yup from "yup";
 import { useGetVehicles } from "../query/getVehicle";
 import { useGetInstrument } from "../query/getInstrument";
 import { ICreateOrderDto, useCreateOrder } from "../query/postCreateOrder";
-import { useToast } from "@chakra-ui/react";
+import { useDisclosure, useToast } from "@chakra-ui/react";
 import { title } from "process";
+import { useState } from "react";
 
 export const useShopCreateOrder = () => {
   const toast = useToast();
-
   const { data: vehiclesList } = useGetVehicles();
   const { data: instrumentList } = useGetInstrument();
+
+  const { isOpen, onOpen, onClose } = useDisclosure({ defaultIsOpen: true });
+  const { isOpen: isOpenPhoneNumber, onOpen: onOpenPhoneNumber, onClose: onClosePhoneNumber } = useDisclosure();
+
+  const [phoneNumber, setPhoneNumber] = useState("");
   const { mutateAsync: createOrderApi, isPending } = useCreateOrder();
 
   const {
@@ -45,13 +50,17 @@ export const useShopCreateOrder = () => {
       nextDistance: data.nextDistance.replace(/,/g, ""),
     };
     createOrderApi(payload as any).then(() => {
-      reset()
+      reset();
       toast({
         title: "سرویس با موفقیت ثبت شد",
         status: "success",
         position: "top",
       });
     });
+  };
+
+  const handleSelectPhoneNumber = () => {
+    onClose();
   };
 
   return {
@@ -69,6 +78,15 @@ export const useShopCreateOrder = () => {
     vehiclesList,
     isPending,
     instrumentList,
+    isOpen,
+    onOpen,
+    onClose,
+    phoneNumber,
+    setPhoneNumber,
+    handleSelectPhoneNumber,
+    isOpenPhoneNumber,
+    onOpenPhoneNumber,
+    onClosePhoneNumber,
   };
 };
 
