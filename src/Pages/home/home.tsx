@@ -1,25 +1,17 @@
-// Completely Rebuilt Mobile-App Style UI (Material 3 Inspired)
-// Fresh layout, modern mobile navigation, card stacks, floating action button
-
-"use client";
-
+import { Login } from "@/components/Common/Login/Login";
+import Logo from "@/images/logo.png";
 import {
   Box,
   Button,
   Flex,
+  HStack,
   Image,
   Text,
-  VStack,
-  HStack,
   useDisclosure,
-  IconButton,
-  Divider,
+  VStack
 } from "@chakra-ui/react";
-import { Bell, Toolbox, File, Plus } from "@phosphor-icons/react";
+import { Bell, File, Toolbox } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
-import Logo from "@/images/logo.png";
-import { Link } from "react-router-dom";
-import { Login } from "@/components/Common/Login/Login";
 
 const MotionBox = motion(Box);
 const MotionFlex = motion(Flex);

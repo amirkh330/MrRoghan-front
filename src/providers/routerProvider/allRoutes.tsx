@@ -12,6 +12,8 @@ import useAuthStore from "@/store/authStore";
 import { RoleEnum } from "@/utils/common";
 import { Navigate, RouteObject } from "react-router-dom";
 import { RouteConst } from "@/utils/allRoutes.type";
+import ContactUs from "@/Pages/contactUs/contactUs";
+import Services from "@/Pages/services/services";
 
 const PrivateRoute = ({
   element,
@@ -30,6 +32,8 @@ const PrivateRoute = ({
 
 export const allRoutes: Array<RouteObject> = [
   { path: RouteConst.home, element: <Home /> },
+  { path: RouteConst.contactUs, element: <ContactUs /> },
+  { path: RouteConst.services, element: <Services /> },
   { path: RouteConst.login, element: <LoginPage /> },
   { path: RouteConst.register, element: <Register /> },
 
