@@ -36,7 +36,7 @@ const Menu = () => {
     : _PublicMenu;
   return (
     <>
-      <Icon as={List} size={18} onClick={onOpen} />
+      <Icon as={List} width={"25px"} h={"25px"} onClick={onOpen} />
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent bgColor="amir.mainBg" color="amir.common">

@@ -9,7 +9,7 @@ const mockCustomers = [
     phone: "09121234567",
     lastVisit: "۳ روز قبل",
     nextService: "۲ ماه دیگر",
-    status: "فعال",
+    vehicle: "پراید",
   },
   {
     id: 2,
@@ -17,7 +17,7 @@ const mockCustomers = [
     phone: "09351234567",
     lastVisit: "۱۰ روز قبل",
     nextService: "۱ ماه دیگر",
-    status: "کم‌مصرف",
+    vehicle: "پراید",
   },
 ];
 
@@ -62,27 +62,17 @@ export const ShopCustomers = () => {
                 <Text fontWeight="700" fontSize="md" noOfLines={1}>
                   {item.name}
                 </Text>
-                <Tag
-                  size="sm"
-                  bg={
-                    item.status === "فعال"
-                      ? "green.400"
-                      : item.status === "کم‌مصرف"
-                      ? "orange.400"
-                      : "red.400"
-                  }
-                  color="black"
-                  borderRadius="full"
-                  px="3"
-                >
-                  {item.status}
-                </Tag>
               </Flex>
-              <Flex align="center" justify="space-between" gap={2} m={0}>
+              <Flex
+                as="a"
+                href={`tel:${item.phone}`}
+                align="center"
+                justify="space-between"
+                gap={2}
+                m={0}
+              >
                 <Phone color="#FFB703" />
                 <Text
-                  as="a"
-                  href={`tel:${item.phone}`}
                   color="amir.primary"
                   fontWeight="600"
                   fontSize="sm"
@@ -105,6 +95,13 @@ export const ShopCustomers = () => {
                 سرویس بعدی:{" "}
               </Text>
               <Text color="amir.common">{item.nextService}</Text>
+            </Flex>
+
+            <Flex justifyContent="space-between" align="center" gap={3} mb={2}>
+              <Text fontSize="sm" color="amir.secondaryVariant">
+                وسیله نقلیه:{" "}
+              </Text>
+              <Text color="amir.common">{item.vehicle}</Text>
             </Flex>
           </Box>
         ))}

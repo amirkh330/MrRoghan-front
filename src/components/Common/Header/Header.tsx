@@ -28,7 +28,8 @@ export const Header = () => {
       justify="space-between"
       align="center"
       px="5"
-      py="4"
+      py="2"
+      pr="2"
       position="sticky"
       top="0"
       zIndex={10}

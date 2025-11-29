@@ -58,7 +58,8 @@ export const ShopDashboard = () => {
             bg="amir.secondaryBg"
             w="48%"
             m="0"
-            p="5"
+            p="4"
+            py="2"
             borderRadius="18px"
             shadow="md"
             initial={{ opacity: 0, y: 20 }}
@@ -95,7 +96,7 @@ export const ShopDashboard = () => {
                     shadow="sm"
                     m="0"
                   >
-                    <Icon as={item.icon} color="white" />
+                    <Icon w={"20px"} h="20px" as={item.icon} color="white" />
                   </Flex>
                 </Flex>
               </Flex>
