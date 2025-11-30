@@ -14,6 +14,9 @@ import { Navigate, RouteObject } from "react-router-dom";
 import { RouteConst } from "@/utils/allRoutes.type";
 import ContactUs from "@/Pages/contactUs/contactUs";
 import Services from "@/Pages/services/services";
+import { AdminLogin } from "@/Pages/[admin]/adminLogin/adminLogin";
+import { AdminDashboard } from "@/Pages/[admin]/adminDashboard/adminDashboard";
+import { AdminServices } from "@/Pages/[admin]/adminServices/adminServices";
 
 const PrivateRoute = ({
   element,
@@ -38,6 +41,24 @@ export const allRoutes: Array<RouteObject> = [
   { path: RouteConst.register, element: <Register /> },
 
   { path: "*", element: <NotFound /> },
+
+  // Admin //
+  {
+    path: RouteConst.adminLogin,
+    element: <AdminLogin />,
+  },
+  {
+    path: RouteConst.adminDashboard,
+    element: (
+      <PrivateRoute element={<AdminDashboard />} acceptRole={RoleEnum.ADMIN} />
+    ),
+  },
+  {
+    path: RouteConst.adminServices,
+    element: (
+      <PrivateRoute element={<AdminServices />} acceptRole={RoleEnum.ADMIN} />
+    ),
+  },
 
   // Customer //
   {

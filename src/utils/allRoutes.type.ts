@@ -1,16 +1,22 @@
 export const RouteConst = {
+  home: "/",
   login: "/login",
   register: "/register",
-  home: "/",
+
+  adminDashboard: "/admin",
+  adminLogin: "/admin/login",
+  adminServices: "/admin/services",
+
   services: "/services",
   contactUs: "/contact-us",
 
-
-  shopDashboard: "/shop/dashboard",
-  shopCreateOrder: "/shop/create-order",
   shopReports: "/shop/reports",
   shopCustomers: "/shop/customers",
-  customerDashboard: "/user/dashboard",
+  shopDashboard: "/shop/dashboard",
+  shopCreateOrder: "/shop/create-order",
+
   customerReports: "/user/reports",
+  customerDashboard: "/user/dashboard",
+
   notFound: "*",
 };

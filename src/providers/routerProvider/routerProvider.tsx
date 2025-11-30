@@ -3,6 +3,7 @@ import { allRoutes } from "@/providers/routerProvider/allRoutes";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const RouterProvider = () => {
+  
   return (
     <BrowserRouter
     // future={{ v7_relativeSplatPath: true, v7_startTransition: true }}
