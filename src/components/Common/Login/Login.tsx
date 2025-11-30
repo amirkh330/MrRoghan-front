@@ -11,6 +11,8 @@ import {
 } from "@chakra-ui/react";
 import { useLogin } from "./Login.biz";
 import { persianToEnglishNumbers } from "@/utils/convertNumber/ConvertNumber";
+import { useEffect } from "react";
+import { OtpStep } from "./otp";
 
 interface ILogin {
   isOpen: boolean;
@@ -74,7 +76,13 @@ const PhoneNumberStep = ({
   loading,
 }: any) => {
   return (
-    <Box color="amir.mainBg" p="4" display="flex" flexDirection="column" gap={"18px"}>
+    <Box
+      color="amir.mainBg"
+      p="4"
+      display="flex"
+      flexDirection="column"
+      gap={"18px"}
+    >
       <Flex mb="4" justifyContent={"center"}>
         <Text color={"amir.common"}>لطفا شماره موبایل خود را وارد کنید</Text>
       </Flex>
@@ -106,52 +114,6 @@ const PhoneNumberStep = ({
         isLoading={loading}
       >
         ارسال
-      </Button>
-    </Box>
-  );
-};
-
-const OtpStep = ({ otp, setOtp, handleSendOtp, loading }: any) => {
-  return (
-    <Box mx="auto" p="4">
-      <Text color={"amir.common"}>لطفا کد otp را وارد کنید</Text>
-      <HStack my="6" justifyContent={"space-around"} mx="8" dir="ltr">
-        <PinInput
-          value={otp}
-          onChange={(e) => setOtp(persianToEnglishNumbers(e))}
-        >
-          <PinInputField
-            _focusVisible={{ borderColor: "amir.primary" }}
-            color={"amir.common"}
-          />
-          <PinInputField
-            _focusVisible={{ borderColor: "amir.primary" }}
-            color={"amir.common"}
-          />
-          <PinInputField
-            _focusVisible={{ borderColor: "amir.primary" }}
-            color={"amir.common"}
-          />
-          <PinInputField
-            _focusVisible={{ borderColor: "amir.primary" }}
-            color={"amir.common"}
-          />
-          {/* <PinInputField
-            _focusVisible={{ borderColor: "amir.primary" }}
-            color={"amir.common"}
-          /> */}
-        </PinInput>
-      </HStack>
-      <Button
-        my="2"
-        isDisabled={otp.length !== 4}
-        isLoading={loading}
-        bg={"amir.primary"}
-        color={"white"} 
-        w={"100%"}
-        onClick={handleSendOtp}
-      >
-        ورود
       </Button>
     </Box>
   );

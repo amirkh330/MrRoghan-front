@@ -141,7 +141,7 @@ export default Menu;
 
 const _CustomerMenu = [
   { title: "داشبورد", link: RouteConst.customerDashboard },
-  { title: "آمار", link: RouteConst.customerReports },
+  { title: "سوابق سفارش", link: RouteConst.customerReports },
 ];
 
 const _ShopMenu = [
