@@ -36,7 +36,7 @@ const Menu = () => {
     : _PublicMenu;
   return (
     <>
-      <Icon as={List} size={18} onClick={onOpen} />
+      <Icon as={List} width={"25px"} h={"25px"} onClick={onOpen} />
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent bgColor="amir.mainBg" color="amir.common">
@@ -146,12 +146,10 @@ const _CustomerMenu = [
 
 const _ShopMenu = [
   { title: "داشبورد", link: RouteConst.shopCustomers },
+  { title: "خدمات ما", link: RouteConst.services },
   { title: "آمار", link: RouteConst.shopReports },
   { title: "ایجاد رسید", link: RouteConst.shopCreateOrder },
   { title: "مشتریان من", link: RouteConst.shopCustomers },
 ];
 
-const _PublicMenu = [
-  { title: "خدمات ما", link: RouteConst.services },
-  { title: "تماس با ما", link: RouteConst.contactUs },
-];
+const _PublicMenu = [{ title: "تماس با ما", link: RouteConst.contactUs }];
