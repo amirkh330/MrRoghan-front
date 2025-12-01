@@ -7,6 +7,7 @@ import { ICreateOrderDto, useCreateOrder } from "../query/postCreateOrder";
 import { useDisclosure, useToast } from "@chakra-ui/react";
 import { title } from "process";
 import { useState } from "react";
+import { useGetUserExist } from "../query/getUserExist";
 
 export const useShopCreateOrder = () => {
   const toast = useToast();
@@ -14,10 +15,17 @@ export const useShopCreateOrder = () => {
   const { data: instrumentList } = useGetInstrument();
 
   const { isOpen, onOpen, onClose } = useDisclosure({ defaultIsOpen: true });
-  const { isOpen: isOpenPhoneNumber, onOpen: onOpenPhoneNumber, onClose: onClosePhoneNumber } = useDisclosure();
+  const {
+    isOpen: isOpenPhoneNumber,
+    onOpen: onOpenPhoneNumber,
+    onClose: onClosePhoneNumber,
+  } = useDisclosure();
 
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const { mutateAsync: createOrderApi, isPending } = useCreateOrder();
+  const { mutateAsync: getUserExist, isPending: userExistLoading } =
+    useGetUserExist();
 
   const {
     register,
@@ -60,11 +68,33 @@ export const useShopCreateOrder = () => {
   };
 
   const handleSelectPhoneNumber = () => {
-    onClose();
+    getUserExist({ phoneNumber })
+      .then(({ data }) => {
+        setIsDisabled(true);
+        reset({
+          phoneNumber: data.phoneNumber,
+          customer_firstName: data.firstName,
+          customer_lastName: data.lastName,
+        });
+
+        onClose();
+      })
+      .catch(() => {
+        toast({
+          title: "کاربری با این شماره یافت نشد",
+          description: "لطفا اطلاعات مشتری را وارد نمایید",
+          status: "warning",
+          position: "top",
+        });
+        reset({
+          phoneNumber: phoneNumber,
+        });
+      });
   };
 
   return {
     register,
+    isDisabled,
     control,
     handleSubmit,
     setValue,

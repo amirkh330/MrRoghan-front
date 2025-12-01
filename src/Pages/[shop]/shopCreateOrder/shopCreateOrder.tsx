@@ -41,6 +41,8 @@ export const ShopCreateOrder = () => {
     onSubmit,
     setValue,
     vehiclesList,
+    isDisabled,
+
     isPending,
     isOpen,
     onOpen,
@@ -67,6 +69,7 @@ export const ShopCreateOrder = () => {
             <Input
               {...register("phoneNumber")}
               maxLength={11}
+              disabled={isDisabled}
               onChange={(e) =>
                 setValue("phoneNumber", persianToEnglishNumbers(e.target.value))
               }
@@ -81,6 +84,7 @@ export const ShopCreateOrder = () => {
             <FormLabel>نام مشتری (اختیاری)</FormLabel>
             <Input
               {...register("customer_firstName")}
+              disabled={isDisabled}
               placeholder="نام"
               bg="amir.secondaryBg"
             />
@@ -95,6 +99,7 @@ export const ShopCreateOrder = () => {
             <Input
               {...register("customer_lastName")}
               placeholder="نام خانوادگی"
+              disabled={isDisabled}
               bg="amir.secondaryBg"
             />
             <FormErrorMessage>
