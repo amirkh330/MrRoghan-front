@@ -50,13 +50,15 @@ export const allRoutes: Array<RouteObject> = [
   {
     path: RouteConst.adminDashboard,
     element: (
-      <PrivateRoute element={<AdminDashboard />} acceptRole={RoleEnum.ADMIN} />
+      <AdminDashboard />
+      // <PrivateRoute element={<AdminDashboard />} acceptRole={RoleEnum.ADMIN} />
     ),
   },
   {
     path: RouteConst.adminServices,
     element: (
-      <PrivateRoute element={<AdminServices />} acceptRole={RoleEnum.ADMIN} />
+      <AdminServices />
+      // <PrivateRoute element={<AdminServices />} acceptRole={RoleEnum.ADMIN} />
     ),
   },
 
