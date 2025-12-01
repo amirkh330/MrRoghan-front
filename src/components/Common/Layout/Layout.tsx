@@ -12,8 +12,6 @@ export const Layout = () => {
       direction="column"
       width="100%"
       maxWidth="400px"
-      mx="auto !important"
-      my="0px !important"
       bg="amir.mainBg"
       height="100dvh"
     >
