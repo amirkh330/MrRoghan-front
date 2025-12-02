@@ -42,7 +42,9 @@ export const Header = () => {
           </Box>
         )}
       </Flex>
-      <Text>مستر روغن</Text>
+      <Text>
+        اتوپین
+      </Text>
 
       {/* <Login isOpen={isOpen} onOpen={onOpen} onClose={onClose} /> */}
     </Flex>

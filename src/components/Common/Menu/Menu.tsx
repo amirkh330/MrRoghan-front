@@ -50,7 +50,7 @@ const Menu = () => {
             {/* <DrawerCloseButton /> */}
             <Icon mx="0" as={CloseButton} onClick={onClose} />
             <Text fontSize={"18px"} fontWeight={600}>
-              مستر روغن
+              اتوپین
             </Text>
           </Flex>
 
