@@ -1,23 +1,11 @@
 import { RouteConst } from "@/utils/allRoutes.type";
-import {
-  Box,
-  Text,
-  VStack,
-  Flex,
-  Icon,
-  Button,
-  HStack,
-} from "@chakra-ui/react";
-import {
-  Calendar,
-  CurrencyDollar,
-  Plus,
-  Toolbox,
-  User,
-} from "@phosphor-icons/react";
-import { CalendarCheck } from "@phosphor-icons/react/dist/ssr";
+import { Box, Button, Flex, HStack, Icon, Text } from "@chakra-ui/react";
+import { Calendar, CurrencyDollar, Toolbox, User } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { IShopDashboard, useGetShopDashboard } from "../query/getShopDashboard";
+import { Loading } from "@/components/CoreComponents/Loading/Loading";
+import { Toman } from "@/utils/Toman/Toman";
 
 const MotionBox = motion(Box);
 
@@ -29,80 +17,85 @@ const servicesWeek = 18;
 const stats = [
   {
     label: "تعداد کل مشتریان",
-    value: customersCount,
+    value: "totalCustomers",
     icon: User,
   },
   {
     label: "سرویس‌های امروز",
-    value: servicesToday,
+    value: "todayService",
     icon: Toolbox,
   },
   {
     label: "سرویس‌های هفته",
-    value: servicesWeek,
+    value: "weekService",
     icon: Calendar,
   },
   {
     label: "سرویس‌های ماهانه",
-    value: servicesWeek,
+    value: "monthService",
     icon: Calendar,
   },
 ];
 export const ShopDashboard = () => {
+  const { data, isLoading } = useGetShopDashboard();
   return (
     <Box p="4" color="amir.common" minH="0dvh">
       <HStack spacing="2" mb="6" w="100%" flexWrap="wrap">
-        {stats.map((item, index) => (
-          <MotionBox
-            key={index}
-            bg="amir.secondaryBg"
-            w="48%"
-            m="0"
-            p="4"
-            py="2"
-            borderRadius="18px"
-            shadow="md"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, delay: index * 0.08 }}
-          >
-            <Flex justify="space-between" align="center">
-              <Flex direction="column" m="0" w={"100%"}>
-                <Text fontSize="sm" color="amir.secondary">
-                  {item.label}
-                </Text>
-                <Flex
-                  alignItems="center"
-                  justifyContent="space-between"
-                  w="100%"
-                  mt="4"
-                >
-                  <Text
-                    fontSize="2xl"
-                    fontWeight="700"
-                    color="amir.common"
-                    mt="1"
-                  >
-                    {item.value}
+        {isLoading ? (
+          <Loading />
+        ) : (
+          stats.map((item, index) => (
+            <MotionBox
+              key={index}
+              bg="amir.secondaryBg"
+              w="48%"
+              m="0"
+              p="4"
+              py="2"
+              borderRadius="18px"
+              shadow="md"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: index * 0.08 }}
+            >
+              <Flex justify="space-between" align="center">
+                <Flex direction="column" m="0" w={"100%"}>
+                  <Text fontSize="sm" color="amir.secondary">
+                    {item.label}
                   </Text>
-
                   <Flex
-                    bg="amir.secondary"
-                    w="50px"
-                    h="50px"
-                    borderRadius="14px"
-                    align="center"
-                    justify="center"
-                    shadow="sm"
-                    m="0"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    w="100%"
+                    mt="4"
                   >
-                    <Icon w={"20px"} h="20px" as={item.icon} color="white" />
+                    <Text
+                      fontSize="2xl"
+                      fontWeight="700"
+                      color="amir.common"
+                      mt="1"
+                    >
+                      {data?.[item.value as keyof IShopDashboard]}
+                    </Text>
+
+                    <Flex
+                      bg="amir.secondary"
+                      w="50px"
+                      h="50px"
+                      borderRadius="14px"
+                      align="center"
+                      justify="center"
+                      shadow="sm"
+                      m="0"
+                    >
+                      <Icon w={"20px"} h="20px" as={item.icon} color="white" />
+                    </Flex>
                   </Flex>
                 </Flex>
               </Flex>
-            </Flex>
-          </MotionBox>
-        ))}
+            </MotionBox>
+          ))
+        )}
       </HStack>
 
       <MotionBox
@@ -122,7 +115,7 @@ export const ShopDashboard = () => {
               درآمد روزانه
             </Text>
             <Text fontSize="2xl" fontWeight="700" color="amir.common" mt="1">
-              ۲/۵۰۰۰/۰۰۰ تومان
+              {Toman(data?.todayIncome!)}
             </Text>
           </Flex>
 
@@ -158,7 +151,7 @@ export const ShopDashboard = () => {
               درآمد ماهانه
             </Text>
             <Text fontSize="2xl" fontWeight="700" color="amir.common" mt="1">
-              ۲۵/۵۰۰۰/۰۰۰ تومان
+              {Toman(data?.monthIncome!)}
             </Text>
           </Flex>
 
@@ -188,7 +181,7 @@ export const ShopDashboard = () => {
         borderRadius="20px"
         size="lg"
       >
-        + ساخت سرویس جدید 
+        + ساخت سرویس جدید
       </Button>
     </Box>
   );
