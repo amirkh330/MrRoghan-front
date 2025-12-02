@@ -3,7 +3,8 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalOverlay
+  ModalHeader,
+  ModalOverlay,
 } from "@chakra-ui/react";
 import React from "react";
 
@@ -11,7 +12,9 @@ export const CustomModal = ({
   isOpen,
   onClose,
   children,
+  title
 }: {
+  title?: string;
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
@@ -19,8 +22,8 @@ export const CustomModal = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered closeOnEsc>
       <ModalOverlay />
-      <ModalContent>
-        {/* <ModalHeader>Verify OTP</ModalHeader> */}
+      <ModalContent mx={"4"}>
+        {title && <ModalHeader>{title}</ModalHeader>}
         <ModalCloseButton onClick={() => {}} />
         <ModalBody mx="0">{children}</ModalBody>
         {/* <ModalFooter>

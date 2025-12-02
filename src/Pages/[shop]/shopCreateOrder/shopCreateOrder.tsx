@@ -9,7 +9,6 @@ import {
   IconButton,
   Input,
   InputGroup,
-  InputLeftElement,
   InputRightElement,
   Select,
   Spacer,
@@ -19,20 +18,22 @@ import {
   VStack,
 } from "@chakra-ui/react";
 
+import BottomSheet from "@/components/CoreComponents/BottomSheet/BottomSheet";
+import { SearchSelect } from "@/components/CoreComponents/SearchSelect/searchSelect";
 import { persianToEnglishNumbers } from "@/utils/convertNumber/ConvertNumber";
 import { formatNumber } from "@/utils/Toman/Toman";
-import { Trash, TrashSimple } from "@phosphor-icons/react";
-import { useShopCreateOrder } from "./shopCreateOrder.biz";
-import { UsageEnum } from "@/utils/common";
-import BottomSheet from "@/components/CoreComponents/BottomSheet/BottomSheet";
+import { Bell, BellRinging, Trash, TrashSimple } from "@phosphor-icons/react";
 import { useState } from "react";
+import { useShopCreateOrder } from "./shopCreateOrder.biz";
+import { set } from "react-hook-form";
+import { months, ReminderDateEnum } from "@/utils/common";
+import { ConfirmModal } from "../confirmModal/confirmModal";
 
 export const ShopCreateOrder = () => {
   const {
     append,
-    remove,
+    handleDelete,
     fields,
-    instrumentList,
     register,
     isSubmitting,
     handleSubmit,
@@ -42,17 +43,22 @@ export const ShopCreateOrder = () => {
     setValue,
     vehiclesList,
     isDisabled,
-
     isPending,
-    isOpen,
-    onOpen,
-    onClose,
+    isOpenReminder,
+    handleSaveReminder,
+    setIsOpenReminder,
     phoneNumber,
     setPhoneNumber,
+    isActiveReminder,
     handleSelectPhoneNumber,
+    serviceList,
     isOpenPhoneNumber,
     onOpenPhoneNumber,
-    onClosePhoneNumber,
+    searchService,
+    setSearchService,
+    handleReminder,
+    visibleConfirmModal,
+    setVisibleConfirmModal,
   } = useShopCreateOrder();
 
   return (
@@ -69,7 +75,7 @@ export const ShopCreateOrder = () => {
             <Input
               {...register("phoneNumber")}
               maxLength={11}
-              disabled={isDisabled}
+              disabled={true}
               onChange={(e) =>
                 setValue("phoneNumber", persianToEnglishNumbers(e.target.value))
               }
@@ -81,7 +87,7 @@ export const ShopCreateOrder = () => {
 
           {/* نام */}
           <FormControl isInvalid={!!errors.customer_firstName}>
-            <FormLabel>نام مشتری (اختیاری)</FormLabel>
+            <FormLabel>نام مشتری </FormLabel>
             <Input
               {...register("customer_firstName")}
               disabled={isDisabled}
@@ -95,7 +101,7 @@ export const ShopCreateOrder = () => {
 
           {/* نام خانوادگی */}
           <FormControl isInvalid={!!errors.customer_lastName}>
-            <FormLabel>نام خانوادگی مشتری (اختیاری)</FormLabel>
+            <FormLabel>نام خانوادگی مشتری </FormLabel>
             <Input
               {...register("customer_lastName")}
               placeholder="نام خانوادگی"
@@ -126,58 +132,62 @@ export const ShopCreateOrder = () => {
             <FormErrorMessage>{errors.vehicle?.message}</FormErrorMessage>
           </FormControl>
 
-          {/* قطعات تعویض‌شده */}
           <Box width="100%">
             <Text mb="2" fontWeight="600">
-              لیست قطعات تعویض شده
+              سرویس های انجام شده
             </Text>
 
-            {/* SELECT برای انتخاب چند قطعه */}
-            <Select
-              placeholder="انتخاب قطعه"
-              bg="amir.secondaryBg"
-              mb={3}
-              onChange={(e) => {
-                const id = Number(e.target.value);
-                if (!id) return;
-
-                const item = instrumentList?.data?.find((i) => i.id === id);
-                if (!item) return;
-
-                append(item);
+            <SearchSelect
+              value={searchService}
+              onChange={() => {}}
+              onSearch={setSearchService}
+              options={
+                serviceList?.filter(
+                  (service) =>
+                    !fields.map((f) => Number(f.serviceId)).includes(service.id)
+                ) || []
+              }
+              onSelect={(item) => {
+                append({
+                  serviceId: item.id,
+                  title: item.title,
+                });
               }}
-            >
-              {instrumentList?.data?.map((instrument) => {
-                return (
-                  <option key={instrument.id} value={instrument.id}>
-                    {instrument.title}
-                  </option>
-                );
-              })}
-            </Select>
+            />
 
-            {/* فهرست انتخاب‌شده‌ها */}
-            {fields.map((field, index) => (
-              <HStack key={field.id} mb="3" align="center">
-                <Box
-                  flex="1"
-                  bg="amir.secondaryBg"
-                  px="3"
-                  py="2"
-                  borderRadius="6px"
-                  border="1px solid #555"
-                >
-                  <Text fontSize="14px">{field.title}</Text>
-                </Box>
-
-                <IconButton
-                  aria-label="delete"
-                  icon={<Trash />}
-                  size="sm"
-                  onClick={() => remove(index)}
-                />
-              </HStack>
-            ))}
+            {fields.map((field, index) => {
+              return (
+                <HStack key={field.serviceId} mb="3" align="center">
+                  <Box
+                    flex="1"
+                    bg="amir.secondaryBg"
+                    px="3"
+                    py="2"
+                    borderRadius="6px"
+                    border="1px solid #555"
+                  >
+                    <Text fontSize="14px">{field.title}</Text>
+                  </Box>
+                  <IconButton
+                    aria-label="notification"
+                    icon={
+                      <BellRinging
+                        fill={field.reminder ? "#2bb15cff" : "black"}
+                        weight={field.reminder ? "fill" : "bold"}
+                      />
+                    }
+                    size="sm"
+                    onClick={() => handleReminder(field as any)}
+                  />
+                  <IconButton
+                    aria-label="delete"
+                    icon={<Trash />}
+                    size="sm"
+                    onClick={() => handleDelete(index)}
+                  />
+                </HStack>
+              );
+            })}
           </Box>
 
           {/* کیلومتر فعلی */}
@@ -232,21 +242,6 @@ export const ShopCreateOrder = () => {
             <FormErrorMessage>{errors.nextDistance?.message}</FormErrorMessage>
           </FormControl>
 
-          {/* میزان استفاده از ماشین */}
-          <FormControl isInvalid={!!errors.usage}>
-            <FormLabel>میزان استفاده از ماشین</FormLabel>
-            <Select
-              {...register("usage")}
-              placeholder="انتخاب کنید"
-              bg="amir.secondaryBg"
-            >
-              <option value={UsageEnum.SHORT}>کم</option>
-              <option value={UsageEnum.MEDIUM}>متوسط</option>
-              <option value={UsageEnum.LONG}>زیاد</option>
-            </Select>
-            <FormErrorMessage>{errors.usage?.message}</FormErrorMessage>
-          </FormControl>
-
           {/* توضیحات */}
           <FormControl>
             <FormLabel>توضیحات برای دفعه بعدی</FormLabel>
@@ -285,22 +280,33 @@ export const ShopCreateOrder = () => {
 
           {/* دکمه ثبت */}
           <Button
-            type="submit"
+            onClick={() => setVisibleConfirmModal(true)}
             width="100%"
             bg="amir.primary"
-            color="black"
+            color="white"
             fontWeight="bold"
             size="lg"
-            isLoading={isPending}
             _hover={{ bg: "#ffca3a" }}
           >
-            ثبت اوردر
+            ثبت سرویس
           </Button>
         </VStack>
         <BottomSheetReminder
-          isOpen={isOpen}
-          onOpen={onOpen}
-          onClose={onClose}
+          isOpen={isOpenReminder}
+          onOpen={() => {}}
+          handleSaveReminder={handleSaveReminder}
+          onClose={() => setIsOpenReminder(null)}
+        />
+        <ConfirmModal
+          isLoading={isPending}
+          isOpen={visibleConfirmModal}
+          onClose={() => setVisibleConfirmModal(false)}
+          data={{
+            ...watch(),
+          }}
+          onConfirm={() => {
+            handleSubmit(onSubmit)();
+          }}
         />
       </form>
       <BottomSheetPhoneNumber
@@ -368,132 +374,62 @@ const BottomSheetPhoneNumber = ({
   );
 };
 
-const REMINDER_TYPES = [
-  "تعویض سرویس دوره ای",
-  "تعویض قطعات مصرفی",
-  "تعویض قطعات اصلی",
-];
-
-const months = Array.from({ length: 6 }, (_, i) => i + 1);
-
-export default function BottomSheetReminder({ onOpen, isOpen, onClose }: any) {
-  const [needReminder, setNeedReminder] = useState(false);
-  const [reminders, setReminders] = useState<
-    { type: string; period: number }[]
-  >([]);
-
-  // local fields for the "add new" row
+export default function BottomSheetReminder({
+  onOpen,
+  isOpen,
+  onClose,
+  handleSaveReminder,
+}: any) {
   const [newType, setNewType] = useState("");
-  const [newPeriod, setNewPeriod] = useState<number | "">("");
-
-  const addReminder = () => {
-    if (!newType || !newPeriod) return; // require both
-    if (reminders.length >= 3) return;
-    setReminders((r) => [...r, { type: newType, period: Number(newPeriod) }]);
-    setNewType("");
-    setNewPeriod("");
-  };
-
-  const deleteReminder = (index: number) => {
-    setReminders((r) => r.filter((_, i) => i !== index));
-  };
 
   return (
     <BottomSheet
       onOpen={onOpen}
-      isOpen={isOpen}
-      onClose={onClose}
+      isOpen={!!isOpen}
+      onClose={() => {
+        onClose();
+        setNewType("");
+      }}
       showCloseButton={false}
       title="یادآوری"
     >
       <Box p="4" display="flex" flexDirection="column" gap="18px">
-        <FormControl display="flex" alignItems="center">
-          <FormLabel mb="0">
-            آیا برای این سرویس نیاز به یادآوری دارید؟
-          </FormLabel>
-          <Switch
-            isChecked={needReminder}
-            onChange={(e) => setNeedReminder(e.target.checked)}
-          />
-        </FormControl>
+        <Flex alignItems="start" w="auto">
+          <Text textAlign={"start"} mx="0" mb="0" w="auto">
+            شما در حال ایجاد یادآوری برای{" "}
+            <Text fontSize={"18px"} as="span" w="auto" color="blue.500">
+              {isOpen?.title}
+            </Text>{" "}
+            هستید.
+          </Text>
+        </Flex>
 
-        {needReminder && (
-          <>
-            {/* add new reminder row */}
-            <Flex gap="10px" alignItems="center">
-              <Select
-                placeholder="نوع یادآوری را انتخاب کنید"
-                value={newType}
-                onChange={(e) => setNewType(e.target.value)}
-              >
-                {REMINDER_TYPES.map((type) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-              </Select>
+        <Text fontSize={"14px"} textAlign={"start"} mx="0" mb="0" w="auto">
+          دوره زمانی یادآوری برای مراجعه یعدی را مشخص کنید:
+        </Text>
 
-              <Select
-                placeholder="دوره زمانی (ماه)"
-                value={newPeriod as any}
-                onChange={(e) =>
-                  setNewPeriod(e.target.value ? Number(e.target.value) : "")
-                }
-              >
-                {months.map((m) => (
-                  <option key={m} value={m}>
-                    {m} ماه
-                  </option>
-                ))}
-              </Select>
-
-              <Button
-                bg="amir.primary"
-                color="white"
-                onClick={addReminder}
-                isDisabled={!newType || !newPeriod || reminders.length >= 3}
-              >
-                افزودن
-              </Button>
-            </Flex>
-
-            {/* list of reminders (one row each) */}
-            <Box display="flex" flexDirection="column" gap="8px">
-              {reminders.map((item, index) => (
-                <Flex
-                  key={index}
-                  p="3"
-                  borderWidth="1px"
-                  borderRadius="md"
-                  alignItems="center"
-                  gap="4"
-                >
-                  <Text flexBasis="60%">{item.type}</Text>
-                  <Text>{item.period} ماه</Text>
-                  <Spacer />
-                  <IconButton
-                    aria-label="حذف"
-                    icon={<TrashSimple />}
-                    size="sm"
-                    onClick={() => deleteReminder(index)}
-                  />
-                </Flex>
-              ))}
-            </Box>
-
-            {/* show message when max reached */}
-            {reminders.length >= 3 && (
-              <Text color="gray.500" fontSize="sm">
-                حداکثر ۳ یادآوری مجاز است
-              </Text>
-            )}
-          </>
-        )}
+        <Select
+          placeholder="زمان یادآوری را انتخاب کنید"
+          value={newType}
+          onChange={(e) => setNewType(e.target.value)}
+        >
+          {months.map((month) => {
+            return (
+              <option key={month.title} value={month.value}>
+                {month.title}
+              </option>
+            );
+          })}
+        </Select>
 
         <Button
           bg="amir.primary"
           color="white"
-          onClick={() => onClose(reminders)}
+          onClick={() => {
+            handleSaveReminder(isOpen, newType);
+            onClose();
+            setNewType("");
+          }}
         >
           ذخیره
         </Button>

@@ -15,7 +15,7 @@ export const useGetUserExist = () => {
       phoneNumber: string;
     }): Promise<IApiResponse<IUserExist>> => {
       const res = await api.post<IApiResponse<IUserExist>>(
-        "/orders/create",
+        "/shops/user-exist",
         payload
       );
 

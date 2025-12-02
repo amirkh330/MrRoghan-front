@@ -1,28 +1,37 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useFieldArray, useForm } from "react-hook-form";
-import * as yup from "yup";
-import { useGetVehicles } from "../query/getVehicle";
-import { useGetInstrument } from "../query/getInstrument";
-import { ICreateOrderDto, useCreateOrder } from "../query/postCreateOrder";
 import { useDisclosure, useToast } from "@chakra-ui/react";
-import { title } from "process";
-import { useState } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useMemo, useState } from "react";
+import { set, useFieldArray, useForm } from "react-hook-form";
+import * as yup from "yup";
+import { useGetInstrument } from "../query/getInstrument";
+import { useGetServices } from "../query/getServices";
 import { useGetUserExist } from "../query/getUserExist";
+import { useGetVehicles } from "../query/getVehicle";
+import { useCreateOrder } from "../query/postCreateOrder";
+import { ReminderDateEnum } from "@/utils/common";
 
 export const useShopCreateOrder = () => {
   const toast = useToast();
-  const { data: vehiclesList } = useGetVehicles();
-  const { data: instrumentList } = useGetInstrument();
 
-  const { isOpen, onOpen, onClose } = useDisclosure({ defaultIsOpen: true });
   const {
     isOpen: isOpenPhoneNumber,
     onOpen: onOpenPhoneNumber,
     onClose: onClosePhoneNumber,
-  } = useDisclosure();
+  } = useDisclosure({ defaultIsOpen: true });
 
+  const [searchService, setSearchService] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [isOpenReminder, setIsOpenReminder] = useState<{
+    title: string;
+    serviceId: string;
+  } | null>(null);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  const [visibleConfirmModal, setVisibleConfirmModal] =
+    useState<boolean>(false);
+
+  const { data: vehiclesList } = useGetVehicles();
+  const { data: serviceList } = useGetServices(searchService);
+
   const { mutateAsync: createOrderApi, isPending } = useCreateOrder();
   const { mutateAsync: getUserExist, isPending: userExistLoading } =
     useGetUserExist();
@@ -39,25 +48,26 @@ export const useShopCreateOrder = () => {
     resolver: yupResolver(schema),
     mode: "onChange",
     defaultValues: {
-      instrument: [],
+      services: [],
     },
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "instrument",
+    name: "services",
   });
 
   const onSubmit = (data: FormType) => {
     const payload = {
       ...data,
-      instrument: data?.instrument?.map((item) => item.id),
+      services: data?.services?.map((item) => item.serviceId),
       price: data.price.replace(/,/g, ""),
       vehicle: Number(data.vehicle),
       currentDistance: data.currentDistance.replace(/,/g, ""),
       nextDistance: data.nextDistance.replace(/,/g, ""),
     };
     createOrderApi(payload as any).then(() => {
+      setVisibleConfirmModal(false);
       reset();
       toast({
         title: "سرویس با موفقیت ثبت شد",
@@ -68,6 +78,7 @@ export const useShopCreateOrder = () => {
   };
 
   const handleSelectPhoneNumber = () => {
+    setIsDisabled(false);
     getUserExist({ phoneNumber })
       .then(({ data }) => {
         setIsDisabled(true);
@@ -76,27 +87,77 @@ export const useShopCreateOrder = () => {
           customer_firstName: data.firstName,
           customer_lastName: data.lastName,
         });
-
-        onClose();
+        onClosePhoneNumber();
       })
       .catch(() => {
-        toast({
-          title: "کاربری با این شماره یافت نشد",
-          description: "لطفا اطلاعات مشتری را وارد نمایید",
-          status: "warning",
-          position: "top",
-        });
+        // toast({
+        //   title: "کاربری با این شماره یافت نشد",
+        //   description: "لطفا اطلاعات مشتری را وارد نمایید",
+        //   status: "warning",
+        //   position: "top",
+        // });
         reset({
           phoneNumber: phoneNumber,
         });
+        onClosePhoneNumber();
       });
   };
 
+  const isActiveReminder = useMemo(
+    () => () => {
+      return Boolean(fields.find((item) => item.reminder));
+    },
+    [fields]
+  );
+
+  const handleReminder = (field: {
+    title: string;
+    serviceId: string;
+    reminder?: ReminderDateEnum;
+  }) => {
+    if (field.reminder) {
+      fields.filter((item) => item.serviceId !== field.serviceId);
+    } else {
+      setIsOpenReminder(field);
+    }
+  };
+
+  const handleSaveReminder = (
+    field: { title: string; serviceId: string; reminder?: ReminderDateEnum },
+    type: string
+  ) => {
+    setValue(
+      "services",
+      fields.map((item) => {
+        if (item.serviceId === field.serviceId) {
+          return {
+            ...item,
+            reminder: type,
+          };
+        }
+        return item;
+      })
+    );
+    setIsOpenReminder(null);
+  };
+
+  const handleDelete = (index: number) => {
+    const item = fields[index];
+    if (item.reminder) {
+      setIsOpenReminder(null);
+    }
+    remove(index);
+  };
   return {
     register,
     isDisabled,
     control,
+    isActiveReminder,
     handleSubmit,
+    setIsOpenReminder,
+    handleSaveReminder,
+    visibleConfirmModal,
+    setVisibleConfirmModal,
     setValue,
     errors,
     isSubmitting,
@@ -107,16 +168,18 @@ export const useShopCreateOrder = () => {
     onSubmit,
     vehiclesList,
     isPending,
-    instrumentList,
-    isOpen,
-    onOpen,
-    onClose,
+    searchService,
+    setSearchService,
+    isOpenReminder,
     phoneNumber,
     setPhoneNumber,
     handleSelectPhoneNumber,
+    serviceList,
     isOpenPhoneNumber,
     onOpenPhoneNumber,
     onClosePhoneNumber,
+    handleReminder,
+    handleDelete,
   };
 };
 
@@ -131,10 +194,11 @@ const schema = yup.object({
 
   vehicle: yup.string().required("نام خودرو الزامی است"),
 
-  instrument: yup.array().of(
+  services: yup.array().of(
     yup.object({
-      id: yup.number().required("نام قطعه الزامی است"),
+      serviceId: yup.string().required("نام قطعه الزامی است"),
       title: yup.string().required("نام قطعه الزامی است"),
+      reminder: yup.string().optional(),
     })
   ),
 
@@ -148,7 +212,6 @@ const schema = yup.object({
     .typeError("باید عدد باشد")
     .required("کیلومتر بعدی الزامی است"),
 
-  usage: yup.string().required("میزان استفاده الزامی است"),
 
   description: yup.string().optional(),
 
