@@ -15,8 +15,8 @@ export const CustomerReports = () => {
       <VStack spacing="4">
         {isLoading ? (
           <Spinner />
-        ) : data?.data?.length ? (
-          data.data.map((item) => <OrderCard key={item.id} item={item} />)
+        ) : data?.length ? (
+          data.map((item) => <OrderCard key={item.id} item={item} />)
         ) : (
           <EmptyState />
         )}

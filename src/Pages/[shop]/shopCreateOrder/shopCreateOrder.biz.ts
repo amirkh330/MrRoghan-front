@@ -60,7 +60,7 @@ export const useShopCreateOrder = () => {
   const onSubmit = (data: FormType) => {
     const payload = {
       ...data,
-      services: data?.services?.map((item) => item.serviceId),
+      services: data?.services,
       price: data.price.replace(/,/g, ""),
       vehicle: Number(data.vehicle),
       currentDistance: data.currentDistance.replace(/,/g, ""),
@@ -69,6 +69,7 @@ export const useShopCreateOrder = () => {
     createOrderApi(payload as any).then(() => {
       setVisibleConfirmModal(false);
       reset();
+      remove();
       toast({
         title: "سرویس با موفقیت ثبت شد",
         status: "success",
@@ -211,7 +212,6 @@ const schema = yup.object({
     .string()
     .typeError("باید عدد باشد")
     .required("کیلومتر بعدی الزامی است"),
-
 
   description: yup.string().optional(),
 

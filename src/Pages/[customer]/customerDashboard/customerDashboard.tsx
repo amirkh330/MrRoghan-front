@@ -3,229 +3,207 @@ import { OrderCard } from "@/components/CoreComponents/OrderCard/orderCard";
 import { formatNumber } from "@/utils/Toman/Toman";
 import {
   Box,
+  Button,
   HStack,
   Icon,
   Spinner,
   Text,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
-import {
-  Calendar,
-  RoadHorizon,
-  Storefront
-} from "@phosphor-icons/react";
+import { Calendar, RoadHorizon, Storefront } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useCustomerReports } from "../customerReports/customerReports.biz";
+import { Route, useNavigate } from "react-router-dom";
+import { RouteConst } from "@/utils/allRoutes.type";
+import { Loading } from "@/components/CoreComponents/Loading/Loading";
 const MotionBox = motion(Box);
 
-// Mock – اطلاعات سرویس بعدی
-const nextServiceInfo = {
-  shopName: "تعمیرگاه جنت",
-  nextKm: 125000,
-  nextDate: "۱۴۰۴/۰۲/۱۲",
-  status: "expired", // expired | soon | ok
-};
-
-// Mock – API list
-const mockHistory = Array.from({ length: 50 }).map((_, i) => ({
-  id: i + 1,
-  date: "۱۴۰۳/۱۰/۲۰",
-  km: 118500,
-  price: "۲,۴۵۰,۰۰۰ تومان",
-  parts: [
-    { title: "فیلتر روغن", price: "۱۵۰,۰۰۰" },
-    { title: "روغن موتور", price: "۲۵۰,۰۰۰" },
-  ],
-  note: "روغن در نوبت بعدی حتماً بررسی شود.",
-}));
-
 export const CustomerDashboard = () => {
-  const [items, setItems] = useState(mockHistory.slice(0, 10));
-  const [page, setPage] = useState(1);
-  const loaderRef = useRef(null);
+  const navigate = useNavigate();
 
-  // Infinite Scroll
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          loadMore();
-        }
-      },
-      { threshold: 1 }
-    );
-    if (loaderRef.current) observer.observe(loaderRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  const loadMore = () => {
-    const newPage = page + 1;
-    const newItems = mockHistory.slice(0, newPage * 10);
-    setPage(newPage);
-    setItems(newItems);
-  };
-
-  // استایل وضعیت سرویس بعدی
-  const statusColor: any = {
-    expired: "red.400",
-    soon: "orange.400",
-    ok: "green.400",
-  };
-
-  const borderColor: any = {
-    expired: "red.500",
-    soon: "orange.300",
-    ok: "amir.secondaryBg",
-  };
-  const { data, isLoading } = useCustomerReports();
+  const { data, isLoading, nextSession, nextSessionLoading } =
+    useCustomerReports();
 
   return (
     <Box p="4" color="amir.common">
-      <MotionBox
-        p="5"
-        bg="amir.secondaryBg"
-        borderRadius="18px"
-        borderWidth="2px"
-        borderColor={borderColor[nextServiceInfo.status]}
-        shadow="lg"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35 }}
-      >
-        {/* عنوان کارت */}
-        <HStack justify="space-between" mb="4">
-          <Text fontSize="lg" fontWeight="700">
-            سرویس بعدی شما
-          </Text>
+      {nextSessionLoading ? (
+        <Loading />
+      ) : (
+        <MotionBox
+          p="5"
+          shadow="lg"
+          borderWidth="2px"
+          borderRadius="18px"
+          bg="amir.secondaryBg"
+          borderColor={"amir.accent"}
+          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.35 }}
+        >
+          {/* عنوان کارت */}
+          <HStack justify="space-between" mb="4">
+            <Text fontSize="lg" fontWeight="700">
+              سرویس بعدی شما
+            </Text>
 
-          <Box
-            w="14px"
-            h="14px"
-            borderRadius="full"
-            mx="0"
-            bg={statusColor[nextServiceInfo.status]}
-          />
-        </HStack>
-
-        {/* اطلاعات با نظم کامل */}
-        <VStack spacing="4" align="stretch" mx="0">
-          <HStack spacing="3" mx="0">
             <Box
-              w="32px"
-              h="32px"
-              bg="amir.mainBg"
-              borderRadius="10px"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
+              w="14px"
+              h="14px"
+              borderRadius="full"
               mx="0"
-            >
-              <Icon as={Storefront} color="amir.primary" mx="0" />
-            </Box>
-
-            <HStack
-              spacing="0"
-              align="start"
-              mx="0"
-              justifyContent={"space-between"}
-              w={"full"}
-            >
-              <Text fontSize="xs" color="amir.secondaryVariant">
-                آخرین مغازه
-              </Text>
-              <Text fontSize="md" fontWeight="600">
-                {nextServiceInfo.shopName}
-              </Text>
-            </HStack>
+              bg={"amir.accent"}
+            />
           </HStack>
 
-          <HStack spacing="3" mx="0">
-            <Box
-              w="32px"
-              h="32px"
-              bg="amir.mainBg"
-              borderRadius="10px"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              mx="0"
-            >
-              <Icon as={RoadHorizon} color="amir.primary" mx="0" />
-            </Box>
+          {/* اطلاعات با نظم کامل */}
+          <VStack spacing="4" align="stretch" mx="0">
+            <HStack spacing="3" mx="0">
+              <Box
+                w="32px"
+                h="32px"
+                bg="amir.mainBg"
+                borderRadius="10px"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                mx="0"
+              >
+                <Icon as={Storefront} color="amir.primary" mx="0" />
+              </Box>
 
-            <HStack
-              spacing="0"
-              align="start"
-              mx="0"
-              justifyContent={"space-between"}
-              w={"full"}
-            >
-              <Text fontSize="xs" color="amir.secondaryVariant">
-                کیلومتر مراجعه بعدی
-              </Text>
-              <Text fontSize="md" fontWeight="600">
-                {formatNumber(nextServiceInfo.nextKm)}
-              </Text>
+              <HStack
+                spacing="0"
+                align="start"
+                mx="0"
+                justifyContent={"space-between"}
+                w={"full"}
+              >
+                <Text fontSize="xs" color="amir.secondaryVariant">
+                  آخرین مغازه
+                </Text>
+                <Text fontSize="md" fontWeight="600">
+                  {nextSession?.order?.shop?.shopName}
+                </Text>
+              </HStack>
             </HStack>
-          </HStack>
 
-          <HStack spacing="3" mx="0">
-            <Box
-              w="32px"
-              h="32px"
-              bg="amir.mainBg"
-              borderRadius="10px"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              mx="0"
-            >
-              <Icon as={Calendar} color="amir.primary" mx="0" />
-            </Box>
+            <HStack spacing="3" mx="0">
+              <Box
+                w="32px"
+                h="32px"
+                bg="amir.mainBg"
+                borderRadius="10px"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                mx="0"
+              >
+                <Icon as={RoadHorizon} color="amir.primary" mx="0" />
+              </Box>
 
-            <HStack
-              spacing="0"
-              align="start"
-              mx="0"
-              justifyContent={"space-between"}
-              w={"full"}
-            >
-              <Text fontSize="xs" color="amir.secondaryVariant">
-                تاریخ مراجعه بعدی
-              </Text>
-              <Text fontSize="md" fontWeight="600">
-                {nextServiceInfo.nextDate}
-              </Text>
+              <HStack
+                spacing="0"
+                align="start"
+                mx="0"
+                justifyContent={"space-between"}
+                w={"full"}
+              >
+                <Text fontSize="xs" color="amir.secondaryVariant">
+                  کیلومتر مراجعه بعدی
+                </Text>
+                <Text fontSize="md" fontWeight="600">
+                  {formatNumber(Number(nextSession?.order?.nextDistance))}
+                </Text>
+              </HStack>
             </HStack>
-          </HStack>
-        </VStack>
 
-        {/* هشدار */}
-        {nextServiceInfo.status === "expired" && (
-          <Box
-            mt="4"
-            p="3"
-            bg="red.500"
-            borderRadius="12px"
-            textAlign="center"
-            fontWeight="600"
-            fontSize="sm"
-          >
-            ⚠️ زمان سرویس شما گذشته — لطفاً سریع‌تر مراجعه کنید
-          </Box>
-        )}
-      </MotionBox>
+            <HStack spacing="3" mx="0">
+              <Box
+                w="32px"
+                h="32px"
+                bg="amir.mainBg"
+                borderRadius="10px"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                mx="0"
+              >
+                <Icon as={RoadHorizon} color="amir.primary" mx="0" />
+              </Box>
 
+              <HStack
+                spacing="0"
+                align="start"
+                mx="0"
+                justifyContent={"space-between"}
+                w={"full"}
+              >
+                <Text fontSize="xs" color="amir.secondaryVariant">
+                  وسیله نقلیه
+                </Text>
+                <Text fontSize="md" fontWeight="600">
+                  {nextSession?.order?.vehicle?.title}
+                </Text>
+              </HStack>
+            </HStack>
+
+            <HStack spacing="3" mx="0">
+              <Box
+                w="32px"
+                h="32px"
+                bg="amir.mainBg"
+                borderRadius="10px"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                mx="0"
+              >
+                <Icon as={Calendar} color="amir.primary" mx="0" />
+              </Box>
+
+              <HStack
+                spacing="0"
+                align="start"
+                mx="0"
+                justifyContent={"space-between"}
+                w={"full"}
+              >
+                <Text fontSize="xs" color="amir.secondaryVariant">
+                  تاریخ مراجعه بعدی
+                </Text>
+                <Text fontSize="md" fontWeight="600">
+                  {new Date(
+                    nextSession?.nextSession?.reminderAt!
+                  ).toLocaleDateString("fa-IR")}
+                </Text>
+              </HStack>
+            </HStack>
+          </VStack>
+        </MotionBox>
+      )}
       <Text fontWeight="700" fontSize="lg" my="4">
         سوابق سرویس‌ها
       </Text>
-
+      {}
       <VStack spacing="4">
         {isLoading ? (
           <Spinner />
-        ) : data?.data?.length ? (
-          data.data.map((item) => <OrderCard key={item.id} item={item} />)
+        ) : data?.length ? (
+          <>
+            {Array.from({ length: 3 }).map((_, i) => (
+              <OrderCard key={i} item={data[i]} />
+            ))}
+            <Button
+              w="full"
+              variant="outline"
+              color="white"
+              bgColor="amir.accent"
+              onClick={() => navigate(RouteConst.customerReports)}
+            >
+              مشاهده همه سرویس‌ها
+            </Button>
+          </>
         ) : (
           <EmptyState />
         )}

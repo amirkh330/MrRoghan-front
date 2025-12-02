@@ -15,6 +15,14 @@ import { motion } from "framer-motion";
 const MotionBox = motion(Box);
 
 export const OrderCard = ({ item }: { item: IMyOrder }) => {
+  const dt = new Date(item.createdAt);
+  const date = dt.toLocaleDateString("fa-IR");
+  const time = dt.toLocaleTimeString("fa-IR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+
   return (
     <MotionBox
       key={item.id}
@@ -27,8 +35,17 @@ export const OrderCard = ({ item }: { item: IMyOrder }) => {
       w="100%"
     >
       {/* عنوان */}
-      <HStack justify="space-between" mb="2">
+      <HStack
+        justify="space-between"
+        mb="4"
+        borderBottom="1px solid"
+        borderColor="amir.secondaryVariant"
+        pb={"2"}
+      >
         <Text fontWeight="700">سرویس {item.id}</Text>
+        <Text fontSize="xs">
+          {time} - {date}
+        </Text>
       </HStack>
 
       {/* ردیف کیلومتر + مبلغ */}
@@ -88,6 +105,20 @@ export const OrderCard = ({ item }: { item: IMyOrder }) => {
           my="1"
         >
           <Text fontWeight="600" color="amir.secondaryVariant">
+            وسیله نقلیه
+          </Text>
+          <Text fontSize="xs">{item.vehicle?.title}</Text>
+        </HStack>
+
+        <HStack
+          spacing="0"
+          justifyContent="space-between"
+          align="start"
+          mx="0"
+          w="100%"
+          my="1"
+        >
+          <Text fontWeight="600" color="amir.secondaryVariant">
             مغازه
           </Text>
           <Text fontSize="xs">{item.shop?.shopName}</Text>
@@ -112,10 +143,10 @@ export const OrderCard = ({ item }: { item: IMyOrder }) => {
           <AccordionPanel pb={4}>
             <VStack alignItems={"start"} mb="4">
               <Text fontSize={"16px"} fontWeight="600">
-                قطعات تعویض‌شده:
+                سرویس‌های انجام شده:
               </Text>
 
-              {item.instrument.map((p, idx) => (
+              {item?.services?.map?.((p, idx) => (
                 <HStack key={idx} mx="0" my="2">
                   <Text fontSize={"14px"}>
                     {" "}
