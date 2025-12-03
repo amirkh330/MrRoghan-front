@@ -5,6 +5,8 @@ import { Outlet, useLocation } from "react-router-dom";
 import { AdminLayout } from "@/Pages/[admin]/adminLayout/adminLayout";
 
 export const Layout = () => {
+  const { pathname } = useLocation();
+  if (pathname.includes("admin")) return <AdminLayout />;
   return (
     <Flex
       direction="column"
@@ -12,7 +14,6 @@ export const Layout = () => {
       maxWidth="400px"
       bg="amir.mainBg"
       height="100dvh"
-      className="mobile-layout"
     >
       <Header />
       <Box flex="1" overflow="auto" w={"full"}>

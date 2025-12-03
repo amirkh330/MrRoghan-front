@@ -21,14 +21,8 @@
 }
 * {
   font-family: "IranYekan";
-}
-.mobile-layout {
   max-width: 400px;
   margin: 0 auto;
-}
-
-.full-layout {
-  width: 100%;
 }
 
 html {

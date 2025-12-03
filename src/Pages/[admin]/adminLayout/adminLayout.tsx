@@ -34,11 +34,7 @@ import useAuthStore from "@/store/authStore";
 // Layout Wrapper
 export const AdminLayout = () => {
   const { isAuth } = useAuthStore();
-  return (
-    <Box className="full-layout">
-      {isAuth ? <DashboardLayout /> : <LoginLayout />}
-    </Box>
-  );
+  return isAuth ? <DashboardLayout /> : <LoginLayout />;
 };
 
 // Layout for NOT logged-in (Login Page Layout)
