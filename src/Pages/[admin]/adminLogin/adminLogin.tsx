@@ -1,45 +1,66 @@
-import { useState } from "react";
+import useAuthStore from "@/store/authStore";
+import { RouteConst } from "@/utils/allRoutes.type";
+import { BaseURL, RoleEnum } from "@/utils/common";
 import {
   Box,
   Button,
   Flex,
+  FormControl,
+  FormLabel,
   Heading,
+  Icon,
   Input,
   InputGroup,
   InputLeftElement,
   Stack,
-  FormControl,
-  FormLabel,
   Text,
   useToast,
-  Icon,
-  chakra,
 } from "@chakra-ui/react";
 import { Lock, User } from "@phosphor-icons/react";
+import axios from "axios";
+import { useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export const AdminLogin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { loginUser } = useAuthStore();
   const toast = useToast();
+  const navigate = useNavigate();
 
   const handleLogin = () => {
-    if (!username || !password) {
-      return toast({
-        title: "خطا",
-        description: "لطفاً تمام فیلدها را پر کنید",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
+    axios
+      .post(`${BaseURL}auth/login-admin/`, {
+        username,
+        password,
+      })
+      .then((res) => {
+        loginUser({
+          accessToken: res.data.data.accessToken,
+          refresh: "",
+          fullName: "ادمین ادمین‌زاده",
+          role: RoleEnum.ADMIN,
+          phoneNumber: "",
+        });
+        toast({
+          title: "ورود موفق",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+        });
+        navigate(RouteConst.adminDashboard);
+      })
+      .catch((err) => {
+        return toast({
+          title: "خطا",
+          description: "لطفاً تمام فیلدها را پر کنید",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+        });
       });
-    }
-
-    toast({
-      title: "ورود موفق",
-      description: `${username} عزیز خوش آمدید!`,
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
   };
 
   return (

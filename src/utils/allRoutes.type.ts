@@ -6,6 +6,9 @@ export const RouteConst = {
   adminDashboard: "/admin",
   adminLogin: "/admin/login",
   adminServices: "/admin/services",
+  adminUsers: "/admin/users",
+  adminVehicles: "/admin/vehicles",
+  adminPeriods: "/admin/periods",
 
   services: "/services",
   contactUs: "/contact-us",

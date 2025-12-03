@@ -35,7 +35,7 @@ export const useRegister = () => {
   const onSubmit = (data: FormType) => {
     setLoading(true);
     axios
-      .post(`${BaseURL}auth/sign-up/shop`, data)
+      .post(`${BaseURL}auth/login-admin`, data)
       .then(() => {
         toast({
           title: "ثبت نام با موفقیت انجام شد",

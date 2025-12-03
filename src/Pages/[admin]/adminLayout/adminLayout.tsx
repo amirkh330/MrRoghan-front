@@ -27,9 +27,11 @@ import {
   GearSix,
   SignOut,
   ListDashes,
+  Car,
 } from "@phosphor-icons/react";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import useAuthStore from "@/store/authStore";
+import { RouteConst } from "@/utils/allRoutes.type";
 
 // Layout Wrapper
 export const AdminLayout = () => {
@@ -57,12 +59,28 @@ function DashboardLayout() {
   const sidebarBg = useColorModeValue("white", "gray.800");
   const headerBg = useColorModeValue("white", "gray.900");
   const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const navigate = useNavigate();
   const drawer = useDisclosure();
+  const { logout } = useAuthStore();
 
   const menuItems = [
-    { label: "داشبورد", icon: <House size={22} />, link: "/" },
-    { label: "کاربران", icon: <User size={22} />, link: "/users" },
-    { label: "تنظیمات", icon: <GearSix size={22} />, link: "/settings" },
+    {
+      label: "داشبورد",
+      icon: <House size={22} />,
+      link: RouteConst.adminDashboard,
+    },
+    { label: "کاربران", icon: <User size={22} />, link: RouteConst.adminUsers },
+    {
+      label: "سرویس ها",
+      icon: <GearSix size={22} />,
+      link: RouteConst.adminServices,
+    },
+    {
+      label: "ماشین ها",
+      icon: <Car size={22} />,
+      link: RouteConst.adminVehicles,
+    },
+    // { label: "تنظیمات", icon: <GearSix size={22} />, link: "" },
   ];
 
   const SidebarContent = () => (
@@ -76,7 +94,7 @@ function DashboardLayout() {
       shadow="xl"
     >
       <Text fontSize="2xl" fontWeight="bold" textAlign="center">
-        Admin Panel
+        پنل ادمین
       </Text>
 
       <Divider />
@@ -85,6 +103,8 @@ function DashboardLayout() {
         <Flex
           key={item.label}
           align="center"
+          as={Link}
+          to={item.link}
           p={2}
           rounded="lg"
           cursor="pointer"
@@ -101,7 +121,10 @@ function DashboardLayout() {
         leftIcon={<SignOut size={20} />}
         colorScheme="red"
         variant="outline"
-        onClick={() => {}}
+        onClick={() => {
+          logout();
+          navigate("/");
+        }}
       >
         خروج
       </Button>
