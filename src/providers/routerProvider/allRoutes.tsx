@@ -19,7 +19,7 @@ import { AdminDashboard } from "@/Pages/[admin]/adminDashboard/adminDashboard";
 import { AdminServices } from "@/Pages/[admin]/adminServices/adminServices";
 import { AdminUsers } from "@/Pages/[admin]/adminUsers/adminUsers";
 import { AdminVehicles } from "@/Pages/[admin]/adminVehicles/adminVehicles";
-import { AdminPeriods } from "@/Pages/[admin]/adminPeriods/adminPeriods";
+import { AdminPeriod } from "@/Pages/[admin]/adminPeriods/adminPeriods";
 
 const PrivateRoute = ({
   element,
@@ -77,7 +77,7 @@ export const allRoutes: Array<RouteObject> = [
   {
     path: RouteConst.adminPeriods,
     element: (
-      <PrivateRoute element={<AdminPeriods />} acceptRole={RoleEnum.ADMIN} />
+      <PrivateRoute element={<AdminPeriod />} acceptRole={RoleEnum.ADMIN} />
     ),
   },
 
