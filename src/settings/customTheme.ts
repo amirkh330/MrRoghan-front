@@ -19,6 +19,18 @@ export const customTheme = extendTheme({
     VStack: { defaultProps: { spacing: 0, margin: 0 } },
     Stack: { defaultProps: { spacing: 0, margin: 0 } },
     Button: {
+      variants: {
+        solid: {
+          _active: {
+            bg: "#3FBD6E(206, 4, 206, 0.33)",
+            borderColor: "#3FBD6E(206, 4, 206, 0.33)",
+          },
+          _hover: {
+            bg: "#3FBD6E(206, 4, 206, 0.33)",
+            borderColor: "#3FBD6E(206, 4, 206, 0.33)",
+          },
+        },
+      },
       baseStyle: {
         borderRadius: "8px",
       },

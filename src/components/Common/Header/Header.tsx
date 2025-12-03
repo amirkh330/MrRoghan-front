@@ -1,20 +1,11 @@
+import Logo from "@/images/logo.png";
 import useAuthStore from "@/store/authStore";
-import { Box, Flex, Text, useDisclosure, useToast } from "@chakra-ui/react";
-import { Login } from "../Login/Login";
+import { Box, Flex, Image, Text } from "@chakra-ui/react";
+
 import Menu from "../Menu/Menu";
 
 export const Header = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isAuth, logout, fullName } = useAuthStore();
-  const toast = useToast();
-  const handleLogout = () => {
-    logout();
-    toast({
-      title: "log out successfully",
-      status: "success",
-      position: "top",
-    });
-  };
+  const { isAuth, fullName } = useAuthStore();
 
   return (
     <Flex
@@ -27,9 +18,9 @@ export const Header = () => {
       //
       justify="space-between"
       align="center"
-      px="5"
       py="2"
       pr="2"
+      pl="2"
       position="sticky"
       top="0"
       zIndex={10}
@@ -42,9 +33,11 @@ export const Header = () => {
           </Box>
         )}
       </Flex>
-      <Text>
-        اتوپین
-      </Text>
+
+      <Flex m="0" alignItems="center" gap="2">
+        <Text>اتوپین</Text>
+        <Image src={Logo} h="25px" opacity={0.9} mx="0" />
+      </Flex>
 
       {/* <Login isOpen={isOpen} onOpen={onOpen} onClose={onClose} /> */}
     </Flex>
