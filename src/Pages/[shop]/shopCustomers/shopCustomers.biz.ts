@@ -1,6 +1,23 @@
+import { useState } from "react";
 import { useGetMyCustomers } from "../query/getCustomers";
+import debounce from "lodash.debounce";
 
 export const useShopCustomers = () => {
-  const { data, isLoading } = useGetMyCustomers();
-  return { data, isLoading };
+  const [search, setSearch] = useState("");
+  const [value, setValue] = useState("");
+  const { data, isLoading } = useGetMyCustomers("");
+
+  const debouncedSearch = debounce((val: string) => {
+    setSearch(val);
+  }, 700);
+
+  return {
+    data,
+    isLoading,
+    search,
+    setSearch,
+    debouncedSearch,
+    value,
+    setValue,
+  };
 };

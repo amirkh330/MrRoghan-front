@@ -80,7 +80,7 @@ const Menu = () => {
                     key={item.title}
                     to={item.link}
                     onClick={onClose}
-                    style={{ fontSize: "14px" }}
+                    style={{ fontSize: "14px", margin: "auto" }}
                   >
                     {item.title}
                   </Link>

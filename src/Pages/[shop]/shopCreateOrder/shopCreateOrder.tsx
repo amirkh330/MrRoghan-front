@@ -28,6 +28,7 @@ import { useShopCreateOrder } from "./shopCreateOrder.biz";
 import { set } from "react-hook-form";
 import { months, ReminderDateEnum } from "@/utils/common";
 import { ConfirmModal } from "../confirmModal/confirmModal";
+import { useNavigate } from "react-router-dom";
 
 export const ShopCreateOrder = () => {
   const {
@@ -329,11 +330,12 @@ const BottomSheetPhoneNumber = ({
   isPending,
   handleSelectPhoneNumber,
 }: any) => {
+  const navigate = useNavigate();
   return (
     <BottomSheet
       onOpen={onOpen}
       isOpen={isOpen}
-      onClose={() => {}}
+      onClose={() => navigate(-1)}
       showCloseButton={false}
       title="انتخاب شماره مشتری"
     >

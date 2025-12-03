@@ -35,6 +35,10 @@ export const Footer = () => {
           key={index}
           as={Link}
           to={item.url}
+          mx={"auto"}
+          display={"flex"}
+          flexDirection={"column"}
+          alignItems={"center"}
           color={isActive(item.url) ? "amir.common" : "amir.accent"}
         >
           {item.icon}

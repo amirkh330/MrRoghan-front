@@ -29,7 +29,7 @@ export const CustomerDashboard = () => {
     <Box p="4" color="amir.common">
       {nextSessionLoading ? (
         <Loading />
-      ) : (
+      ) : nextSession?.nextSession?.reminderAt ? (
         <MotionBox
           p="5"
           shadow="lg"
@@ -181,7 +181,7 @@ export const CustomerDashboard = () => {
             </HStack>
           </VStack>
         </MotionBox>
-      )}
+      ) : null}
       <Text fontWeight="700" fontSize="lg" my="4">
         سوابق سرویس‌ها
       </Text>

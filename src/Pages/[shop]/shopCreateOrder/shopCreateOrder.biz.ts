@@ -52,7 +52,7 @@ export const useShopCreateOrder = () => {
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, update } = useFieldArray({
     control,
     name: "services",
   });
@@ -117,7 +117,19 @@ export const useShopCreateOrder = () => {
     reminder?: ReminderDateEnum;
   }) => {
     if (field.reminder) {
-      fields.filter((item) => item.serviceId !== field.serviceId);
+      setValue(
+        "services",
+        fields?.map((item) => {
+          if (item.serviceId === field.serviceId) {
+            return {
+              title: item.title,
+              serviceId: item.serviceId,
+              id: item.id,
+            };
+          }
+          return item;
+        })
+      );
     } else {
       setIsOpenReminder(field);
     }

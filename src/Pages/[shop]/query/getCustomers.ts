@@ -6,13 +6,17 @@ export interface IInstrument {
   id: number;
   title: string;
 }
-export const useGetMyCustomers = () => {
+export const useGetMyCustomers = (search: string) => {
   const api = useApiService();
 
   return useQuery({
-    queryKey: ["my-customers"],
+    queryKey: ["my-customers", search],
     queryFn: async () => {
-      const res = await api.get<IApiResponse<any[]>>("/shops/my-customers");
+      const res = await api.get<IApiResponse<any[]>>(
+        `/shops/my-customers${
+          search ? `?search=${encodeURIComponent(search)}` : ""
+        }`
+      );
       return res.data.data;
     },
   });
