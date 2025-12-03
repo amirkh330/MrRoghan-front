@@ -14,7 +14,7 @@ export default defineConfig({
       includeAssets: ["favicon.svg", "robots.txt", "icons/*.png"],
       manifest: {
         name: "اتوپین سرویس",
-        short_name: "اتوپین",
+        short_name: "AutoPin",
         description: "سرویس آنلاین اتوپین",
         theme_color: "#3FBD6E",
         background_color: "#ffffff",
