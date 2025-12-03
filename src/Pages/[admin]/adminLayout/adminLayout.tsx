@@ -28,6 +28,7 @@ import {
   SignOut,
   ListDashes,
   Car,
+  ClockCounterClockwise,
 } from "@phosphor-icons/react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import useAuthStore from "@/store/authStore";
@@ -80,6 +81,11 @@ function DashboardLayout() {
       icon: <Car size={22} />,
       link: RouteConst.adminVehicles,
     },
+    {
+      label: "مدت دوره ها",
+      icon: <ClockCounterClockwise size={22} />,
+      link: RouteConst.adminPeriods,
+    },
     // { label: "تنظیمات", icon: <GearSix size={22} />, link: "" },
   ];
 
@@ -109,8 +115,12 @@ function DashboardLayout() {
           rounded="lg"
           cursor="pointer"
           _hover={{ bg: "teal.500", color: "white" }}
+          bg={
+            window.location.pathname === item.link ? "teal.500" : "transparent"
+          }
+          color={window.location.pathname === item.link ? "white" : ""}
         >
-          <Box mr={3}>{item.icon}</Box>
+          <Box mx={3}>{item.icon}</Box>
           <Text>{item.label}</Text>
         </Flex>
       ))}

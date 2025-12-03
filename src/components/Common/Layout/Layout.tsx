@@ -9,6 +9,7 @@ export const Layout = () => {
   if (pathname.includes("admin")) return <AdminLayout />;
   return (
     <Flex
+      className="userLayout"
       direction="column"
       width="100%"
       maxWidth="400px"

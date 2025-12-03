@@ -27,6 +27,12 @@ import {
 } from "@chakra-ui/react";
 import { Plus, PencilSimple, Trash } from "@phosphor-icons/react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useAddService,
+  useDeleteService,
+  useEditService,
+  useGetServices,
+} from "../query/serviceAPI";
 
 // Fake API services (replace with real urls)
 const api = {
@@ -60,47 +66,16 @@ const api = {
 
 export const AdminServices = () => {
   const toast = useToast();
-  const queryClient = useQueryClient();
-
   const [selectedService, setSelectedService] = useState<any>(null);
   const [title, setTitle] = useState("");
 
+  const queryClient = useQueryClient();
   const modal = useDisclosure();
 
-  // GET services
-  const { data, isLoading } = useQuery({
-    queryKey: ["services"],
-    queryFn: api.getServices,
-  });
-
-  // CREATE
-  const createMutation = useMutation({
-    mutationFn: api.createService,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["services"] });
-      toast({ title: "سرویس جدید اضافه شد", status: "success" });
-      modal.onClose();
-    },
-  });
-
-  // UPDATE
-  const updateMutation = useMutation({
-    mutationFn: api.updateService,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["services"] });
-      toast({ title: "سرویس بروزرسانی شد", status: "success" });
-      modal.onClose();
-    },
-  });
-
-  // DELETE
-  const deleteMutation = useMutation({
-    mutationFn: api.deleteService,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["services"] });
-      toast({ title: "سرویس حذف شد", status: "info" });
-    },
-  });
+  const { data, isFetching: isLoading } = useGetServices("");
+  const deleteMutation = useDeleteService();
+  const editMutation = useEditService();
+  const addMutation = useAddService();
 
   const openCreate = () => {
     setSelectedService(null);
@@ -114,14 +89,25 @@ export const AdminServices = () => {
     modal.onOpen();
   };
 
+  const handleUpdate = () => {
+    queryClient.invalidateQueries({ queryKey: ["services"] });
+  };
+
   const handleSubmit = () => {
     if (!title) {
       return toast({ title: "عنوان وارد شود", status: "error" });
     }
-
     selectedService
-      ? updateMutation.mutate({ id: selectedService.id, title })
-      : createMutation.mutate({ title });
+      ? editMutation.mutateAsync({ id: selectedService.id, title }).then(() => {
+          handleUpdate();
+          modal.onClose();
+          toast({ title: "ویرایش با موفقیت انجام شد", status: "success" });
+        })
+      : addMutation.mutateAsync({ title }).then(() => {
+          handleUpdate();
+          modal.onClose();
+          toast({ title: "افزودن با موفقیت انجام شد", status: "success" });
+        });
   };
 
   return (
@@ -166,7 +152,11 @@ export const AdminServices = () => {
                     <Trash
                       size={20}
                       color="red"
-                      onClick={() => deleteMutation.mutate(service.id)}
+                      onClick={() =>
+                        deleteMutation
+                          .mutateAsync(service.id)
+                          .then(() => handleUpdate())
+                      }
                     />
                   </HStack>
                 </Td>
@@ -193,7 +183,7 @@ export const AdminServices = () => {
             <Button
               colorScheme="teal"
               onClick={handleSubmit}
-              isLoading={createMutation.isPending || updateMutation.isPending}
+              isLoading={addMutation.isPending || editMutation.isPending}
             >
               ذخیره
             </Button>
