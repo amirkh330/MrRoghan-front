@@ -1,4 +1,5 @@
 import { Login } from "@/components/Common/Login/Login";
+import Carousel from "@/components/CoreComponents/Carousel/Carousel";
 import Logo from "@/images/logo.png";
 import {
   Box,
@@ -8,10 +9,13 @@ import {
   Image,
   Text,
   useDisclosure,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { Bell, File, Toolbox } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
+import c1 from "public/images/co-1.png";
+import c2 from "public/images/co-2.png";
+import c3 from "public/images/co-3.png";
 
 const MotionBox = motion(Box);
 const MotionFlex = motion(Flex);
@@ -31,7 +35,7 @@ export default function Home() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <Image src={Logo} h="110px" opacity={0.9} />
+        <Image src={Logo} h="130px" opacity={0.9} />
 
         <Text fontSize="26px" fontWeight="700" mt="4" color="amir.common">
           مدیریت سرویس‌ها با یک لمس
@@ -43,7 +47,7 @@ export default function Home() {
       </MotionFlex>
 
       {/* FEATURE CARDS STACK */}
-      <VStack spacing="4" mt="10" px="5">
+      {/* <VStack spacing="4" mt="10" px="5">
         <FeatureCard
           icon={<Bell size={28} />}
           title="یادآوری هوشمند"
@@ -59,7 +63,30 @@ export default function Home() {
           title="مخصوص راننده و تعمیرکار"
           desc="هر دو سمت یک پنل واضح و ساده دارند."
         />
-      </VStack>
+      </VStack> */}
+      {/* <Carousel images={[c1, c2, c3]} /> */}
+      <Box mx="4" my="6">
+        <Carousel
+          items={[
+            <FeatureCard
+              icon={<Bell size={28} />}
+              title="یادآوری هوشمند"
+              desc="یادآوری هوشمند برای سرویس‌های شما."
+            />,
+            <FeatureCard
+              icon={<File size={28} />}
+              title="کارتکس دیجیتال"
+              desc="همه سوابق خودرو همیشه همراه شماست."
+            />,
+            <FeatureCard
+              icon={<Toolbox size={28} />}
+              title="مخصوص راننده و تعمیرکار"
+              desc="هر دو سمت یک پنل واضح و ساده دارند."
+            />,
+          ]}
+        />
+      </Box>
+
       <MotionFlex
         mt="auto"
         py={6}

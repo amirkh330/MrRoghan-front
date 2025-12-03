@@ -39,7 +39,7 @@ export const useApiService = () => {
     axiosInstance.interceptors.response.use(
       (response) => response,
       (error: AxiosError<any>) => {
-        console.log('error:', error)
+        console.log("error:", error);
         const status = error.response?.status;
 
         switch (status) {
@@ -84,7 +84,8 @@ export const useApiService = () => {
           default:
             toast({
               title: "خطا",
-              description: "مشکل ناشناخته‌ای رخ داد.",
+              description:
+                error.response?.data?.message || "مشکل ناشناخته‌ای رخ داد.",
               status: "error",
               position: "top",
             });
