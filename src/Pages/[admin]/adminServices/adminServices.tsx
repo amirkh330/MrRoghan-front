@@ -1,68 +1,37 @@
-import { useState } from "react";
 import {
   Box,
   Button,
   Flex,
+  FormControl,
+  FormLabel,
   Heading,
   HStack,
   Input,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  IconButton,
-  useDisclosure,
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
   ModalBody,
+  ModalContent,
   ModalFooter,
-  FormControl,
-  FormLabel,
-  useToast,
+  ModalHeader,
+  ModalOverlay,
   Spinner,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  useDisclosure,
+  useToast
 } from "@chakra-ui/react";
-import { Plus, PencilSimple, Trash } from "@phosphor-icons/react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { PencilSimple, Plus, Trash } from "@phosphor-icons/react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import {
   useAddService,
   useDeleteService,
   useEditService,
   useGetServices,
 } from "../query/serviceAPI";
-
-// Fake API services (replace with real urls)
-const api = {
-  getServices: async () => {
-    const res = await fetch("/api/services");
-    return res.json();
-  },
-  createService: async (payload: any) => {
-    const res = await fetch("/api/services", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    return res.json();
-  },
-  updateService: async ({ id, title }: any) => {
-    const res = await fetch(`/api/services/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title }),
-    });
-    return res.json();
-  },
-  deleteService: async (id: any) => {
-    const res = await fetch(`/api/services/${id}`, {
-      method: "DELETE",
-    });
-    return res.json();
-  },
-};
 
 export const AdminServices = () => {
   const toast = useToast();

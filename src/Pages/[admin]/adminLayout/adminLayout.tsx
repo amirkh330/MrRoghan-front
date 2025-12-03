@@ -164,7 +164,7 @@ function DashboardLayout() {
       <Flex direction="column" flex={1}>
         {/* Header */}
         <Flex bg={headerBg} p={4} align="center" shadow="md">
-          <ListDashes size={26} />
+          <ListDashes size={26} onClick={drawer.onOpen}/>
           {/* <Icon
             display={{ base: "flex", md: "none" }}
             as={<ListDashes size={26} />}
