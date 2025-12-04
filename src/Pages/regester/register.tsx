@@ -1,20 +1,17 @@
-import React from "react";
+import Map from "@/components/CoreComponents/Map/Map";
+import { persianToEnglishNumbers } from "@/utils/convertNumber/ConvertNumber";
 import {
   Box,
   Button,
-  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Input,
-  VStack,
   Text,
   Textarea,
+  VStack
 } from "@chakra-ui/react";
 import { useRegister } from "./register.biz";
-import { persianToEnglishNumbers } from "@/utils/convertNumber/ConvertNumber";
-import Map from "@/components/CoreComponents/Map/Map";
-import { set } from "react-hook-form";
 
 export const Register = () => {
   const {
