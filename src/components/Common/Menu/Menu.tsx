@@ -145,7 +145,7 @@ const _CustomerMenu = [
 ];
 
 const _ShopMenu = [
-  { title: "داشبورد", link: RouteConst.shopCustomers },
+  { title: "داشبورد", link: RouteConst.shopDashboard },
   { title: "خدمات ما", link: RouteConst.services },
   // { title: "آمار", link: RouteConst.shopReports },
   { title: "ایجاد رسید", link: RouteConst.shopCreateOrder },
