@@ -120,7 +120,7 @@ export const Register = () => {
             type="submit"
             width="100%"
             bg="amir.primary"
-            color="black"
+            color="white"
             fontWeight="bold"
             size="lg"
             isLoading={loading}

@@ -107,11 +107,12 @@ const PhoneNumberStep = ({
         </Text>
       )}
       <Button
-        bg={"amir.primary"}
-        color={"white"}
         w={"100%"}
-        onClick={handleSetPhoneNumber}
+        color={"white"}
+        bg={"amir.primary"}
         isLoading={loading}
+        disabled={!phoneNumber}
+        onClick={handleSetPhoneNumber}
       >
         ارسال
       </Button>
