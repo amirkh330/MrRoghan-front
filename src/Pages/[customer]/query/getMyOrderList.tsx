@@ -1,4 +1,5 @@
 import { useApiService } from "@/settings/axiosConfig";
+import useAuthStore from "@/store/authStore";
 import { IApiResponse, ReminderDateEnum } from "@/utils/common";
 import { useQuery } from "@tanstack/react-query";
 
@@ -20,12 +21,14 @@ export interface IMyOrder {
 
 export const useGetMyOrderList = () => {
   const api = useApiService();
+  const { accessToken } = useAuthStore();
 
   return useQuery({
-    queryKey: ["myOrderList"],
+    queryKey: ["myOrderList", accessToken],
     queryFn: async () => {
       const res = await api.get<IApiResponse<IMyOrder[]>>("/users/my-orders");
       return res.data.data;
     },
+    enabled: !!accessToken,
   });
 };
