@@ -12,6 +12,12 @@ export interface IMyOrder {
   description: string | null;
   services: { title: string; serviceId: number; reminder: ReminderDateEnum }[];
   createdAt: string; // یا Date اگر میخوای تبدیل کنی
+  user: {
+    id: number;
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+  };
   shop: {
     id: number;
     shopName: string;

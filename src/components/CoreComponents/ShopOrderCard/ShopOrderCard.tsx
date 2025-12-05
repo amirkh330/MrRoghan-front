@@ -14,7 +14,7 @@ import {
 import { motion } from "framer-motion";
 const MotionBox = motion(Box);
 
-export const OrderCard = ({ item }: { item: IMyOrder }) => {
+export const ShopOrderCard = ({ item }: { item: IMyOrder }) => {
   const dt = new Date(item?.createdAt ?? "");
   const date = dt.toLocaleDateString("fa-IR");
   const time = dt.toLocaleTimeString("fa-IR", {
@@ -22,6 +22,7 @@ export const OrderCard = ({ item }: { item: IMyOrder }) => {
     minute: "2-digit",
     hour12: false,
   });
+  const fullName = `${item?.user?.firstName} ${item?.user?.lastName}`;
 
   return (
     <MotionBox
@@ -42,7 +43,7 @@ export const OrderCard = ({ item }: { item: IMyOrder }) => {
         borderColor="amir.secondaryVariant"
         pb={"2"}
       >
-        <Text fontWeight="700">سرویس {item?.id}</Text>
+        <Text fontWeight="700">{fullName}</Text>
         <Text fontSize="xs">
           {time} - {date}
         </Text>
@@ -119,9 +120,9 @@ export const OrderCard = ({ item }: { item: IMyOrder }) => {
           my="1"
         >
           <Text fontWeight="600" color="amir.secondaryVariant">
-            مغازه
+            شماره تلفن
           </Text>
-          <Text fontSize="xs">{item?.shop?.shopName}</Text>
+          <Text fontSize="xs">{item?.user?.phoneNumber}</Text>
         </HStack>
       </VStack>
 
