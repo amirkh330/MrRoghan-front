@@ -56,7 +56,6 @@ export const useDeleteService = () => {
 
   return useMutation({
     mutationFn: async (payload: number): Promise<IApiResponse<any>> => {
-      console.log("payload:", payload);
       const res = await api.delete<IApiResponse<any>>(
         `/admin/service/${payload}`
       );

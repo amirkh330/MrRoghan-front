@@ -14,7 +14,13 @@ import {
 import { motion } from "framer-motion";
 const MotionBox = motion(Box);
 
-export const OrderCard = ({ item }: { item: IMyOrder }) => {
+export const OrderCard = ({
+  item,
+  isShop = false,
+}: {
+  item: IMyOrder;
+  isShop?: boolean;
+}) => {
   const dt = new Date(item?.createdAt ?? "");
   const date = dt.toLocaleDateString("fa-IR");
   const time = dt.toLocaleTimeString("fa-IR", {
@@ -110,19 +116,21 @@ export const OrderCard = ({ item }: { item: IMyOrder }) => {
           <Text fontSize="xs">{item?.vehicle?.title}</Text>
         </HStack>
 
-        <HStack
-          spacing="0"
-          justifyContent="space-between"
-          align="start"
-          mx="0"
-          w="100%"
-          my="1"
-        >
-          <Text fontWeight="600" color="amir.secondaryVariant">
-            مغازه
-          </Text>
-          <Text fontSize="xs">{item?.shop?.shopName}</Text>
-        </HStack>
+        {isShop && (
+          <HStack
+            spacing="0"
+            justifyContent="space-between"
+            align="start"
+            mx="0"
+            w="100%"
+            my="1"
+          >
+            <Text fontWeight="600" color="amir.secondaryVariant">
+              مغازه
+            </Text>
+            <Text fontSize="xs">{item?.shop?.shopName}</Text>
+          </HStack>
+        )}
       </VStack>
 
       {/* آکاردئون */}

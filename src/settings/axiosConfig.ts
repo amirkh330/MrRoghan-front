@@ -39,7 +39,6 @@ export const useApiService = () => {
     axiosInstance.interceptors.response.use(
       (response) => response,
       (error: AxiosError<any>) => {
-        console.log("error:", error);
         const status = error.response?.status;
 
         switch (status) {

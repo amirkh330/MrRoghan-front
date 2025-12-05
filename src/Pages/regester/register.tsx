@@ -75,6 +75,9 @@ export const Register = () => {
                 setValue("phoneNumber", persianToEnglishNumbers(e.target.value))
               }
               placeholder="مثلاً 09123456789"
+              dir="ltr"
+              type="tel"
+              maxLength={11}
               bg="amir.secondaryBg"
               border="1px solid #555"
               inputMode="numeric"

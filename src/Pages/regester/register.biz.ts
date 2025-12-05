@@ -25,7 +25,6 @@ export const useRegister = () => {
     resolver: yupResolver(schema),
     mode: "onChange",
   });
-  console.log('errors:', errors)
 
   useEffect(() => {
     if (search.get("phoneNumber")) {
