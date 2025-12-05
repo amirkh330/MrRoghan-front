@@ -15,7 +15,7 @@ import { motion } from "framer-motion";
 const MotionBox = motion(Box);
 
 export const OrderCard = ({ item }: { item: IMyOrder }) => {
-  const dt = new Date(item.createdAt);
+  const dt = new Date(item?.createdAt ?? "");
   const date = dt.toLocaleDateString("fa-IR");
   const time = dt.toLocaleTimeString("fa-IR", {
     hour: "2-digit",
@@ -25,7 +25,7 @@ export const OrderCard = ({ item }: { item: IMyOrder }) => {
 
   return (
     <MotionBox
-      key={item.id}
+      key={item?.id}
       p="5"
       bg="amir.secondaryBg"
       borderRadius="16px"
@@ -42,7 +42,7 @@ export const OrderCard = ({ item }: { item: IMyOrder }) => {
         borderColor="amir.secondaryVariant"
         pb={"2"}
       >
-        <Text fontWeight="700">سرویس {item.id}</Text>
+        <Text fontWeight="700">سرویس {item?.id}</Text>
         <Text fontSize="xs">
           {time} - {date}
         </Text>
@@ -62,7 +62,7 @@ export const OrderCard = ({ item }: { item: IMyOrder }) => {
             کیلومتر موقع سرویس
           </Text>
           <Text fontSize="xs">
-            {formatNumber(Number(item.currentDistance))} km
+            {formatNumber(Number(item?.currentDistance))} km
           </Text>
         </HStack>
 
@@ -78,7 +78,7 @@ export const OrderCard = ({ item }: { item: IMyOrder }) => {
             کیلومتر بعدی
           </Text>
           <Text fontSize="xs">
-            {formatNumber(Number(item.nextDistance))} km
+            {formatNumber(Number(item?.nextDistance))} km
           </Text>
         </HStack>
 
@@ -93,7 +93,7 @@ export const OrderCard = ({ item }: { item: IMyOrder }) => {
           <Text fontWeight="600" color="amir.secondaryVariant">
             مبلغ
           </Text>
-          <Text fontSize="xs">{Toman(Number(item.price))}</Text>
+          <Text fontSize="xs">{Toman(Number(item?.price))}</Text>
         </HStack>
 
         <HStack
@@ -107,7 +107,7 @@ export const OrderCard = ({ item }: { item: IMyOrder }) => {
           <Text fontWeight="600" color="amir.secondaryVariant">
             وسیله نقلیه
           </Text>
-          <Text fontSize="xs">{item.vehicle?.title}</Text>
+          <Text fontSize="xs">{item?.vehicle?.title}</Text>
         </HStack>
 
         <HStack
@@ -121,7 +121,7 @@ export const OrderCard = ({ item }: { item: IMyOrder }) => {
           <Text fontWeight="600" color="amir.secondaryVariant">
             مغازه
           </Text>
-          <Text fontSize="xs">{item.shop?.shopName}</Text>
+          <Text fontSize="xs">{item?.shop?.shopName}</Text>
         </HStack>
       </VStack>
 
@@ -161,7 +161,7 @@ export const OrderCard = ({ item }: { item: IMyOrder }) => {
                 توضیحات:
               </Text>
               <Text fontSize={"14px"} color="amir.secondaryVariant">
-                {item.description || "-"}
+                {item?.description || "-"}
               </Text>
             </VStack>
           </AccordionPanel>

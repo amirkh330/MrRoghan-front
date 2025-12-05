@@ -9,7 +9,7 @@ import {
   Input,
   Text,
   Textarea,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { useRegister } from "./register.biz";
 
@@ -109,7 +109,11 @@ export const Register = () => {
           <FormControl isInvalid={!!errors.location}>
             <FormLabel>موقعیت مغازه</FormLabel>
             <Map setNewPin={(e) => setValue("location", e as any)} />
-            <FormErrorMessage>{errors.location?.message}</FormErrorMessage>
+            {errors.location?.lat || errors.location?.lng ? (
+              <FormErrorMessage>
+                انتخاب موقعیت جغرافیایی الزامی است{" "}
+              </FormErrorMessage>
+            ) : null}
           </FormControl>
 
           {/* دکمه ثبت */}

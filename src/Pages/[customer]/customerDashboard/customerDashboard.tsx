@@ -1,5 +1,7 @@
 import { EmptyState } from "@/components/Common/EmptyState/EmptyState";
+import { Loading } from "@/components/CoreComponents/Loading/Loading";
 import { OrderCard } from "@/components/CoreComponents/OrderCard/orderCard";
+import { RouteConst } from "@/utils/allRoutes.type";
 import { formatNumber } from "@/utils/Toman/Toman";
 import {
   Box,
@@ -12,18 +14,15 @@ import {
 } from "@chakra-ui/react";
 import { Calendar, RoadHorizon, Storefront } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
-import { useCustomerReports } from "../customerReports/customerReports.biz";
-import { Route, useNavigate } from "react-router-dom";
-import { RouteConst } from "@/utils/allRoutes.type";
-import { Loading } from "@/components/CoreComponents/Loading/Loading";
+import { useNavigate } from "react-router-dom";
+import { useCustomerDashboard } from "./customerDashboard.biz";
 const MotionBox = motion(Box);
 
 export const CustomerDashboard = () => {
   const navigate = useNavigate();
 
-  const { data, isLoading, nextSession, nextSessionLoading } =
-    useCustomerReports();
+  const { data, isLoading, nextSession, nextSessionLoading, reportsCount } =
+    useCustomerDashboard();
 
   return (
     <Box p="4" color="amir.common">
@@ -191,7 +190,7 @@ export const CustomerDashboard = () => {
           <Spinner />
         ) : data?.length ? (
           <>
-            {Array.from({ length: 3 }).map((_, i) => (
+            {Array.from({ length: reportsCount || 0 }).map((_, i) => (
               <OrderCard key={i} item={data[i]} />
             ))}
             <Button
