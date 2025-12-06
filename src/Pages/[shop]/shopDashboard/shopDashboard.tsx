@@ -40,136 +40,152 @@ export const ShopDashboard = () => {
   const { data, isLoading } = useGetShopDashboard();
   return (
     <Box p="4" color="amir.common" minH="0dvh">
-      <HStack spacing="2" mb="6" w="100%" flexWrap="wrap">
-        {isLoading ? (
-          <Loading />
-        ) : (
-          stats.map((item, index) => (
-            <MotionBox
-              key={index}
-              bg="amir.secondaryBg"
-              w="48%"
-              m="0"
-              p="4"
-              py="2"
-              borderRadius="18px"
-              shadow="md"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, delay: index * 0.08 }}
-            >
-              <Flex justify="space-between" align="center">
-                <Flex direction="column" m="0" w={"100%"}>
-                  <Text fontSize="sm" color="amir.secondary">
-                    {item.label}
-                  </Text>
-                  <Flex
-                    alignItems="center"
-                    justifyContent="space-between"
-                    w="100%"
-                    mt="4"
-                  >
-                    <Text
-                      fontSize="2xl"
-                      fontWeight="700"
-                      color="amir.common"
-                      mt="1"
-                    >
-                      {data?.[item.value as keyof IShopDashboard]}
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <HStack spacing="2" mb="6" w="100%" flexWrap="wrap">
+            {stats.map((item, index) => (
+              <MotionBox
+                key={index}
+                bg="amir.secondaryBg"
+                w="48%"
+                m="0"
+                p="4"
+                py="2"
+                borderRadius="18px"
+                shadow="md"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: index * 0.08 }}
+              >
+                <Flex justify="space-between" align="center">
+                  <Flex direction="column" m="0" w={"100%"}>
+                    <Text fontSize="sm" color="amir.secondary">
+                      {item.label}
                     </Text>
-
                     <Flex
-                      bg="amir.secondary"
-                      w="50px"
-                      h="50px"
-                      borderRadius="14px"
-                      align="center"
-                      justify="center"
-                      shadow="sm"
-                      m="0"
+                      alignItems="center"
+                      justifyContent="space-between"
+                      w="100%"
+                      mt="4"
                     >
-                      <Icon w={"20px"} h="20px" as={item.icon} color="white" />
+                      <Text
+                        fontSize="2xl"
+                        fontWeight="700"
+                        color="amir.common"
+                        mt="1"
+                      >
+                        {data?.[item.value as keyof IShopDashboard]}
+                      </Text>
+
+                      <Flex
+                        bg="amir.secondary"
+                        w="50px"
+                        h="50px"
+                        borderRadius="14px"
+                        align="center"
+                        justify="center"
+                        shadow="sm"
+                        m="0"
+                      >
+                        <Icon
+                          w={"20px"}
+                          h="20px"
+                          as={item.icon}
+                          color="white"
+                        />
+                      </Flex>
                     </Flex>
                   </Flex>
                 </Flex>
+              </MotionBox>
+            ))}
+          </HStack>
+
+          <MotionBox
+            bg="amir.secondaryBg"
+            w="100%"
+            p="5"
+            mb="6"
+            borderRadius="18px"
+            shadow="md"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, delay: 2 * 0.08 }}
+          >
+            <Flex justify="space-between" align="center">
+              <Flex direction="column" m="0">
+                <Text fontSize="sm" color="amir.secondary">
+                  درآمد روزانه
+                </Text>
+                <Text
+                  fontSize="2xl"
+                  fontWeight="700"
+                  color="amir.common"
+                  mt="1"
+                >
+                  {Toman(data?.todayIncome!)}
+                </Text>
               </Flex>
-            </MotionBox>
-          ))
-        )}
-      </HStack>
 
-      <MotionBox
-        bg="amir.secondaryBg"
-        w="100%"
-        p="5"
-        mb="6"
-        borderRadius="18px"
-        shadow="md"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35, delay: 2 * 0.08 }}
-      >
-        <Flex justify="space-between" align="center">
-          <Flex direction="column" m="0">
-            <Text fontSize="sm" color="amir.secondary">
-              درآمد روزانه
-            </Text>
-            <Text fontSize="2xl" fontWeight="700" color="amir.common" mt="1">
-              {Toman(data?.todayIncome!)}
-            </Text>
-          </Flex>
+              <Flex
+                bg="amir.secondary"
+                w="50px"
+                h="50px"
+                borderRadius="14px"
+                align="center"
+                justify="center"
+                shadow="sm"
+                m="0"
+              >
+                <Icon as={CurrencyDollar} size={28} color="white" />
+              </Flex>
+            </Flex>
+          </MotionBox>
 
-          <Flex
-            bg="amir.secondary"
-            w="50px"
-            h="50px"
-            borderRadius="14px"
-            align="center"
-            justify="center"
-            shadow="sm"
-            m="0"
+          <MotionBox
+            bg="amir.secondaryBg"
+            w="100%"
+            p="5"
+            mb="6"
+            borderRadius="18px"
+            shadow="md"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, delay: 2 * 0.08 }}
           >
-            <Icon as={CurrencyDollar} size={28} color="white" />
-          </Flex>
-        </Flex>
-      </MotionBox>
+            <Flex justify="space-between" align="center">
+              <Flex direction="column" m="0">
+                <Text fontSize="sm" color="amir.secondary">
+                  درآمد ماهانه
+                </Text>
+                <Text
+                  fontSize="2xl"
+                  fontWeight="700"
+                  color="amir.common"
+                  mt="1"
+                >
+                  {Toman(data?.monthIncome!)}
+                </Text>
+              </Flex>
 
-      <MotionBox
-        bg="amir.secondaryBg"
-        w="100%"
-        p="5"
-        mb="6"
-        borderRadius="18px"
-        shadow="md"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35, delay: 2 * 0.08 }}
-      >
-        <Flex justify="space-between" align="center">
-          <Flex direction="column" m="0">
-            <Text fontSize="sm" color="amir.secondary">
-              درآمد ماهانه
-            </Text>
-            <Text fontSize="2xl" fontWeight="700" color="amir.common" mt="1">
-              {Toman(data?.monthIncome!)}
-            </Text>
-          </Flex>
-
-          <Flex
-            bg="amir.secondary"
-            w="50px"
-            h="50px"
-            borderRadius="14px"
-            align="center"
-            justify="center"
-            shadow="sm"
-            m="0"
-          >
-            <Icon as={CurrencyDollar} size={28} color="white" />
-          </Flex>
-        </Flex>
-      </MotionBox>
-
+              <Flex
+                bg="amir.secondary"
+                w="50px"
+                h="50px"
+                borderRadius="14px"
+                align="center"
+                justify="center"
+                shadow="sm"
+                m="0"
+              >
+                <Icon as={CurrencyDollar} size={28} color="white" />
+              </Flex>
+            </Flex>
+          </MotionBox>
+        </>
+      )}
       <Button
         as={Link}
         to={RouteConst.shopCreateOrder}
