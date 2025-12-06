@@ -1,3 +1,4 @@
+import { queryClient } from "@/main";
 import { RoleEnum } from "@/utils/common";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
@@ -57,6 +58,11 @@ const useAuthStore = create<AuthState>()(
       },
 
       logout: () => {
+        // axios.defaults.headers.common["Authorization"] = "";
+
+        queryClient.cancelQueries();
+        queryClient.clear();
+        queryClient.removeQueries();
         set({
           isAuth: false,
           accessToken: "",

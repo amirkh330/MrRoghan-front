@@ -32,13 +32,14 @@ import {
   useEditService,
   useGetServices,
 } from "../query/serviceAPI";
+import { queryClient } from "@/main";
 
 export const AdminServices = () => {
   const toast = useToast();
   const [selectedService, setSelectedService] = useState<any>(null);
   const [title, setTitle] = useState("");
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   const modal = useDisclosure();
 
   const { data, isFetching: isLoading } = useGetServices("");

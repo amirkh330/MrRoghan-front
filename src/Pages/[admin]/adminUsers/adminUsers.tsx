@@ -33,6 +33,7 @@ import {
   useEditUser,
   useDeleteUser,
 } from "../query/usersAPI"; // adjust path if needed
+import { queryClient } from "@/main";
 
 export const AdminUsers = () => {
   const toast = useToast();
@@ -45,7 +46,7 @@ export const AdminUsers = () => {
   const [lat, setLat] = useState<number | "">("");
   const [lng, setLng] = useState<number | "">("");
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   const modal = useDisclosure();
 
   const { data, isFetching: isLoading } = useGetUsers("");

@@ -33,6 +33,7 @@ import {
   useEditVehicle,
   useDeleteVehicle,
 } from "../query/vehiclesAPI";
+import { queryClient } from "@/main";
 
 export const AdminVehicles = () => {
   const toast = useToast();
@@ -40,7 +41,7 @@ export const AdminVehicles = () => {
   const [title, setTitle] = useState("");
   const [isActive, setIsActive] = useState(true);
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   const modal = useDisclosure();
 
   const { data, isFetching: isLoading } = useGetVehicles("");

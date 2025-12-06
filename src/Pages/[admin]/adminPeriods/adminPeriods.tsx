@@ -33,6 +33,7 @@ import {
   useGetPeriods,
 } from "../query/periodsAPI";
 import { PencilSimple, Plus, Trash } from "@phosphor-icons/react";
+import { queryClient } from "@/main";
 
 export const AdminPeriod = () => {
   const toast = useToast();
@@ -40,7 +41,7 @@ export const AdminPeriod = () => {
   const [title, setTitle] = useState("");
   const [isActive, setIsActive] = useState(true);
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   const modal = useDisclosure();
 
   const { data, isFetching: isLoading } = useGetPeriods("");

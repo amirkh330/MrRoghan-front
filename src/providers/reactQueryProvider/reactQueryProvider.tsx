@@ -35,7 +35,6 @@ const queryClient = new QueryClient({
       }
     },
   }),
-
   queryCache: new QueryCache({
     onSuccess: (data, query) => {
       const queryMeta = query.meta;
