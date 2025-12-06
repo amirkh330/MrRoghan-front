@@ -3,8 +3,8 @@ export const RouteConst = {
   login: "/login",
   register: "/register",
 
-  adminDashboard: "/admin",
-  adminLogin: "/admin/login",
+  adminDashboard: "/admin/dashboard",
+  adminLogin: "/admin",
   adminServices: "/admin/services",
   adminUsers: "/admin/users",
   adminVehicles: "/admin/vehicles",

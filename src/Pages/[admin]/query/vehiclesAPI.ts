@@ -47,7 +47,7 @@ export const useEditVehicle = () => {
       isActive: boolean;
     }): Promise<IApiResponse<any>> => {
       const res = await api.patch<IApiResponse<any>>(
-        `/admin/vehicles/${payload.id}`,
+        `/admin/vehicles`,
         payload
       );
       return res.data;

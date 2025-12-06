@@ -11,7 +11,7 @@ export const useGetServices = (search: string) => {
   const api = useApiService();
 
   return useQuery({
-    queryKey: ["services", search],
+    queryKey: ["admin-services", search],
     queryFn: async () => {
       const res = await api.get<IApiResponse<IServices[]>>(
         `/admin/service${search ? `?search=${encodeURIComponent(search)}` : ""}`
@@ -40,12 +40,10 @@ export const useEditService = () => {
   return useMutation({
     mutationFn: async (payload: {
       id: string;
-      title: string;
+      title?: string;
+      isActive?: boolean;
     }): Promise<IApiResponse<any>> => {
-      const res = await api.patch<IApiResponse<any>>(
-        `/admin/service/${payload.id}`,
-        payload
-      );
+      const res = await api.patch<IApiResponse<any>>(`/admin/service`, payload);
       return res.data;
     },
   });

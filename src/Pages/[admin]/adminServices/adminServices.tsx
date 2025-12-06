@@ -4,7 +4,6 @@ import {
   Flex,
   FormControl,
   FormLabel,
-  Heading,
   HStack,
   Input,
   Modal,
@@ -14,36 +13,35 @@ import {
   ModalHeader,
   ModalOverlay,
   Spinner,
+  Switch,
   Table,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
   useDisclosure,
   useToast
 } from "@chakra-ui/react";
-import { PencilSimple, Plus, Trash } from "@phosphor-icons/react";
+import { PencilSimple, Plus } from "@phosphor-icons/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import {
   useAddService,
-  useDeleteService,
   useEditService,
-  useGetServices,
+  useGetServices
 } from "../query/serviceAPI";
-import { queryClient } from "@/main";
 
 export const AdminServices = () => {
   const toast = useToast();
   const [selectedService, setSelectedService] = useState<any>(null);
   const [title, setTitle] = useState("");
 
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   const modal = useDisclosure();
 
   const { data, isFetching: isLoading } = useGetServices("");
-  const deleteMutation = useDeleteService();
   const editMutation = useEditService();
   const addMutation = useAddService();
 
@@ -60,7 +58,7 @@ export const AdminServices = () => {
   };
 
   const handleUpdate = () => {
-    queryClient.invalidateQueries({ queryKey: ["services"] });
+    queryClient.invalidateQueries({ queryKey: ["admin-services"] });
   };
 
   const handleSubmit = () => {
@@ -83,7 +81,9 @@ export const AdminServices = () => {
   return (
     <Box>
       <Flex mb={5} align="center" justify="space-between">
-        <Heading size="lg">مدیریت سرویس‌ها</Heading>
+        <Text fontSize="2xl" fontWeight="700">
+          مدیریت سرویس‌ها
+        </Text>
         <Button
           leftIcon={<Plus size={20} />}
           colorScheme="teal"
@@ -119,14 +119,24 @@ export const AdminServices = () => {
                       onClick={() => openEdit(service)}
                     />
 
-                    <Trash
-                      size={20}
-                      color="red"
-                      onClick={() =>
-                        deleteMutation
-                          .mutateAsync(service.id)
-                          .then(() => handleUpdate())
-                      }
+                    <Switch
+                      isChecked={service.isActive}
+                      onChange={(e) => {
+                        editMutation
+                          .mutateAsync({
+                            id: service.id,
+                            title: service.title,
+                            isActive: e.target.checked,
+                          })
+                          .then(() => {
+                            handleUpdate();
+                            toast({
+                              title: "ویرایش با موفقیت انجام شد",
+                              status: "success",
+                              position: "top",
+                            });
+                          });
+                      }}
                     />
                   </HStack>
                 </Td>

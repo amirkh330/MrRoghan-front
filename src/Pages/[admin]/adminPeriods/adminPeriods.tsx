@@ -23,6 +23,7 @@ import {
   FormControl,
   FormLabel,
   Switch,
+  Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -33,7 +34,6 @@ import {
   useGetPeriods,
 } from "../query/periodsAPI";
 import { PencilSimple, Plus, Trash } from "@phosphor-icons/react";
-import { queryClient } from "@/main";
 
 export const AdminPeriod = () => {
   const toast = useToast();
@@ -41,7 +41,7 @@ export const AdminPeriod = () => {
   const [title, setTitle] = useState("");
   const [isActive, setIsActive] = useState(true);
 
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   const modal = useDisclosure();
 
   const { data, isFetching: isLoading } = useGetPeriods("");
@@ -94,7 +94,9 @@ export const AdminPeriod = () => {
   return (
     <Box>
       <Flex mb={5} align="center" justify="space-between">
-        <Heading size="lg">مدیریت دوره‌ها</Heading>
+        <Text fontSize="2xl" fontWeight="700">
+          مدیریت دوره‌ها
+        </Text>
         <Button
           leftIcon={<Plus size={20} />}
           colorScheme="teal"

@@ -1,8 +1,14 @@
 import { extendTheme } from "@chakra-ui/react";
 import { color } from "framer-motion";
+import { baseStyle } from "node_modules/@chakra-ui/react/dist/types/avatar/avatar";
 
 export const customTheme = extendTheme({
   direction: "rtl",
+  fonts: {
+    heading: "'IranYekan', sans-serif",
+    body: "'IranYekan', sans-serif",
+    table: "'IranYekan', sans-serif", // اگه بخواهی اختصاصی برا جدول
+  },
   colors: {
     amir: {
       mainBg: "#d5dadf",

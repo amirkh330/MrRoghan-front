@@ -79,13 +79,15 @@ export const AdminLogin = () => {
         w={{ base: "90%", sm: "400px" }}
         textAlign="center"
       >
-        <Heading
+        <Text
           mb={6}
           bgGradient="linear(to-r, teal.500, blue.600)"
           bgClip="text"
+          fontSize="3xl"
+          fontWeight="bold"
         >
           ورود به پنل مدیریت
-        </Heading>
+        </Text>
 
         <Stack spacing={5}>
           <FormControl>

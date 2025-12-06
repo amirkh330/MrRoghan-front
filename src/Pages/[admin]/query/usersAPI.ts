@@ -14,7 +14,7 @@ export interface IUser {
   phoneNumber: string;
   shopName: string;
   address: string;
-  location: IUserLocation;
+  // location: IUserLocation;
 }
 
 // GET users
@@ -52,10 +52,7 @@ export const useEditUser = () => {
 
   return useMutation({
     mutationFn: async (payload: IUser): Promise<IApiResponse<any>> => {
-      const res = await api.patch<IApiResponse<any>>(
-        `/admin/users/${payload.id}`,
-        payload
-      );
+      const res = await api.patch<IApiResponse<any>>(`/admin/users`, payload);
       return res.data;
     },
   });

@@ -23,6 +23,7 @@ import {
   FormControl,
   FormLabel,
   Switch,
+  Text,
 } from "@chakra-ui/react";
 import { Plus, PencilSimple, Trash } from "@phosphor-icons/react";
 import { useState } from "react";
@@ -33,7 +34,6 @@ import {
   useEditVehicle,
   useDeleteVehicle,
 } from "../query/vehiclesAPI";
-import { queryClient } from "@/main";
 
 export const AdminVehicles = () => {
   const toast = useToast();
@@ -41,7 +41,7 @@ export const AdminVehicles = () => {
   const [title, setTitle] = useState("");
   const [isActive, setIsActive] = useState(true);
 
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   const modal = useDisclosure();
 
   const { data, isFetching: isLoading } = useGetVehicles("");
@@ -94,7 +94,9 @@ export const AdminVehicles = () => {
   return (
     <Box>
       <Flex mb={5} align="center" justify="space-between">
-        <Heading size="lg">مدیریت وسایل نقلیه</Heading>
+        <Text fontSize="2xl" fontWeight="700">
+          مدیریت وسایل نقلیه
+        </Text>
         <Button
           leftIcon={<Plus size={20} />}
           colorScheme="teal"
@@ -114,7 +116,6 @@ export const AdminVehicles = () => {
             <Tr>
               <Th>شناسه</Th>
               <Th>عنوان</Th>
-              <Th>فعال</Th>
               <Th>عملیات</Th>
             </Tr>
           </Thead>
@@ -123,7 +124,6 @@ export const AdminVehicles = () => {
               <Tr key={vehicle.id}>
                 <Td>{vehicle.id}</Td>
                 <Td>{vehicle.title}</Td>
-                <Td>{vehicle.isActive ? "✅" : "❌"}</Td>
                 <Td>
                   <HStack>
                     <PencilSimple
@@ -131,14 +131,24 @@ export const AdminVehicles = () => {
                       size={20}
                       onClick={() => openEdit(vehicle)}
                     />
-                    <Trash
-                      size={20}
-                      color="red"
-                      onClick={() =>
-                        deleteMutation
-                          .mutateAsync({ id: vehicle.id })
-                          .then(handleUpdate)
-                      }
+                    <Switch
+                      isChecked={vehicle.isActive}
+                      onChange={(e) => {
+                        editMutation
+                          .mutateAsync({
+                            id: vehicle.id,
+                            title: vehicle.title,
+                            isActive: e.target.checked,
+                          })
+                          .then(() => {
+                            handleUpdate();
+                            toast({
+                              title: "ویرایش با موفقیت انجام شد",
+                              status: "success",
+                              position: "top",
+                            });
+                          });
+                      }}
                     />
                   </HStack>
                 </Td>

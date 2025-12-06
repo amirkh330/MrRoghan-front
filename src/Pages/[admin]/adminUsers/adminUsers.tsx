@@ -2,38 +2,38 @@ import {
   Box,
   Button,
   Flex,
+  FormControl,
+  FormLabel,
   Heading,
   HStack,
   Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  SimpleGrid,
   Spinner,
   Table,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
   useDisclosure,
   useToast,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  FormControl,
-  FormLabel,
-  SimpleGrid,
 } from "@chakra-ui/react";
-import { Plus, PencilSimple, Trash } from "@phosphor-icons/react";
+import { PencilSimple, Plus, Trash } from "@phosphor-icons/react";
 import { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 import {
-  useGetUsers,
   useAddUser,
-  useEditUser,
   useDeleteUser,
+  useEditUser,
+  useGetUsers,
 } from "../query/usersAPI"; // adjust path if needed
-import { queryClient } from "@/main";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const AdminUsers = () => {
   const toast = useToast();
@@ -46,7 +46,7 @@ export const AdminUsers = () => {
   const [lat, setLat] = useState<number | "">("");
   const [lng, setLng] = useState<number | "">("");
 
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   const modal = useDisclosure();
 
   const { data, isFetching: isLoading } = useGetUsers("");
@@ -70,9 +70,9 @@ export const AdminUsers = () => {
     setSelectedUser(user);
     setFirstName(user.firstName);
     setLastName(user.lastName);
-    setPhoneNumber(user.phoneNumber);
-    setShopName(user.shopName);
-    setAddress(user.address);
+    setPhoneNumber(user?.phoneNumber);
+    setShopName(user?.profile?.shopName);
+    setAddress(user?.profile?.address);
     setLat(user.location?.lat ?? "");
     setLng(user.location?.lng ?? "");
     modal.onOpen();
@@ -83,25 +83,12 @@ export const AdminUsers = () => {
   };
 
   const handleSubmit = () => {
-    if (
-      !firstName ||
-      !lastName ||
-      !phoneNumber ||
-      !shopName ||
-      !address ||
-      lat === "" ||
-      lng === ""
-    ) {
-      return toast({ title: "تمام فیلدها باید پر شوند", status: "error" });
-    }
-
     const payload = {
       firstName,
       lastName,
       phoneNumber,
       shopName,
       address,
-      location: { lat: Number(lat), lng: Number(lng) },
     };
 
     if (selectedUser) {
@@ -122,7 +109,9 @@ export const AdminUsers = () => {
   return (
     <Box>
       <Flex mb={5} align="center" justify="space-between">
-        <Heading size="lg">مدیریت کاربران</Heading>
+        <Text fontSize="2xl" fontWeight="700">
+          مدیریت کاربران
+        </Text>
         <Button
           leftIcon={<Plus size={20} />}
           colorScheme="teal"
@@ -156,8 +145,8 @@ export const AdminUsers = () => {
                 <Td>{user.firstName}</Td>
                 <Td>{user.lastName}</Td>
                 <Td>{user.phoneNumber}</Td>
-                <Td>{user.shopName}</Td>
-                <Td>{user.address}</Td>
+                <Td>{user?.profile?.shopName}</Td>
+                <Td>{user?.profile?.address}</Td>
                 <Td>
                   <HStack>
                     <PencilSimple
@@ -165,7 +154,7 @@ export const AdminUsers = () => {
                       size={20}
                       onClick={() => openEdit(user)}
                     />
-                    <Trash
+                    {/* <Trash
                       size={20}
                       color="red"
                       onClick={() =>
@@ -173,7 +162,7 @@ export const AdminUsers = () => {
                           .mutateAsync({ id: user.id })
                           .then(handleUpdate)
                       }
-                    />
+                    /> */}
                   </HStack>
                 </Td>
               </Tr>
@@ -226,7 +215,7 @@ export const AdminUsers = () => {
                   onChange={(e) => setAddress(e.target.value)}
                 />
               </FormControl>
-              <FormControl>
+              {/* <FormControl>
                 <FormLabel>عرض جغرافیایی (lat)</FormLabel>
                 <Input
                   type="number"
@@ -245,7 +234,7 @@ export const AdminUsers = () => {
                     setLng(e.target.value ? Number(e.target.value) : "")
                   }
                 />
-              </FormControl>
+              </FormControl> */}
             </SimpleGrid>
           </ModalBody>
           <ModalFooter>
