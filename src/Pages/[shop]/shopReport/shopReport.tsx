@@ -39,8 +39,7 @@ export const ShopReports = () => {
         <CustomSelect
           search={search}
           setSearch={setSearch}
-          onChange={(e) => console.log(e)}
-          // onChange={setSelected}
+          onChange={setSelected}
           isMulti={false}
           value={selected}
           options={

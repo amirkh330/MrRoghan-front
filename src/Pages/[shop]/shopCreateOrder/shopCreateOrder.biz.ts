@@ -14,6 +14,7 @@ import { useSearchParams } from "react-router-dom";
 export const useShopCreateOrder = () => {
   const toast = useToast();
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [searchVehicle, setSearchVehicle] = useState("");
   const [search] = useSearchParams(window.location.href);
   const urlPhoneNumber = search.get("phoneNumber");
 
@@ -75,7 +76,7 @@ export const useShopCreateOrder = () => {
       ...data,
       services: data?.services,
       price: data.price.replace(/,/g, ""),
-      vehicle: Number(data.vehicle),
+      vehicle: data.vehicle.value,
       currentDistance: data.currentDistance.replace(/,/g, ""),
       nextDistance: data.nextDistance.replace(/,/g, ""),
     };
@@ -168,9 +169,12 @@ export const useShopCreateOrder = () => {
     }
     remove(index);
   };
+
   return {
     register,
     isDisabled,
+    searchVehicle,
+    setSearchVehicle,
     control,
     isActiveReminder,
     handleSubmit,
@@ -212,7 +216,9 @@ const schema = yup.object({
   customer_firstName: yup.string().optional(),
   customer_lastName: yup.string().optional(),
 
-  vehicle: yup.string().required("نام خودرو الزامی است"),
+  vehicle: yup
+    .object({ value: yup.string().required("نام خودرو الزامی است") })
+    .required("نام خودرو الزامی است"),
 
   services: yup.array().of(
     yup.object({

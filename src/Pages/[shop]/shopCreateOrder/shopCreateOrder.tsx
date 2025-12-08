@@ -29,6 +29,7 @@ import { set } from "react-hook-form";
 import { months, ReminderDateEnum } from "@/utils/common";
 import { ConfirmModal } from "../confirmModal/confirmModal";
 import { useNavigate } from "react-router-dom";
+import CustomSelect from "@/components/CoreComponents/CustomSelect/customSelect";
 
 export const ShopCreateOrder = () => {
   const {
@@ -37,6 +38,8 @@ export const ShopCreateOrder = () => {
     fields,
     register,
     isSubmitting,
+    searchVehicle,
+    setSearchVehicle,
     handleSubmit,
     watch,
     errors,
@@ -117,7 +120,7 @@ export const ShopCreateOrder = () => {
           {/* نام خودرو */}
           <FormControl isInvalid={!!errors.vehicle}>
             <FormLabel>نام خودرو</FormLabel>
-            <Select
+            {/* <Select
               {...register("vehicle")}
               placeholder="انتخاب کنید"
               bg="amir.secondaryBg"
@@ -129,7 +132,22 @@ export const ShopCreateOrder = () => {
                   </option>
                 );
               })}
-            </Select>
+            </Select> */}
+            <CustomSelect
+              search={searchVehicle}
+              setSearch={setSearchVehicle}
+              // onChange={(e) => console.log(e.value)}
+              onChange={(e) => setValue("vehicle", e)}
+              isMulti={false}
+              value={watch("vehicle")}
+              options={
+                vehiclesList?.data?.map((item) => ({
+                  value: item.id,
+                  label: item.title,
+                })) ?? []
+              }
+              loading={false}
+            />
             <FormErrorMessage>{errors.vehicle?.message}</FormErrorMessage>
           </FormControl>
 

@@ -76,7 +76,8 @@ const chakraStyles = {
   control: (base: any, state: any) => ({
     ...base,
     width: "100%",
-    background: "var(--chakra-colors-white)",
+    background: "#e7eaefff",
+    fontSize:"14px",
     borderColor: state.isFocused
       ? "var(--chakra-colors-blue-500)"
       : "var(--chakra-colors-gray-300)",
@@ -136,6 +137,7 @@ const chakraStyles = {
 
   placeholder: (base: any) => ({
     ...base,
+    fonSize: "10px",
     color: "var(--chakra-colors-gray-400)",
   }),
 };
