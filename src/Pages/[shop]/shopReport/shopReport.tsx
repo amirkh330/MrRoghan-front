@@ -1,25 +1,30 @@
 import { EmptyState } from "@/components/Common/EmptyState/EmptyState";
-import BottomSheet from "@/components/CoreComponents/BottomSheet/BottomSheet";
 import CustomSelect from "@/components/CoreComponents/CustomSelect/customSelect";
 import { ShopOrderCard } from "@/components/CoreComponents/ShopOrderCard/ShopOrderCard";
-import {
-  Box,
-  Button,
-  Flex,
-  Spinner,
-  Text,
-  useDisclosure,
-  VStack,
-} from "@chakra-ui/react";
-import { useGetMyOrders } from "../query/getMyOrders";
+import { Box, Flex, Spinner, Text, VStack } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { useGetMyCustomers } from "../query/getCustomers";
-import { useState } from "react";
+import { useGetMyOrders } from "../query/getMyOrders";
+import { useSearchParams } from "react-router-dom";
 
 export const ShopReports = () => {
   const [search, setSearch] = useState("");
-  const { data, isLoading } = useGetMyOrders();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selected, setSelected] = useState<any>(null);
 
+  const [searchParams] = useSearchParams(window.location.href);
+  const customerId = searchParams.get("customerId");
+  const customerName = searchParams.get("customer");
+
+  useEffect(() => {
+    if (customerId) {
+      setSelected({
+        value: Number(customerId),
+        label: customerName,
+      });
+    }
+  }, []);
+
+  const { data, isLoading } = useGetMyOrders(selected?.value);
   const { data: myCustomer, isLoading: loadingMyCustomer } =
     useGetMyCustomers("");
 
@@ -29,10 +34,24 @@ export const ShopReports = () => {
         <Text fontWeight="700" fontSize="lg">
           سوابق سرویس‌ها
         </Text>
-        {/* <Button size="sm" color="white" bg={"amir.accent"} onClick={onOpen}>
-          فیلتر
-        </Button> */}
       </Flex>
+      <Box pb="4">
+        <CustomSelect
+          search={search}
+          setSearch={setSearch}
+          onChange={(e) => console.log(e)}
+          // onChange={setSelected}
+          isMulti={false}
+          value={selected}
+          options={
+            myCustomer?.map((item) => ({
+              value: item.id,
+              label: item.firstName + " " + item.lastName,
+            })) ?? []
+          }
+          loading={loadingMyCustomer}
+        />
+      </Box>
 
       <VStack spacing="4">
         {isLoading ? (
@@ -43,32 +62,6 @@ export const ShopReports = () => {
           <EmptyState />
         )}
       </VStack>
-      <BottomSheet
-        isOpen={isOpen}
-        onOpen={onOpen}
-        onClose={onClose}
-        title={"فیلرسفارش مشتری"}
-      >
-        <Box p="4">
-          <VStack gap={2} alignItems="start">
-            <Text>مشتری</Text>
-            <CustomSelect
-              onChange={(e) => console.log(e)}
-              // options={[]}
-              options={
-                myCustomer?.map((item) => ({
-                  value: item.id,
-                  label: item.firstName + " " + item.lastName,
-                })) ?? []
-              }
-              loading={loadingMyCustomer}
-            />
-          </VStack>
-        </Box>
-      </BottomSheet>
     </Box>
   );
 };
-
-
-

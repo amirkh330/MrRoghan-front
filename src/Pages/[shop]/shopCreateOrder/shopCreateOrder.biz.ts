@@ -1,6 +1,6 @@
 import { useDisclosure, useToast } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { set, useFieldArray, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { useGetInstrument } from "../query/getInstrument";
@@ -9,9 +9,23 @@ import { useGetUserExist } from "../query/getUserExist";
 import { useGetVehicles } from "../query/getVehicle";
 import { useCreateOrder } from "../query/postCreateOrder";
 import { ReminderDateEnum } from "@/utils/common";
+import { useSearchParams } from "react-router-dom";
 
 export const useShopCreateOrder = () => {
   const toast = useToast();
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [search] = useSearchParams(window.location.href);
+  const urlPhoneNumber = search.get("phoneNumber");
+
+  useEffect(() => {
+    urlPhoneNumber && setPhoneNumber(urlPhoneNumber);
+  }, []);
+
+  useEffect(() => {
+    if (urlPhoneNumber && phoneNumber.length === 11) {
+      handleSelectPhoneNumber();
+    }
+  }, [phoneNumber]);
 
   const {
     isOpen: isOpenPhoneNumber,
@@ -20,7 +34,6 @@ export const useShopCreateOrder = () => {
   } = useDisclosure({ defaultIsOpen: true });
 
   const [searchService, setSearchService] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
   const [isOpenReminder, setIsOpenReminder] = useState<{
     title: string;
     serviceId: string;
@@ -91,12 +104,6 @@ export const useShopCreateOrder = () => {
         onClosePhoneNumber();
       })
       .catch(() => {
-        // toast({
-        //   title: "کاربری با این شماره یافت نشد",
-        //   description: "لطفا اطلاعات مشتری را وارد نمایید",
-        //   status: "warning",
-        //   position: "top",
-        // });
         reset({
           phoneNumber: phoneNumber,
         });

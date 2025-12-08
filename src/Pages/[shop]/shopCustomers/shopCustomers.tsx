@@ -1,12 +1,12 @@
 import { EmptyState } from "@/components/Common/EmptyState/EmptyState";
 import { Loading } from "@/components/CoreComponents/Loading/Loading";
-import { Box, Flex, Input, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Flex, Input, Text, VStack } from "@chakra-ui/react";
 import { Phone } from "@phosphor-icons/react";
 import { useShopCustomers } from "./shopCustomers.biz";
 import { VehicleTags } from "./tags";
 
 export const ShopCustomers = () => {
-  const { data, isLoading, value, setValue } = useShopCustomers();
+  const { data, isLoading, value, setValue, navigate } = useShopCustomers();
   return (
     <Box p="4" color="amir.common">
       {/* Search */}
@@ -70,6 +70,33 @@ export const ShopCustomers = () => {
               </Flex>
 
               <VehicleTags vehicles={item?.vehicle} />
+
+              <Flex mt={3} justify="space-between" gap={2}>
+                <Button
+                  size="sm"
+                  width="100%"
+                  variant="outline"
+                  colorScheme="green"
+                  onClick={() =>
+                    navigate(`/shop/reports?customerId=${item.id}&customer=${item.firstName } ${item.lastName}`)
+                  }
+                >
+                  سوابق
+                </Button>
+
+                <Button
+                  size="sm"
+                  width="100%"
+                  colorScheme="green"
+                  onClick={() =>
+                    navigate(
+                      `/shop/create-order?phoneNumber=${item.phoneNumber}`
+                    )
+                  }
+                >
+                  ایجاد سرویس
+                </Button>
+              </Flex>
             </Box>
           ))
         ) : (

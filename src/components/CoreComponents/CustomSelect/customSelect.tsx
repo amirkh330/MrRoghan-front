@@ -14,6 +14,7 @@ interface ICustomAsyncSelect {
   minSearch?: number;
   placeholder?: string;
   search?: string;
+  value?: any;
   loading?: boolean;
   setSearch?: (value: string) => void;
 }
@@ -23,6 +24,7 @@ export default function CustomSelect({
   onChange,
   options,
   search,
+  value,
   loading,
   setSearch,
   minSearch = 2,
@@ -34,7 +36,7 @@ export default function CustomSelect({
 
   const handleChange = (val: MultiValue<Option> | SingleValue<Option>) => {
     if (Array.isArray(val)) {
-      onChange(val.map((v) => v.value));
+      onChange(val.map((v) => v));
     } else {
       onChange(val ?? null);
     }
@@ -42,31 +44,35 @@ export default function CustomSelect({
 
   return (
     <Select
-      isMulti={isMulti}
       isClearable
       isSearchable
-      isLoading={loading}
       options={options}
+      isMulti={isMulti}
+      isLoading={loading}
       placeholder={placeholder}
       onInputChange={(value) => {
         if (value?.length >= minSearch) handleSearch(value);
       }}
       onChange={handleChange}
       noOptionsMessage={() => "موردی یافت نشد"}
-      value={options.filter((o) =>
-        isMulti
-          ? Array.isArray(search)
-            ? search.includes(o.value)
-            : false
-          : o.value === search
-      )}
-    
+      value={value} // 👈 از بیرون کنترل می‌شود
+      // value={options.filter((o) =>
+      //   isMulti
+      //     ? Array.isArray(search)
+      //       ? search.includes(o.value)
+      //       : false
+      //     : o.value === search
+      // )}
       styles={chakraStyles}
     />
   );
 }
 
 const chakraStyles = {
+  container: (base: any) => ({
+    ...base,
+    width: "100%",
+  }),
   control: (base: any, state: any) => ({
     ...base,
     width: "100%",
