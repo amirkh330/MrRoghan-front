@@ -36,6 +36,7 @@ export default function Home() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
       >
+        <h1>there is develop</h1>
         <Image src={intro} h="300px" />
 
         <Text fontSize="26px" fontWeight="700" mt="2" color="amir.common">
