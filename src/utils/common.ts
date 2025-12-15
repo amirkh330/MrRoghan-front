@@ -10,6 +10,7 @@ export interface IApiResponse<T> {
 }
 
 export enum ReminderDateEnum {
+  FIVE_MINUTE = "5_minute",
   ONE_MONTH = "one_month",
   TWO_MONTH = "two_month",
   THREE_MONTH = "three_month",
@@ -19,6 +20,7 @@ export enum ReminderDateEnum {
 }
 
 export const months = [
+  { value: [ReminderDateEnum.FIVE_MINUTE], title: "۵ دقیقه" },
   { value: [ReminderDateEnum.ONE_MONTH], title: "یک ماه دیگر" },
   { value: [ReminderDateEnum.TWO_MONTH], title: "دو ماه دیگر" },
   { value: [ReminderDateEnum.THREE_MONTH], title: "سه ماه دیگر" },
