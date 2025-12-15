@@ -18,7 +18,9 @@ export enum ReminderDateEnum {
   FIVE_MONTH = "five_month",
   SIX_MONTH = "six_month",
 }
-
+// ...(process.env.NODE_ENV === "development"
+//   ? [{ value: [ReminderDateEnum.ONE_MONTH], title: "یک ماه دیگر" }]
+//   : []),
 export const months = [
   { value: [ReminderDateEnum.FIVE_MINUTE], title: "۵ دقیقه" },
   { value: [ReminderDateEnum.ONE_MONTH], title: "یک ماه دیگر" },
