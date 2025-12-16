@@ -79,6 +79,8 @@ export const ShopCreateOrder = () => {
             <Input
               {...register("phoneNumber")}
               maxLength={11}
+              dir="ltr"
+              type="tel"
               disabled={true}
               onChange={(e) =>
                 setValue("phoneNumber", persianToEnglishNumbers(e.target.value))
@@ -374,6 +376,8 @@ const BottomSheetPhoneNumber = ({
         </Flex>
         <Input
           maxLength={11}
+          dir="ltr"
+          type="tel"
           onChange={(e) =>
             setPhoneNumber(persianToEnglishNumbers(e.target.value))
           }
