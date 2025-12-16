@@ -265,7 +265,7 @@ export const ShopCreateOrder = () => {
 
           {/* توضیحات */}
           <FormControl>
-            <FormLabel>توضیحات برای دفعه بعدی</FormLabel>
+            <FormLabel>توضیحات برای مراجعه بعدی</FormLabel>
             <Textarea
               {...register("description")}
               placeholder="یادداشت..."
@@ -357,7 +357,7 @@ const BottomSheetPhoneNumber = ({
       isOpen={isOpen}
       onClose={() => navigate(-1)}
       showCloseButton={false}
-      title="انتخاب شماره مشتری"
+      title="شماره موبایل مشتری"
     >
       <Box
         // color="amir.mainBg"
