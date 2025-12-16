@@ -1,11 +1,20 @@
 import { useApiService } from "@/settings/axiosConfig";
-import { IApiResponse } from "@/utils/common";
+import { IApiResponse, ReminderDateEnum } from "@/utils/common";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 export interface IPeriod {
-  id: number;
-  title: string;
-  isActive: boolean;
+  id: string;
+  reminderAt: string;
+  services: [
+    {
+      reminder: ReminderDateEnum;
+      title: string;
+      serviceId: string;
+      id: string;
+    }
+  ];
+  retryCount: number;
+  status: "sent" | "failed";
 }
 
 export const useGetPeriods = (search: string) => {
@@ -15,7 +24,9 @@ export const useGetPeriods = (search: string) => {
     queryKey: ["periods", search],
     queryFn: async () => {
       const res = await api.get<IApiResponse<IPeriod[]>>(
-        `/admin/periods${search ? `?search=${encodeURIComponent(search)}` : ""}`
+        `/admin/reminder${
+          search ? `?search=${encodeURIComponent(search)}` : ""
+        }`
       );
       return res.data.data;
     },
