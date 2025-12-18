@@ -22,7 +22,7 @@ const Carousel = ({
       slidesPerView={1}
       centeredSlides={true}
       speed={500}
-      style={{ margin: 0, height: "140px" }}
+      style={{ margin: 0, height: "160px" }}
       spaceBetween={16}
       centeredSlidesBounds
       slidesPerGroup={1}

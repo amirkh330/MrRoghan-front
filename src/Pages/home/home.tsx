@@ -41,31 +41,8 @@ export default function Home() {
         <Text fontSize="26px" fontWeight="700" mt="2" color="amir.common">
           مدیریت هوشمند سرویس خودرو
         </Text>
-
-        {/* <Text fontSize="15px" color="amir.secondary" mt="2" maxW="320px">
-          با ما مدیریت سرویس‌های خودروی شما را به صورت آنلاین انجام دهید.
-        </Text> */}
       </MotionFlex>
 
-      {/* FEATURE CARDS STACK */}
-      {/* <VStack spacing="4" mt="10" px="5">
-        <FeatureCard
-          icon={<Bell size={28} />}
-          title="یادآوری هوشمند"
-          desc="یادآوری هوشمند برای سرویس‌های شما."
-        />
-        <FeatureCard
-          icon={<File size={28} />}
-          title="کارتکس دیجیتال"
-          desc="همه سوابق خودرو همیشه همراه شماست."
-        />
-        <FeatureCard
-          icon={<Toolbox size={28} />}
-          title="مخصوص راننده و تعمیرکار"
-          desc="هر دو سمت یک پنل واضح و ساده دارند."
-        />
-      </VStack> */}
-      {/* <Carousel images={[c1, c2, c3]} /> */}
       <Box mx="4" mt="6">
         <Carousel
           items={[
@@ -87,19 +64,14 @@ export default function Home() {
           ]}
         />
       </Box>
-      {/* <Box mx="4" mt="6">
-        <Carousel images={[intro]} />
-      </Box> */}
 
       <MotionFlex
         mt="auto"
-        py={6}
+        py={3}
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
       >
         <Button
-          // as={Link}
-          // to="/login"
           mx="4"
           px="3"
           py="6"
