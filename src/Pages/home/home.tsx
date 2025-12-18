@@ -40,12 +40,12 @@ export default function Home() {
         <Image src={intro} h="300px" />
 
         <Text fontSize="26px" fontWeight="700" mt="2" color="amir.common">
-          مدیریت سرویس‌ها با یک لمس
+          مدیریت هوشمند سرویس خودرو
         </Text>
 
-        <Text fontSize="15px" color="amir.secondary" mt="2" maxW="320px">
+        {/* <Text fontSize="15px" color="amir.secondary" mt="2" maxW="320px">
           با ما مدیریت سرویس‌های خودروی شما را به صورت آنلاین انجام دهید.
-        </Text>
+        </Text> */}
       </MotionFlex>
 
       {/* FEATURE CARDS STACK */}
@@ -72,18 +72,18 @@ export default function Home() {
           items={[
             <FeatureCard
               icon={<Bell size={28} />}
-              title="یادآوری هوشمند"
-              desc="یادآوری هوشمند برای سرویس‌های شما."
+              title="سرویس خودرو، بدون فراموشی"
+              desc="تمام سرویس‌ها ثبت می‌شوند و زمان رسیدگی همیشه به‌موقع یادآوری می‌شود."
             />,
             <FeatureCard
               icon={<File size={28} />}
-              title="کارتکس دیجیتال"
-              desc="همه سوابق خودرو همیشه همراه شماست."
+              title="هر خودرو، یک پرونده دقیق"
+              desc="سوابق سرویس هر خودرو به‌صورت جداگانه و منظم نگه‌داری می‌شود."
             />,
             <FeatureCard
               icon={<Toolbox size={28} />}
-              title="مخصوص راننده و تعمیرکار"
-              desc="هر دو سمت یک پنل واضح و ساده دارند."
+              title="خدمات حرفه‌ای‌تر دیده میشه"
+              desc="ثبت سیستمی سرویس‌ها، اعتماد مشتری رو بالا می‌بره."
             />,
           ]}
         />

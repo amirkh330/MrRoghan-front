@@ -82,7 +82,7 @@ function DashboardLayout() {
       link: RouteConst.adminVehicles,
     },
     {
-      label: "مدت دوره ها",
+      label: "یادآوری‌ها",
       icon: <ClockCounterClockwise size={22} />,
       link: RouteConst.adminPeriods,
     },
