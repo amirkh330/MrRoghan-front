@@ -145,11 +145,11 @@ const _CustomerMenu = [
 ];
 
 const _ShopMenu = [
-  { title: "داشبورد", link: RouteConst.shopDashboard },
-  { title: "خدمات ما", link: RouteConst.services },
   { title: "آمار", link: RouteConst.shopReports },
-  { title: "ایجاد رسید", link: RouteConst.shopCreateOrder },
+  { title: "خدمات ما", link: RouteConst.services },
+  { title: "داشبورد", link: RouteConst.shopDashboard },
   { title: "مشتریان من", link: RouteConst.shopCustomers },
+  { title: "ایجاد سرویس", link: RouteConst.shopCreateOrder },
 ];
 
 const _PublicMenu = [{ title: "تماس با ما", link: RouteConst.contactUs }];
