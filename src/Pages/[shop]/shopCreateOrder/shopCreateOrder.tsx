@@ -429,7 +429,7 @@ export default function BottomSheetReminder({
         </Flex>
 
         <Text fontSize={"14px"} textAlign={"start"} mx="0" mb="0" w="auto">
-          دوره زمانی یادآوری برای مراجعه یعدی را مشخص کنید:
+          دوره زمانی یادآوری برای مراجعه بعدی را مشخص کنید:
         </Text>
 
         <Select
