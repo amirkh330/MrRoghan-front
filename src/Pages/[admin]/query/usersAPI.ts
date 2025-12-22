@@ -51,7 +51,7 @@ export const useEditUser = () => {
   const api = useApiService();
 
   return useMutation({
-    mutationFn: async (payload: IUser): Promise<IApiResponse<any>> => {
+    mutationFn: async (payload: any): Promise<IApiResponse<any>> => {
       const res = await api.patch<IApiResponse<any>>(`/admin/users`, payload);
       return res.data;
     },

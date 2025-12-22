@@ -34,6 +34,7 @@ import {
   useGetUsers,
 } from "../query/usersAPI"; // adjust path if needed
 import { useQueryClient } from "@tanstack/react-query";
+import { profile } from "console";
 
 export const AdminUsers = () => {
   const toast = useToast();
@@ -43,6 +44,7 @@ export const AdminUsers = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [shopName, setShopName] = useState("");
   const [address, setAddress] = useState("");
+  const [msgCount, setMsgCount] = useState<number>(0);
   const [lat, setLat] = useState<number | "">("");
   const [lng, setLng] = useState<number | "">("");
 
@@ -60,6 +62,7 @@ export const AdminUsers = () => {
     setLastName("");
     setPhoneNumber("");
     setShopName("");
+    setMsgCount(0);
     setAddress("");
     setLat("");
     setLng("");
@@ -72,6 +75,7 @@ export const AdminUsers = () => {
     setLastName(user.lastName);
     setPhoneNumber(user?.phoneNumber);
     setShopName(user?.profile?.shopName);
+    setMsgCount(user?.profile?.messageCount);
     setAddress(user?.profile?.address);
     setLat(user.location?.lat ?? "");
     setLng(user.location?.lng ?? "");
@@ -87,8 +91,11 @@ export const AdminUsers = () => {
       firstName,
       lastName,
       phoneNumber,
-      shopName,
-      address,
+      profile: {
+        shopName,
+        address,
+        messageCount:msgCount,
+      },
     };
 
     if (selectedUser) {
@@ -97,13 +104,14 @@ export const AdminUsers = () => {
         modal.onClose();
         toast({ title: "ویرایش با موفقیت انجام شد", status: "success" });
       });
-    } else {
-      addMutation.mutateAsync(payload).then(() => {
-        handleUpdate();
-        modal.onClose();
-        toast({ title: "افزودن با موفقیت انجام شد", status: "success" });
-      });
     }
+    //  else {
+    //   addMutation.mutateAsync(payload).then(() => {
+    //     handleUpdate();
+    //     modal.onClose();
+    //     toast({ title: "افزودن با موفقیت انجام شد", status: "success" });
+    //   });
+    // }
   };
 
   return (
@@ -134,6 +142,7 @@ export const AdminUsers = () => {
               <Th>نام خانوادگی</Th>
               <Th>شماره موبایل</Th>
               <Th>نام فروشگاه</Th>
+              <Th>تعداد پیامک</Th>
               <Th>آدرس</Th>
               <Th>عملیات</Th>
             </Tr>
@@ -146,6 +155,7 @@ export const AdminUsers = () => {
                 <Td>{user.lastName}</Td>
                 <Td>{user.phoneNumber}</Td>
                 <Td>{user?.profile?.shopName}</Td>
+                <Td>{user?.profile?.messageCount}</Td>
                 <Td>{user?.profile?.address}</Td>
                 <Td>
                   <HStack>
@@ -154,15 +164,6 @@ export const AdminUsers = () => {
                       size={20}
                       onClick={() => openEdit(user)}
                     />
-                    {/* <Trash
-                      size={20}
-                      color="red"
-                      onClick={() =>
-                        deleteMutation
-                          .mutateAsync({ id: user.id })
-                          .then(handleUpdate)
-                      }
-                    /> */}
                   </HStack>
                 </Td>
               </Tr>
@@ -215,26 +216,14 @@ export const AdminUsers = () => {
                   onChange={(e) => setAddress(e.target.value)}
                 />
               </FormControl>
-              {/* <FormControl>
-                <FormLabel>عرض جغرافیایی (lat)</FormLabel>
+              <FormControl>
+                <FormLabel>تعداد پیامک</FormLabel>
                 <Input
                   type="number"
-                  value={lat}
-                  onChange={(e) =>
-                    setLat(e.target.value ? Number(e.target.value) : "")
-                  }
+                  value={msgCount}
+                  onChange={(e) => setMsgCount(Number(e.target.value))}
                 />
               </FormControl>
-              <FormControl>
-                <FormLabel>طول جغرافیایی (lng)</FormLabel>
-                <Input
-                  type="number"
-                  value={lng}
-                  onChange={(e) =>
-                    setLng(e.target.value ? Number(e.target.value) : "")
-                  }
-                />
-              </FormControl> */}
             </SimpleGrid>
           </ModalBody>
           <ModalFooter>
