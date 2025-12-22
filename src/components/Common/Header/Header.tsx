@@ -15,7 +15,6 @@ export const Header = () => {
       color="amir.common"
       p={4}
       w="full"
-      //
       justify="space-between"
       align="center"
       py="2"

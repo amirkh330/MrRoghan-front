@@ -1,5 +1,6 @@
-import useAuthStore from "@/store/authStore";
+import { RouteConst } from "@/utils/allRoutes.type";
 import {
+  Badge,
   Box,
   CloseButton,
   Divider,
@@ -10,30 +11,30 @@ import {
   Flex,
   Icon,
   Text,
-  useDisclosure,
   VStack,
 } from "@chakra-ui/react";
 import { List } from "@phosphor-icons/react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Login } from "../Login/Login";
-import { RouteConst } from "@/utils/allRoutes.type";
+import useMenu from "./Menu.biz";
 
 const Menu = () => {
-  const navigate = useNavigate();
-  const { isAuth, logout, role, fullName, shopName, phoneNumber } =
-    useAuthStore();
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const {
-    isOpen: loginIsOpen,
-    onOpen: loginOnOpen,
-    onClose: loginOnClose,
-  } = useDisclosure();
-
-  const menuItems = isAuth
-    ? role === "customer"
-      ? [..._CustomerMenu, ..._PublicMenu]
-      : [..._ShopMenu, ..._PublicMenu]
-    : _PublicMenu;
+    isAuth,
+    fullName,
+    shopName,
+    phoneNumber,
+    menuItems,
+    isOpen,
+    onOpen,
+    onClose,
+    loginIsOpen,
+    loginOnOpen,
+    loginOnClose,
+    navigate,
+    logout,
+    messageCount,
+  } = useMenu();
   return (
     <>
       <Icon as={List} width={"25px"} h={"25px"} onClick={onOpen} />
@@ -58,36 +59,83 @@ const Menu = () => {
             {isAuth ? (
               <VStack align="start" spacing={4}>
                 <Box
-                  p="2"
-                  m="2"
                   w="100%"
                   mx="auto"
-                  textAlign="center"
-                  borderRadius={"8px"}
-                  bgColor={"amir.secondaryBg"}
+                  p="4"
+                  borderRadius="16px"
+                  bg="amir.secondaryBg"
+                  position="relative"
+                  boxShadow="0 8px 24px rgba(0, 0, 0, 0.08)"
+                  _before={{
+                    content: '""',
+                    position: "absolute",
+                    inset: 0,
+                    borderRadius: "16px",
+                    padding: "2px",
+                    background: "linear-gradient(135deg, #3fbd6d, #6ee7b7)",
+                    WebkitMask:
+                      "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    WebkitMaskComposite: "xor",
+                    maskComposite: "exclude",
+                  }}
                 >
-                  <Text fontSize={"14px"} fontWeight={600} mb="2">
-                    {fullName}
-                  </Text>
-                  <Text fontSize={"12px"} fontWeight={400}>
-                    {shopName ?? phoneNumber}
-                  </Text>
+                  <VStack spacing="2" align="stretch">
+                    {/* Full Name */}
+                    <Flex justify="space-between" align="center">
+                      <Text fontSize="13px" fontWeight="600" color="gray.500">
+                        نام و نام خانوادگی
+                      </Text>
+                      <Text fontSize="14px" fontWeight="700">
+                        {fullName}
+                      </Text>
+                    </Flex>
+
+                    <Divider opacity={0.3} />
+
+                    {/* Phone / Shop */}
+                    <Flex justify="space-between" align="center">
+                      <Text fontSize="13px" fontWeight="600" color="gray.500">
+                        شماره تلفن
+                      </Text>
+                      <Text fontSize="14px" fontWeight="500">
+                        {shopName ?? phoneNumber}
+                      </Text>
+                    </Flex>
+
+                    <Divider opacity={0.3} />
+
+                    {/* Message Count */}
+                    <Flex justify="space-between" align="center">
+                      <Text fontSize="13px" fontWeight="600" color="gray.500">
+                        تعداد پیامک‌های شما
+                      </Text>
+
+                      <Text fontSize="14px" fontWeight="500">
+                        {messageCount}
+                      </Text>
+                    </Flex>
+                  </VStack>
                 </Box>
-                <Divider borderColor={"amir.primary"} />
+
+                {/* <Divider borderColor={"amir.primary"} /> */}
 
                 {menuItems?.map((item) => (
                   <Link
                     key={item.title}
                     to={item.link}
                     onClick={onClose}
-                    style={{ fontSize: "14px", margin: "auto" }}
+                    style={{
+                      fontSize: "14px",
+                      margin: "0 24px",
+                      justifyContent: "start",
+                    }}
                   >
                     {item.title}
                   </Link>
                 ))}
                 <Text
-                  mx={"auto"}
-                  fontSize={"14px"}
+                  mx="24px"
+                  fontSize="14px"
                   onClick={() => {
                     logout();
                     onClose();
