@@ -20,6 +20,7 @@ import { AdminServices } from "@/Pages/[admin]/adminServices/adminServices";
 import { AdminUsers } from "@/Pages/[admin]/adminUsers/adminUsers";
 import { AdminVehicles } from "@/Pages/[admin]/adminVehicles/adminVehicles";
 import { AdminPeriod } from "@/Pages/[admin]/adminPeriods/adminPeriods";
+import { Reminder } from "@/Pages/reminder/reminder";
 
 const PrivateRoute = ({
   element,
@@ -38,6 +39,7 @@ const PrivateRoute = ({
 
 export const allRoutes: Array<RouteObject> = [
   { path: RouteConst.home, element: <Home /> },
+  { path: RouteConst.home, element: <Reminder /> },
   { path: RouteConst.contactUs, element: <ContactUs /> },
   { path: RouteConst.services, element: <Services /> },
   { path: RouteConst.login, element: <LoginPage /> },
