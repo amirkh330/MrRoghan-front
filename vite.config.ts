@@ -11,6 +11,9 @@ export default defineConfig({
     tsconfigPaths(),
     VitePWA({
       registerType: "autoUpdate",
+      workbox: {
+        navigateFallback: "/index.html",
+      },
       includeAssets: ["favicon.svg", "robots.txt", "icons/*.png"],
       manifest: {
         name: "اتوپین سرویس",

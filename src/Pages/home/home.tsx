@@ -17,12 +17,28 @@ import intro from "public/images/intro.png";
 import c1 from "public/images/co-1.png";
 import c2 from "public/images/co-2.png";
 import c3 from "public/images/co-3.png";
+import useAuthStore from "@/store/authStore";
+import { Navigate } from "react-router-dom";
+import { RoleEnum } from "@/utils/common";
+import { RouteConst } from "@/utils/allRoutes.type";
 
 const MotionBox = motion(Box);
 const MotionFlex = motion(Flex);
 
 export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isAuth, role } = useAuthStore();
+  if (isAuth) {
+    return (
+      <Navigate
+        to={`/${
+          role == RoleEnum.SHOP
+            ? RouteConst.shopDashboard
+            : RouteConst.customerDashboard
+        }`}
+      />
+    );
+  }
 
   return (
     <Box width="100%" minH="80dvh" bg="amir.mainBg" color="amir.common">
@@ -36,9 +52,9 @@ export default function Home() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <Image src={intro} h="300px" />
+        <Image src={intro} h="250px" />
 
-        <Text fontSize="26px" fontWeight="700" mt="2" color="amir.common">
+        <Text fontSize="24px" fontWeight="700" mt="2" color="amir.common">
           مدیریت هوشمند سرویس خودرو
         </Text>
       </MotionFlex>
