@@ -2,7 +2,7 @@ export const RouteConst = {
   home: "/",
   login: "/login",
   register: "/register",
-  reminder: "/register/:id",
+  reminder: "/orders/:id",
 
   adminDashboard: "/admin/dashboard",
   adminLogin: "/admin",

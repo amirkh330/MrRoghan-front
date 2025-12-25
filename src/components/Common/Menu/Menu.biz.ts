@@ -16,7 +16,6 @@ const useMenu = () => {
   } = useDisclosure();
 
   const { data, isFetching } = useGetMessageCount({ isShop: role === "shop" });
-  console.log("data:", data?.messageCount);
 
   const menuItems = isAuth
     ? role === "customer"

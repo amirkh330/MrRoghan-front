@@ -39,7 +39,7 @@ const PrivateRoute = ({
 
 export const allRoutes: Array<RouteObject> = [
   { path: RouteConst.home, element: <Home /> },
-  { path: RouteConst.home, element: <Reminder /> },
+  { path: RouteConst.reminder, element: <Reminder /> },
   { path: RouteConst.contactUs, element: <ContactUs /> },
   { path: RouteConst.services, element: <Services /> },
   { path: RouteConst.login, element: <LoginPage /> },
