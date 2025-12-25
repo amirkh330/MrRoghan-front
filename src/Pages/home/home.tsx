@@ -31,11 +31,11 @@ export default function Home() {
   if (isAuth) {
     return (
       <Navigate
-        to={`/${
+        to={
           role == RoleEnum.SHOP
             ? RouteConst.shopDashboard
             : RouteConst.customerDashboard
-        }`}
+        }
       />
     );
   }
