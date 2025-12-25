@@ -226,7 +226,7 @@ const schema = yup.object({
       title: yup.string().required("نام قطعه الزامی است"),
       reminder: yup.string().optional(),
     })
-  ),
+  ).required("نام سرویس الزامی است"),
 
   currentDistance: yup
     .string()

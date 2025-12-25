@@ -138,7 +138,6 @@ export const ShopCreateOrder = () => {
             <CustomSelect
               search={searchVehicle}
               setSearch={setSearchVehicle}
-              // onChange={(e) => console.log(e.value)}
               onChange={(e) => setValue("vehicle", e)}
               isMulti={false}
               value={watch("vehicle")}
@@ -150,65 +149,74 @@ export const ShopCreateOrder = () => {
               }
               loading={false}
             />
-            <FormErrorMessage>{errors.vehicle?.message}</FormErrorMessage>
+            <FormErrorMessage>
+              {errors?.vehicle?.value?.message}
+            </FormErrorMessage>
           </FormControl>
 
           <Box width="100%">
-            <Text mb="2" fontWeight="600">
-              سرویس های انجام شده
-            </Text>
+            <FormControl isInvalid={!!errors.services}>
+              <Text mb="2" fontWeight="600">
+                سرویس های انجام شده
+              </Text>
 
-            <SearchSelect
-              value={searchService}
-              onChange={() => {}}
-              onSearch={setSearchService}
-              options={
-                serviceList?.filter(
-                  (service) =>
-                    !fields.map((f) => Number(f.serviceId)).includes(service.id)
-                ) || []
-              }
-              onSelect={(item) => {
-                append({
-                  serviceId: item.id,
-                  title: item.title,
-                });
-              }}
-            />
+              <SearchSelect
+                value={searchService}
+                onChange={() => {}}
+                onSearch={setSearchService}
+                options={
+                  serviceList?.filter(
+                    (service) =>
+                      !fields
+                        .map((f) => Number(f.serviceId))
+                        .includes(service.id)
+                  ) || []
+                }
+                onSelect={(item) => {
+                  append({
+                    serviceId: item.id,
+                    title: item.title,
+                  });
+                }}
+              />
+              <FormErrorMessage>
+                {errors?.services?.message}
+              </FormErrorMessage>
 
-            {fields.map((field, index) => {
-              return (
-                <HStack key={field.serviceId} mb="3" align="center">
-                  <Box
-                    flex="1"
-                    bg="amir.secondaryBg"
-                    px="3"
-                    py="2"
-                    borderRadius="6px"
-                    border="1px solid #555"
-                  >
-                    <Text fontSize="14px">{field.title}</Text>
-                  </Box>
-                  <IconButton
-                    aria-label="notification"
-                    icon={
-                      <BellRinging
-                        fill={field.reminder ? "#2bb15cff" : "black"}
-                        weight={field.reminder ? "fill" : "bold"}
-                      />
-                    }
-                    size="sm"
-                    onClick={() => handleReminder(field as any)}
-                  />
-                  <IconButton
-                    aria-label="delete"
-                    icon={<Trash />}
-                    size="sm"
-                    onClick={() => handleDelete(index)}
-                  />
-                </HStack>
-              );
-            })}
+              {fields.map((field, index) => {
+                return (
+                  <HStack key={field.serviceId} mb="3" align="center">
+                    <Box
+                      flex="1"
+                      bg="amir.secondaryBg"
+                      px="3"
+                      py="2"
+                      borderRadius="6px"
+                      border="1px solid #555"
+                    >
+                      <Text fontSize="14px">{field.title}</Text>
+                    </Box>
+                    <IconButton
+                      aria-label="notification"
+                      icon={
+                        <BellRinging
+                          fill={field.reminder ? "#2bb15cff" : "black"}
+                          weight={field.reminder ? "fill" : "bold"}
+                        />
+                      }
+                      size="sm"
+                      onClick={() => handleReminder(field as any)}
+                    />
+                    <IconButton
+                      aria-label="delete"
+                      icon={<Trash />}
+                      size="sm"
+                      onClick={() => handleDelete(index)}
+                    />
+                  </HStack>
+                );
+              })}
+            </FormControl>
           </Box>
 
           {/* کیلومتر فعلی */}
