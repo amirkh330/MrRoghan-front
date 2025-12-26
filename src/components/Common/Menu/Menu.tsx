@@ -17,6 +17,7 @@ import { List } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
 import { Login } from "../Login/Login";
 import useMenu from "./Menu.biz";
+import { RoleEnum } from "@/utils/common";
 
 const Menu = () => {
   const {
@@ -34,6 +35,7 @@ const Menu = () => {
     navigate,
     logout,
     messageCount,
+    role,
   } = useMenu();
   return (
     <>
@@ -105,15 +107,17 @@ const Menu = () => {
                     <Divider opacity={0.3} />
 
                     {/* Message Count */}
-                    <Flex justify="space-between" align="center">
-                      <Text fontSize="13px" fontWeight="600" color="gray.500">
-                        تعداد پیامک‌های شما
-                      </Text>
+                    {role === RoleEnum.SHOP && (
+                      <Flex justify="space-between" align="center">
+                        <Text fontSize="13px" fontWeight="600" color="gray.500">
+                          تعداد پیامک‌های شما
+                        </Text>
 
-                      <Text fontSize="14px" fontWeight="500">
-                        {messageCount}
-                      </Text>
-                    </Flex>
+                        <Text fontSize="14px" fontWeight="500">
+                          {messageCount}
+                        </Text>
+                      </Flex>
+                    )}
                   </VStack>
                 </Box>
 

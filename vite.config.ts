@@ -3,7 +3,6 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { VitePWA } from "vite-plugin-pwa";
 
-// https://vitejs.dev/config/
 export default defineConfig({
   base: "./",
   plugins: [
@@ -11,21 +10,32 @@ export default defineConfig({
     tsconfigPaths(),
     VitePWA({
       registerType: "autoUpdate",
+      filename: "registerSW.js",
+      manifestFilename: "manifest.webmanifest",
+      includeAssets: ["icons/*.png"],
       workbox: {
         navigateFallback: "/index.html",
       },
-      includeAssets: ["favicon.svg", "robots.txt", "icons/*.png"],
       manifest: {
         name: "اتوپین سرویس",
-        short_name: "AutoPin",
+        short_name: "اتوپین",
         description: "سرویس آنلاین اتوپین",
+        start_url: "./",
+        scope: "./",
+        display: "standalone",
         theme_color: "#3FBD6E",
         background_color: "#ffffff",
-        display: "standalone",
-        start_url: "/",
         icons: [
-          { src: "icons/icon-192.png", sizes: "192x192", type: "image/png" },
-          { src: "icons/icon-512.png", sizes: "512x512", type: "image/png" },
+          {
+            src: "./icons/icon-192.png",
+            sizes: "192x192",
+            type: "image/png",
+          },
+          {
+            src: "./icons/icon-512.png",
+            sizes: "512x512",
+            type: "image/png",
+          },
         ],
       },
     }),
