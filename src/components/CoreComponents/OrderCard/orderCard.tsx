@@ -36,14 +36,14 @@ export const OrderCard = ({ item }: { item: IMyOrder }) => {
     >
       {/* عنوان */}
       <HStack
-        justify="space-between"
+        justify="end"
         mb="4"
         borderBottom="1px solid"
         borderColor="amir.secondaryVariant"
         pb={"2"}
       >
-        <Text fontWeight="700">سرویس {item?.id}</Text>
-        <Text fontSize="xs">
+        {/* <Text fontWeight="700">سرویس {item?.id}</Text> */}
+        <Text fontWeight="700">
           {time} - {date}
         </Text>
       </HStack>

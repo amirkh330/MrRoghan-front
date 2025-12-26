@@ -4,21 +4,20 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
-  base: "./",
+  base: "/", // ⚡ حتما root باشه
+  preview: {
+    port: 5173,
+    host: true,
+    open: true,
+  },
   plugins: [
     react(),
     tsconfigPaths(),
     VitePWA({
-      registerType: "autoUpdate",
-      filename: "sw.js",
-      manifestFilename: "manifest.webmanifest",
-      workbox: {
-        navigateFallback: "/index.html",
-      },
+      injectRegister: 'auto', // ⚡ تغییر دادیم
       manifest: {
         name: "اتوپین سرویس",
         short_name: "AutoPin",
-        description: "سرویس آنلاین اتوپین",
         start_url: "/",
         scope: "/",
         display: "standalone",
