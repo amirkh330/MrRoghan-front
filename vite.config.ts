@@ -10,29 +10,28 @@ export default defineConfig({
     tsconfigPaths(),
     VitePWA({
       registerType: "autoUpdate",
-      filename: "registerSW.js",
+      filename: "sw.js",
       manifestFilename: "manifest.webmanifest",
-      includeAssets: ["icons/*.png"],
       workbox: {
         navigateFallback: "/index.html",
       },
       manifest: {
         name: "اتوپین سرویس",
-        short_name: "اتوپین",
+        short_name: "AutoPin",
         description: "سرویس آنلاین اتوپین",
-        start_url: "./",
-        scope: "./",
+        start_url: "/",
+        scope: "/",
         display: "standalone",
-        theme_color: "#3FBD6E",
         background_color: "#ffffff",
+        theme_color: "#3FBD6E",
         icons: [
           {
-            src: "./icons/icon-192.png",
+            src: "/icons/icon-192.png",
             sizes: "192x192",
             type: "image/png",
           },
           {
-            src: "./icons/icon-512.png",
+            src: "/icons/icon-512.png",
             sizes: "512x512",
             type: "image/png",
           },
