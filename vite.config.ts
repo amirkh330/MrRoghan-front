@@ -14,7 +14,7 @@ export default defineConfig({
     react(),
     tsconfigPaths(),
     VitePWA({
-      injectRegister: 'auto', // ⚡ تغییر دادیم
+      injectRegister: 'inline', // ⚡ تغییر دادیم
       manifest: {
         name: "اتوپین سرویس",
         short_name: "AutoPin",
