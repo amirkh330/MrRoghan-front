@@ -52,6 +52,7 @@ const _CustomerMenu = [
 const _ShopMenu = [
   { title: "آمار", link: RouteConst.shopReports },
   { title: "خدمات ما", link: RouteConst.services },
+  { title: "پروفایل", link: RouteConst.shopProfile },
   { title: "داشبورد", link: RouteConst.shopDashboard },
   { title: "مشتریان من", link: RouteConst.shopCustomers },
   { title: "ایجاد سرویس", link: RouteConst.shopCreateOrder },

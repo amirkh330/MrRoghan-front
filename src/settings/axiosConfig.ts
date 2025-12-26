@@ -1,5 +1,6 @@
 import useAuthStore from "@/store/authStore";
 import { BaseURL } from "@/utils/common";
+console.log("BaseURL:", BaseURL);
 import { useToast } from "@chakra-ui/react";
 import axios, { AxiosError, AxiosInstance } from "axios";
 

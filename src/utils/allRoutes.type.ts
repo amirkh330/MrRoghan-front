@@ -16,6 +16,7 @@ export const RouteConst = {
 
   shopReports: "/shop/reports",
   shopCustomers: "/shop/customers",
+  shopProfile: "/shop/profile",
   shopDashboard: "/shop/dashboard",
   shopCreateOrder: "/shop/create-order",
 

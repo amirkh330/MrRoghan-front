@@ -1,16 +1,15 @@
+import { RouteConst } from "@/utils/allRoutes.type";
+import { ReminderDateEnum } from "@/utils/common";
 import { useDisclosure, useToast } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useMemo, useState } from "react";
-import { set, useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
-import { useGetInstrument } from "../query/getInstrument";
 import { useGetServices } from "../query/getServices";
 import { useGetUserExist } from "../query/getUserExist";
 import { useGetVehicles } from "../query/getVehicle";
 import { useCreateOrder } from "../query/postCreateOrder";
-import { ReminderDateEnum } from "@/utils/common";
-import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
-import { RouteConst } from "@/utils/allRoutes.type";
 
 export const useShopCreateOrder = () => {
   const toast = useToast();
@@ -84,6 +83,7 @@ export const useShopCreateOrder = () => {
       nextDistance: data.nextDistance.replace(/,/g, ""),
     };
     createOrderApi(payload as any).then(() => {
+      navigate(RouteConst.shopDashboard);
       setVisibleConfirmModal(false);
       reset();
       remove();
@@ -92,7 +92,6 @@ export const useShopCreateOrder = () => {
         status: "success",
         position: "top",
       });
-      navigate(RouteConst.shopDashboard);
     });
   };
 

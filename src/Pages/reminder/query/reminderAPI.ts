@@ -24,6 +24,10 @@ export interface IReminder {
       shopName: string;
     };
   };
+  vehicle: {
+    title: string;
+  };
+  shop: any;
 }
 
 export const useGetReminder = (id: string) => {
@@ -32,8 +36,8 @@ export const useGetReminder = (id: string) => {
   return useQuery({
     queryKey: ["reminder", id],
     queryFn: async () => {
-      const res = await api.get<IApiResponse<IReminder[]>>(`reminder/${id}`);
-      return res.data.data?.[0];
+      const res = await api.get<IApiResponse<IReminder>>(`reminder/${id}`);
+      return res.data.data;
     },
   });
 };

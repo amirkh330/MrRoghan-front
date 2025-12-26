@@ -1,4 +1,11 @@
-import { PhoneCall, RoadHorizon, Screwdriver, Timer, User } from "@phosphor-icons/react";
+import {
+  Car,
+  PhoneCall,
+  RoadHorizon,
+  Screwdriver,
+  Timer,
+  User,
+} from "@phosphor-icons/react";
 import {
   Box,
   Text,
@@ -16,7 +23,6 @@ import { useGetReminder } from "./query/reminderAPI";
 import { Loading } from "@/components/CoreComponents/Loading/Loading";
 import { EmptyState } from "@/components/Common/EmptyState/EmptyState";
 
-
 export const Reminder = () => {
   const { id } = useParams();
   const { data, isLoading } = useGetReminder(id!);
@@ -25,7 +31,6 @@ export const Reminder = () => {
   if (!data) return <EmptyState />;
 
   const { user, shop } = data.order;
-  const service = data.services[0];
 
   return (
     <Box p={4} dir="rtl" maxW="480px" mx="auto">
@@ -56,7 +61,7 @@ export const Reminder = () => {
           <Stack spacing={3}>
             <InfoRow
               icon={RoadHorizon}
-              label="کیلومتر فعلی"
+              label="کیلومتر موقع سرویس"
               value={`${data.order.currentDistance} km`}
               color="green.500"
             />
@@ -71,10 +76,18 @@ export const Reminder = () => {
             <InfoRow
               icon={Screwdriver}
               label="سرویس مورد نیاز"
-              value={service?.title}
+              value={data.services
+                ?.map((service: any) => service.title)
+                .join(",  ")}
               color="purple.500"
             />
 
+            <InfoRow
+              icon={Car}
+              label="اتومبیل"
+              value={data?.vehicle?.title}
+              color="purple.500"
+            />
             <InfoRow
               icon={Timer}
               label="زمان یادآوری"
@@ -82,23 +95,6 @@ export const Reminder = () => {
               color="blue.400"
             />
           </Stack>
-
-          <Divider my={4} />
-
-          {/* Footer */}
-          <Flex justify="space-between" align="center">
-            <Text fontWeight="bold">
-              💰 هزینه تقریبی: {data.order.price} تومان
-            </Text>
-            <Badge
-              colorScheme="green"
-              px={3}
-              py={1}
-              borderRadius="full"
-            >
-              فعال
-            </Badge>
-          </Flex>
         </CardBody>
       </Card>
 
@@ -108,9 +104,7 @@ export const Reminder = () => {
           colorScheme="blue"
           size="lg"
           leftIcon={<PhoneCall />}
-          onClick={() =>
-            window.open(`tel:${user.phoneNumber}`)
-          }
+          onClick={() => window.open(`tel:${data.shop?.phoneNumber}`)}
         >
           تماس با تعمیرگاه
         </Button>

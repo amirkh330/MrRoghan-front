@@ -21,6 +21,7 @@ import { AdminUsers } from "@/Pages/[admin]/adminUsers/adminUsers";
 import { AdminVehicles } from "@/Pages/[admin]/adminVehicles/adminVehicles";
 import { AdminPeriod } from "@/Pages/[admin]/adminPeriods/adminPeriods";
 import { Reminder } from "@/Pages/reminder/reminder";
+import { ShopProfile } from "@/Pages/[shop]/shopProfile/shopProfile";
 
 const PrivateRoute = ({
   element,
@@ -108,6 +109,12 @@ export const allRoutes: Array<RouteObject> = [
     path: RouteConst.shopDashboard,
     element: (
       <PrivateRoute element={<ShopDashboard />} acceptRole={RoleEnum.SHOP} />
+    ),
+  },
+  {
+    path: RouteConst.shopProfile,
+    element: (
+      <PrivateRoute element={<ShopProfile />} acceptRole={RoleEnum.SHOP} />
     ),
   },
   {
