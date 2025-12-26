@@ -5,7 +5,9 @@ import Providers from "@/providers/providers";
 import { ChakraProvider } from "@chakra-ui/react";
 import { customTheme } from "./settings/customTheme";
 import { QueryClient } from "@tanstack/react-query";
+import { registerSW } from 'virtual:pwa-register'
 
+registerSW()
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
