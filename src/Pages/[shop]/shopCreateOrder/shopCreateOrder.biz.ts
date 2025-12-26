@@ -9,10 +9,13 @@ import { useGetUserExist } from "../query/getUserExist";
 import { useGetVehicles } from "../query/getVehicle";
 import { useCreateOrder } from "../query/postCreateOrder";
 import { ReminderDateEnum } from "@/utils/common";
-import { useSearchParams } from "react-router-dom";
+import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
+import { RouteConst } from "@/utils/allRoutes.type";
 
 export const useShopCreateOrder = () => {
   const toast = useToast();
+  const navigate = useNavigate();
+
   const [phoneNumber, setPhoneNumber] = useState("");
   const [searchVehicle, setSearchVehicle] = useState("");
   const [search] = useSearchParams(window.location.href);
@@ -89,6 +92,7 @@ export const useShopCreateOrder = () => {
         status: "success",
         position: "top",
       });
+      navigate(RouteConst.shopDashboard);
     });
   };
 
@@ -220,13 +224,16 @@ const schema = yup.object({
     .object({ value: yup.string().required("نام خودرو الزامی است") })
     .required("نام خودرو الزامی است"),
 
-  services: yup.array().of(
-    yup.object({
-      serviceId: yup.string().required("نام قطعه الزامی است"),
-      title: yup.string().required("نام قطعه الزامی است"),
-      reminder: yup.string().optional(),
-    })
-  ).required("نام سرویس الزامی است"),
+  services: yup
+    .array()
+    .of(
+      yup.object({
+        serviceId: yup.string().required("نام قطعه الزامی است"),
+        title: yup.string().required("نام قطعه الزامی است"),
+        reminder: yup.string().optional(),
+      })
+    )
+    .required("نام سرویس الزامی است"),
 
   currentDistance: yup
     .string()
