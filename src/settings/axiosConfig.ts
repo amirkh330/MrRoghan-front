@@ -1,6 +1,5 @@
 import useAuthStore from "@/store/authStore";
 import { BaseURL } from "@/utils/common";
-console.log("BaseURL:", BaseURL);
 import { useToast } from "@chakra-ui/react";
 import axios, { AxiosError, AxiosInstance } from "axios";
 
@@ -98,3 +97,101 @@ export const useApiService = () => {
 
   return axiosInstance;
 };
+
+
+
+// 
+// import useAuthStore from "@/store/authStore/useAuthStore";
+// import axios, { type AxiosInstance } from "axios";
+// import memoize from "memoizee";
+// import BASE_URL from "./settings";
+// import { ROUTE_CONSTANTS } from "@/constant/AppRoutes";
+
+// export const fetchApi: AxiosInstance = axios.create({
+//   baseURL: `${BASE_URL}`,
+//   headers: {
+//     Accept: "application/json",
+//     "Content-Type": "application/json",
+//   },
+// });
+
+// // memoized to prevent race conditions
+// const handleRefreshToken = memoize(
+//   async function refreshTokenFn() {
+//     const refreshToken = useAuthStore.getState().refreshToken;
+
+//     try {
+//       await axios
+//         .post(
+//           "/panel/user/auth/refresh/",
+//           { refresh: refreshToken },
+//           {
+//             baseURL: `${BASE_URL}`,
+//             headers: {
+//               Accept: "application/json",
+//               "Content-Type": "application/json",
+//             },
+//           },
+//         )
+//         .then((res) => {
+//           useAuthStore.setState({ accessToken: res.data.response.access });
+//           useAuthStore.setState({ refreshToken: res.data.response.refresh });
+//         });
+//     } catch (error) {
+//       useAuthStore.setState({ accessToken: "" });
+//       useAuthStore.setState({ refreshToken: "" });
+//       // window.location.href = RoutesName.HOME;
+//       window.location.href = ROUTE_CONSTANTS.ROOT.ABSOLUTE;
+
+//       return Promise.reject(error);
+//     }
+//   },
+//   { promise: true, maxAge: 5000 },
+// );
+
+// fetchApi.interceptors.request.use(
+//   (config) => {
+//     const accessToken = useAuthStore.getState().accessToken;
+//     const refreshToken = useAuthStore.getState().refreshToken;
+
+//     const tokensData = { accessToken, refreshToken };
+
+//     if (tokensData.accessToken) {
+//       config.headers["Authorization"] = `Bearer ${tokensData.accessToken}`;
+//     }
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   },
+// );
+
+// fetchApi.interceptors.response.use(
+//   (response) => {
+//     return Promise.resolve(response.data);
+//   },
+//   async (error) => {
+//     const originalRequest = error.config;
+
+//     if (
+//       error.response.status === 401 &&
+//       !originalRequest._retry &&
+//       error.request.responseURL.search("auth/login/") === -1
+//     ) {
+//       originalRequest._retry = true;
+
+//       try {
+//         await handleRefreshToken();
+//         return fetchApi(originalRequest);
+//       } catch (refreshError) {
+//         return Promise.reject(refreshError);
+//       }
+//     }
+
+//     if (error.response.data) {
+//       return Promise.reject(error.response.data);
+//     }
+
+//     return Promise.reject(error);
+//   },
+// );
