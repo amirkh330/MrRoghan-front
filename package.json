@@ -9,8 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
-  "engines": {
-    "node": "20.x"
+  "resolutions": {
+    "rollup": "npm:rollup/dist/es/rollup.browser.js"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.10.4",
