@@ -9,9 +9,6 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
-  "resolutions": {
-    "rollup": "npm:rollup/dist/es/rollup.browser.js"
-  },
   "dependencies": {
     "@chakra-ui/react": "^2.10.4",
     "@emotion/react": "^11.13.5",
@@ -21,12 +18,15 @@
     "@phosphor-icons/react": "^2.1.7",
     "@tanstack/react-query": "^5.60.5",
     "@tanstack/react-query-devtools": "^5.62.1",
+    "@types/memoizee": "^0.4.12",
     "@types/swiper": "^6.0.0",
     "axios": "^1.7.9",
     "chart.js": "^4.5.1",
     "framer-motion": "^11.14.0",
     "leaflet": "^1.9.4",
     "lodash.debounce": "^4.0.8",
+    "memoize": "^10.2.0",
+    "memoizee": "^0.4.17",
     "react": "^18.3.1",
     "react-chartjs-2": "^5.3.1",
     "react-countdown": "^2.3.6",
