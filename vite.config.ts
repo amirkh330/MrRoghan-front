@@ -5,6 +5,9 @@ import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
   base: "/", // ⚡ حتما root باشه
+  build: {
+    outDir: "build",
+  },
   preview: {
     port: 5173,
     host: true,
@@ -14,7 +17,7 @@ export default defineConfig({
     react(),
     tsconfigPaths(),
     VitePWA({
-      injectRegister: 'inline', // ⚡ تغییر دادیم
+      injectRegister: "inline", // ⚡ تغییر دادیم
       manifest: {
         name: "اتوپین سرویس",
         short_name: "AutoPin",
