@@ -27,7 +27,21 @@ export interface IReminder {
   vehicle: {
     title: string;
   };
-  shop: any;
+  shop: {
+    id: number;
+    phoneNumber: string;
+    firstName: string;
+    lastName: string;
+    profile: {
+      id: number;
+      shopName: string;
+      address: string;
+      location: {
+        lat: number;
+        lng: number;
+      };
+    };
+  };
 }
 
 export const useGetReminder = (id: string) => {

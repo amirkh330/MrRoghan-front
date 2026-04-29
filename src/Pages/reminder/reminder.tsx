@@ -22,6 +22,7 @@ import { useParams } from "react-router-dom";
 import { useGetReminder } from "./query/reminderAPI";
 import { Loading } from "@/components/CoreComponents/Loading/Loading";
 import { EmptyState } from "@/components/Common/EmptyState/EmptyState";
+import { NavigationCards } from "./navigationCard";
 
 export const Reminder = () => {
   const { id } = useParams();
@@ -97,6 +98,11 @@ export const Reminder = () => {
           </Stack>
         </CardBody>
       </Card>
+
+      <NavigationCards
+        lat={data?.shop?.profile?.location?.lat}
+        lng={data?.shop?.profile?.location?.lng}
+      />
 
       {/* Call To Action */}
       <Stack mt={6} spacing={3}>
