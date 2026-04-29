@@ -161,15 +161,16 @@ export const ShopCreateOrder = () => {
               </Text>
 
               <SearchSelect
-                value={searchService}
-                onChange={() => {}}
+                value={fields}
+                searchValue={searchService}
+                onSearchChange={setSearchService}
                 onSearch={setSearchService}
                 options={
                   serviceList?.filter(
                     (service) =>
                       !fields
                         .map((f) => Number(f.serviceId))
-                        .includes(service.id)
+                        .includes(service.id),
                   ) || []
                 }
                 onSelect={(item) => {
@@ -177,13 +178,14 @@ export const ShopCreateOrder = () => {
                     serviceId: item.id,
                     title: item.title,
                   });
+                  setSearchService("");
                 }}
+                onRemove={handleDelete}
+                handleReminder={handleReminder}
               />
-              <FormErrorMessage>
-                {errors?.services?.message}
-              </FormErrorMessage>
+              <FormErrorMessage>{errors?.services?.message}</FormErrorMessage>
 
-              {fields.map((field, index) => {
+              {/* {fields.map((field, index) => {
                 return (
                   <HStack key={field.serviceId} mb="3" align="center">
                     <Box
@@ -215,7 +217,7 @@ export const ShopCreateOrder = () => {
                     />
                   </HStack>
                 );
-              })}
+              })} */}
             </FormControl>
           </Box>
 
@@ -232,7 +234,7 @@ export const ShopCreateOrder = () => {
                 onChange={(e) => {
                   const raw = persianToEnglishNumbers(e.target.value).replace(
                     /,/g,
-                    ""
+                    "",
                   );
                   setValue("currentDistance", raw);
                 }}
@@ -259,7 +261,7 @@ export const ShopCreateOrder = () => {
                 onChange={(e) => {
                   const raw = persianToEnglishNumbers(e.target.value).replace(
                     /,/g,
-                    ""
+                    "",
                   );
                   setValue("nextDistance", raw);
                 }}
@@ -295,7 +297,7 @@ export const ShopCreateOrder = () => {
                 onChange={(e) => {
                   const raw = persianToEnglishNumbers(e.target.value).replace(
                     /,/g,
-                    ""
+                    "",
                   );
                   setValue("price", raw);
                 }}

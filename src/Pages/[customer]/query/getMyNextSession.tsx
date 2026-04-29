@@ -9,7 +9,11 @@ export interface NextSession {
   nextSession: { reminderAt: string };
 }
 
-export const useGetMyNextSession = () => {
+export const useGetMyNextSession = ({
+  enabled = true,
+}: {
+  enabled?: boolean;
+}) => {
   const api = useApiService();
   const { accessToken } = useAuthStore();
 
@@ -19,6 +23,6 @@ export const useGetMyNextSession = () => {
       const res = await api.get<IApiResponse<NextSession>>("/users/next-stop");
       return res.data.data;
     },
-    enabled: !!accessToken,
+    enabled: enabled || !!accessToken,
   });
 };

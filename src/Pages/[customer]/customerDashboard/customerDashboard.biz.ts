@@ -3,9 +3,9 @@ import { useGetMyNextSession } from "../query/getMyNextSession";
 import { useGetMyOrderList } from "../query/getMyOrderList";
 
 export const useCustomerDashboard = () => {
- const { data, isLoading } = useGetMyOrderList();
+  const { data, isLoading } = useGetMyOrderList();
   const { data: nextSession, isLoading: nextSessionLoading } =
-    useGetMyNextSession();
+    useGetMyNextSession({ enabled: !!data });
 
   const reportsCount = useMemo(() => {
     return data && data?.length >= 3 ? 3 : data?.length;
