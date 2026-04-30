@@ -9,17 +9,8 @@ import {
   Th,
   Thead,
   Tr,
-  useDisclosure,
-  useToast,
 } from "@chakra-ui/react";
-import { useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
-import {
-  useAddPeriod,
-  useDeletePeriod,
-  useEditPeriod,
-  useGetPeriods,
-} from "../query/periodsAPI";
+import { useGetPeriods } from "../query/periodsAPI";
 
 export const AdminPeriod = () => {
   const { data, isFetching: isLoading } = useGetPeriods("");

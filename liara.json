@@ -1,16 +1,5 @@
 {
-<<<<<<< HEAD
   "react": {
     "mirror": false
   }
 }
-=======
-  "build": {
-    "builder": "nodejs",
-    "commands": [
-      "npm install",
-      "npm run build"
-    ]
-  }
-}
->>>>>>> eb0884a2fbaf02ad68360c9daa2e499e13e0d5d5

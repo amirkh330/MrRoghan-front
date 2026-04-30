@@ -9,11 +9,6 @@ import { Toman } from "@/utils/Toman/Toman";
 
 const MotionBox = motion(Box);
 
-// Mock Data
-const customersCount = 120;
-const servicesToday = 5;
-const servicesWeek = 18;
-
 const stats = [
   {
     label: "تعداد کل مشتریان",

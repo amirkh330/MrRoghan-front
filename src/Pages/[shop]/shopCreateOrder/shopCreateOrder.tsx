@@ -22,10 +22,8 @@ import BottomSheet from "@/components/CoreComponents/BottomSheet/BottomSheet";
 import { SearchSelect } from "@/components/CoreComponents/SearchSelect/searchSelect";
 import { persianToEnglishNumbers } from "@/utils/convertNumber/ConvertNumber";
 import { formatNumber } from "@/utils/Toman/Toman";
-import { Bell, BellRinging, Trash, TrashSimple } from "@phosphor-icons/react";
 import { useState } from "react";
 import { useShopCreateOrder } from "./shopCreateOrder.biz";
-import { set } from "react-hook-form";
 import { months, ReminderDateEnum } from "@/utils/common";
 import { ConfirmModal } from "../confirmModal/confirmModal";
 import { useNavigate } from "react-router-dom";
@@ -122,19 +120,7 @@ export const ShopCreateOrder = () => {
           {/* نام خودرو */}
           <FormControl isInvalid={!!errors.vehicle}>
             <FormLabel>نام خودرو</FormLabel>
-            {/* <Select
-              {...register("vehicle")}
-              placeholder="انتخاب کنید"
-              bg="amir.secondaryBg"
-            >
-              {vehiclesList?.data?.map((vehicle) => {
-                return (
-                  <option key={vehicle.id} value={vehicle.id}>
-                    {vehicle.title} hg
-                  </option>
-                );
-              })}
-            </Select> */}
+
             <CustomSelect
               search={searchVehicle}
               setSearch={setSearchVehicle}
@@ -142,7 +128,7 @@ export const ShopCreateOrder = () => {
               isMulti={false}
               value={watch("vehicle")}
               options={
-                vehiclesList?.data?.map((item) => ({
+                vehiclesList?.map((item) => ({
                   value: item.id,
                   label: item.title,
                 })) ?? []
@@ -166,7 +152,7 @@ export const ShopCreateOrder = () => {
                 onSearchChange={setSearchService}
                 onSearch={setSearchService}
                 options={
-                  serviceList?.filter(
+                  serviceList?.data?.filter(
                     (service) =>
                       !fields
                         .map((f) => Number(f.serviceId))

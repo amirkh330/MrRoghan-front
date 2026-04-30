@@ -3,14 +3,12 @@ import { IApiResponse } from "@/utils/common";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetMessageCount = ({ isShop }: { isShop: boolean }) => {
-
-
   return useQuery({
     queryKey: ["message-count", isShop],
 
     queryFn: async () => {
-      const res = await fetchApi.get<IApiResponse<any>>(`/shops/message-count`);
-      return res.data.data;
+      const res = await fetchApi.get<any>(`/shops/message-count`);
+      return res.data;
     },
 
     enabled: isShop,

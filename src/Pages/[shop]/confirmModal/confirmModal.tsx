@@ -38,7 +38,7 @@ export const ConfirmModal = ({
           <Flex alignItems="center" gap="2" mb="4">
             <Text fontWeight="bold">خودرو:</Text>
             <Text>
-              {vehiclesList?.data.find((v) => v.id == data.vehicle)?.title}
+              {vehiclesList?.find((v) => v.id == data.vehicle)?.title}
             </Text>
           </Flex>
         </Box>

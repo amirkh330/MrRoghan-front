@@ -1,5 +1,4 @@
 import { fetchApi } from "@/settings/axiosConfig";
-import { IApiResponse } from "@/utils/common";
 import { useQuery } from "@tanstack/react-query";
 
 export interface IMyCustomer {
@@ -10,16 +9,15 @@ export interface IMyCustomer {
   vehicle: { id: string; title: string }[];
 }
 export const useGetMyCustomers = (search: string) => {
-
-
   return useQuery({
     queryKey: ["my-customers", search],
     queryFn: async () => {
-      const res = await fetchApi.get<IApiResponse<IMyCustomer[]>>(
-        `/shops/my-customers${search ? `?search=${encodeURIComponent(search)}` : ""
-        }`
+      const res = await fetchApi.get<IMyCustomer[]>(
+        `/shops/my-customers${
+          search ? `?search=${encodeURIComponent(search)}` : ""
+        }`,
       );
-      return res.data.data;
+      return res.data;
     },
   });
 };

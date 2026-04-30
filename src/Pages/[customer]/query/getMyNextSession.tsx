@@ -19,8 +19,8 @@ export const useGetMyNextSession = ({
   return useQuery({
     queryKey: ["myNextSession", accessToken],
     queryFn: async () => {
-      const res = await fetchApi.get<IApiResponse<NextSession>>("/users/next-stop");
-      return res.data.data;
+      const res = await fetchApi.get<NextSession>("/users/next-stop");
+      return res.data;
     },
     enabled: enabled || !!accessToken,
   });

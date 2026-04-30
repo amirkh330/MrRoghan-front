@@ -7,17 +7,16 @@ export interface IServices {
   title: string;
 }
 export const useGetServices = (search: string) => {
-
-
   return useQuery({
     queryKey: ["services", search],
 
     queryFn: async () => {
-      const res = await fetchApi.get<IApiResponse<IServices[]>>(
-        `/common/services${search ? `?search=${encodeURIComponent(search)}` : ""
-        }`
+      const res = await fetchApi.get<IServices[]>(
+        `/common/services${
+          search ? `?search=${encodeURIComponent(search)}` : ""
+        }`,
       );
-      return res.data.data;
+      return res;
     },
   });
 };

@@ -26,14 +26,13 @@ export interface IMyOrder {
 }
 
 export const useGetMyOrderList = () => {
-
   const { accessToken } = useAuthStore();
 
   return useQuery({
     queryKey: ["myOrderList", accessToken],
     queryFn: async () => {
-      const res = await fetchApi.get<IApiResponse<IMyOrder[]>>("/users/my-orders");
-      return res.data.data;
+      const res = await fetchApi.get<IMyOrder[]>("/users/my-orders");
+      return res.data;
     },
     enabled: !!accessToken,
   });

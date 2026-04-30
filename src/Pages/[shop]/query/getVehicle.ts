@@ -7,12 +7,10 @@ export interface IVehicle {
   title: string;
 }
 export const useGetVehicles = () => {
-
-
   return useQuery({
     queryKey: ["vehicle"],
     queryFn: async () => {
-      const res = await fetchApi.get<IApiResponse<IVehicle[]>>("/common/vehicle");
+      const res = await fetchApi.get<IVehicle[]>("/common/vehicle");
       return res.data;
     },
   });

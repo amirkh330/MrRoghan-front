@@ -14,9 +14,8 @@ export const useGetShopDashboard = () => {
   return useQuery({
     queryKey: ["shop-dashboard"],
     queryFn: async () => {
-      const res =
-        await fetchApi.get<IApiResponse<IShopDashboard>>("/shops/dashboard");
-      return res.data.data;
+      const res = await fetchApi.get<IShopDashboard>("/shops/dashboard");
+      return res.data;
     },
   });
 };
