@@ -167,7 +167,7 @@ export const useShopCreateOrder = () => {
 
   const handleDelete = (index: number) => {
     const item = fields[index];
-    if (item.reminder) {
+    if (item?.reminder) {
       setIsOpenReminder(null);
     }
     remove(index);

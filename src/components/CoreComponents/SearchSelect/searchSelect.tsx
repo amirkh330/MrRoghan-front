@@ -16,6 +16,7 @@ import { useState, useRef, useCallback } from "react";
 import debounce from "lodash.debounce";
 import { ReminderDateEnum } from "@/utils/common";
 import { BellRinging } from "@phosphor-icons/react";
+import BottomSheet from "../BottomSheet/BottomSheet";
 
 interface ISearchSelect {
   value: any[];
@@ -51,7 +52,10 @@ export const SearchSelect = ({
 
   useOutsideClick({
     ref,
-    handler: () => setOpen(false),
+    handler: () => {
+      console.log("amir hossein");
+      setOpen(false);
+    },
   });
 
   const debouncedSearch = useCallback(
@@ -107,49 +111,80 @@ export const SearchSelect = ({
       />
 
       {open && (
-        <Box
-          mt={1}
-          pos="absolute"
-          w="100%"
-          bg="amir.secondaryBg"
-          borderRadius="8px"
-          border="1px solid #444"
-          maxH="200px"
-          overflowY="auto"
-          zIndex={999}
+        <BottomSheet
+          title={"انتخاب سرویس"}
+          isOpen={open}
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
         >
-          {loading ? (
-            <Box p={3} textAlign="center">
-              <Spinner size="sm" />
-            </Box>
-          ) : options.length === 0 ? (
-            <Box p={3}>
-              <Text fontSize="14px" color="gray.400">
-                نتیجه‌ای یافت نشد
-              </Text>
-            </Box>
-          ) : (
-            <VStack align="stretch" spacing={0}>
-              {options.map((item) => {
-                const selected = isSelected(item.id);
+          <Wrap mb={2} p="2">
+            {value?.length ? (
+              <Flex w="full">
+                <Text fontSize={"xl"} fontWeight={"bold"}>
+                  سرویس های انتخاب شده
+                </Text>
+              </Flex>
+            ) : (
+              ""
+            )}
+            {value?.map((item) => (
+              <Tag key={item.serviceId || item.id} borderRadius="full">
+                <Flex alignItems={"center"} justifyContent={"space-between"}>
+                  <TagLabel>{item.title}</TagLabel>
+                  <Flex alignItems={"center"}>
+                    <TagCloseButton onClick={() => onRemove(item)} m={0} />
+                  </Flex>
+                </Flex>
+              </Tag>
+            ))}
+          </Wrap>
 
-                return (
-                  <Box
-                    key={item.id}
-                    px={3}
-                    py={2}
-                    bg={selected ? "blue.600" : "transparent"}
-                    _hover={{ bg: "gray.600" }}
-                    cursor="pointer"
-                    onClick={() => onSelect(item)}
-                  >
-                    {item.title}
-                  </Box>
-                );
-              })}
-            </VStack>
-          )}
-        </Box>
+          <Box p="4">
+            <Box
+              mt={1}
+              // pos="absolute"
+              // w="100%"
+              bg="amir.secondaryBg"
+              borderRadius="8px"
+              border="1px solid #444"
+              maxH="200px"
+              overflowY="auto"
+              zIndex={999}
+            >
+              {loading ? (
+                <Box p={3} textAlign="center">
+                  <Spinner size="sm" />
+                </Box>
+              ) : options.length === 0 ? (
+                <Box p={3}>
+                  <Text fontSize="14px" color="gray.400">
+                    نتیجه‌ای یافت نشد
+                  </Text>
+                </Box>
+              ) : (
+                <VStack align="stretch" spacing={0} m="4">
+                  {options.map((item) => {
+                    const selected = isSelected(item.id);
+
+                    return (
+                      <Box
+                        key={item.id}
+                        px={3}
+                        py={2}
+                        bg={selected ? "blue.600" : "transparent"}
+                        _hover={{ bg: "gray.600" }}
+                        cursor="pointer"
+                        onClick={() => onSelect(item)}
+                      >
+                        {item.title}
+                      </Box>
+                    );
+                  })}
+                </VStack>
+              )}
+            </Box>
+          </Box>
+        </BottomSheet>
       )}
     </Box>
   );

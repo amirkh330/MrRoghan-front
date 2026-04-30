@@ -32,12 +32,22 @@ export const NavigationCards = ({ lat, lng }: Props) => {
   };
 
   const openBalad = () => {
-    window.open(`https://balad.ir/p/${lat},${lng}`, "_blank");
+    window.open(
+      `https://balad.ir/directions/driving?destination={${lat}%2C${lng}`,
+      "_blank",
+    );
   };
 
   return (
     <>
-      <Button onClick={onOpen} colorScheme="green" size="lg" w={"full"} mt="4" leftIcon={<NavigationArrow/>}>
+      <Button
+        onClick={onOpen}
+        colorScheme="green"
+        size="lg"
+        w={"full"}
+        mt="4"
+        leftIcon={<NavigationArrow />}
+      >
         مسیریابی
       </Button>
 
