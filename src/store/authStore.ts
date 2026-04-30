@@ -4,6 +4,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface AuthState {
+  refreshToken: any;
   accessToken: string;
   refresh: string;
   fullName: string;
@@ -35,6 +36,7 @@ const useAuthStore = create<AuthState>()(
       isAuth: false,
       accessToken: "",
       refresh: "",
+      refreshToken: "",
       fullName: "",
       role: "",
       phoneNumber: "",
@@ -77,8 +79,8 @@ const useAuthStore = create<AuthState>()(
     }),
     {
       name: "auth-storage",
-    }
-  )
+    },
+  ),
 );
 
 export default useAuthStore;

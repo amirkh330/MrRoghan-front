@@ -1,4 +1,4 @@
-import { useApiService } from "@/settings/axiosConfig";
+import { fetchApi } from "@/settings/axiosConfig";
 import { IApiResponse, ReminderDateEnum } from "@/utils/common";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -45,12 +45,12 @@ export interface IReminder {
 }
 
 export const useGetReminder = (id: string) => {
-  const api = useApiService();
+
 
   return useQuery({
     queryKey: ["reminder", id],
     queryFn: async () => {
-      const res = await api.get<IApiResponse<IReminder>>(`reminder/${id}`);
+      const res = await fetchApi.get<IApiResponse<IReminder>>(`reminder/${id}`);
       return res.data.data;
     },
   });

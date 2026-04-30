@@ -1,4 +1,4 @@
-import { useApiService } from "@/settings/axiosConfig";
+import { fetchApi } from "@/settings/axiosConfig";
 import { IApiResponse } from "@/utils/common";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -8,14 +8,13 @@ export interface IVehicle {
 }
 
 export const useGetVehicles = (search: string) => {
-  const api = useApiService();
+
 
   return useQuery({
     queryKey: ["vehicles", search],
     queryFn: async () => {
-      const res = await api.get<IApiResponse<IVehicle[]>>(
-        `/admin/vehicles${
-          search ? `?search=${encodeURIComponent(search)}` : ""
+      const res = await fetchApi.get<IApiResponse<IVehicle[]>>(
+        `/admin/vehicles${search ? `?search=${encodeURIComponent(search)}` : ""
         }`
       );
       return res.data.data;
@@ -24,21 +23,21 @@ export const useGetVehicles = (search: string) => {
 };
 
 export const useAddVehicle = () => {
-  const api = useApiService();
+
 
   return useMutation({
     mutationFn: async (payload: {
       title: string;
       isActive: boolean;
     }): Promise<IApiResponse<any>> => {
-      const res = await api.post<IApiResponse<any>>("/admin/vehicles", payload);
+      const res = await fetchApi.post<IApiResponse<any>>("/admin/vehicles", payload);
       return res.data;
     },
   });
 };
 
 export const useEditVehicle = () => {
-  const api = useApiService();
+
 
   return useMutation({
     mutationFn: async (payload: {
@@ -46,7 +45,7 @@ export const useEditVehicle = () => {
       title: string;
       isActive: boolean;
     }): Promise<IApiResponse<any>> => {
-      const res = await api.patch<IApiResponse<any>>(
+      const res = await fetchApi.patch<IApiResponse<any>>(
         `/admin/vehicles`,
         payload
       );
@@ -56,13 +55,13 @@ export const useEditVehicle = () => {
 };
 
 export const useDeleteVehicle = () => {
-  const api = useApiService();
+
 
   return useMutation({
     mutationFn: async (payload: {
       id: string | number;
     }): Promise<IApiResponse<any>> => {
-      const res = await api.delete<IApiResponse<any>>(
+      const res = await fetchApi.delete<IApiResponse<any>>(
         `/admin/vehicles/${payload.id}`
       );
       return res.data;

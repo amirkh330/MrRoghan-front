@@ -1,4 +1,4 @@
-import { useApiService } from "@/settings/axiosConfig";
+import { fetchApi } from "@/settings/axiosConfig";
 import { IApiResponse } from "@/utils/common";
 import { useMutation } from "@tanstack/react-query";
 
@@ -13,11 +13,11 @@ export interface IUpdateProfileDto {
 }
 
 export const useUpdateProfile = () => {
-  const api = useApiService();
+
 
   return useMutation<IApiResponse<any>, unknown, IUpdateProfileDto>({
     mutationFn: async (payload: IUpdateProfileDto) => {
-      const response = await api.post<IApiResponse<any>>(
+      const response = await fetchApi.post<IApiResponse<any>>(
         "/shops/edit-profile",
         payload
       );

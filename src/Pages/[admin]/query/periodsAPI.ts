@@ -1,4 +1,4 @@
-import { useApiService } from "@/settings/axiosConfig";
+import { fetchApi } from "@/settings/axiosConfig";
 import { IApiResponse, ReminderDateEnum } from "@/utils/common";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -18,14 +18,13 @@ export interface IPeriod {
 }
 
 export const useGetPeriods = (search: string) => {
-  const api = useApiService();
+
 
   return useQuery({
     queryKey: ["periods", search],
     queryFn: async () => {
-      const res = await api.get<IApiResponse<IPeriod[]>>(
-        `/admin/reminder${
-          search ? `?search=${encodeURIComponent(search)}` : ""
+      const res = await fetchApi.get<IApiResponse<IPeriod[]>>(
+        `/admin/reminder${search ? `?search=${encodeURIComponent(search)}` : ""
         }`
       );
       return res.data.data;
@@ -34,21 +33,21 @@ export const useGetPeriods = (search: string) => {
 };
 
 export const useAddPeriod = () => {
-  const api = useApiService();
+
 
   return useMutation({
     mutationFn: async (payload: {
       title: string;
       isActive: boolean;
     }): Promise<IApiResponse<any>> => {
-      const res = await api.post<IApiResponse<any>>("/admin/periods", payload);
+      const res = await fetchApi.post<IApiResponse<any>>("/admin/periods", payload);
       return res.data;
     },
   });
 };
 
 export const useEditPeriod = () => {
-  const api = useApiService();
+
 
   return useMutation({
     mutationFn: async (payload: {
@@ -56,7 +55,7 @@ export const useEditPeriod = () => {
       title: string;
       isActive: boolean;
     }): Promise<IApiResponse<any>> => {
-      const res = await api.patch<IApiResponse<any>>(
+      const res = await fetchApi.patch<IApiResponse<any>>(
         `/admin/periods/${payload.id}`,
         payload
       );
@@ -66,13 +65,13 @@ export const useEditPeriod = () => {
 };
 
 export const useDeletePeriod = () => {
-  const api = useApiService();
+
 
   return useMutation({
     mutationFn: async (payload: {
       id: string | number;
     }): Promise<IApiResponse<any>> => {
-      const res = await api.delete<IApiResponse<any>>(
+      const res = await fetchApi.delete<IApiResponse<any>>(
         `/admin/periods/${payload.id}`
       );
       return res.data;

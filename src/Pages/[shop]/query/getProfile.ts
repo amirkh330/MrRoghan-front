@@ -1,4 +1,4 @@
-import { useApiService } from "@/settings/axiosConfig";
+import { fetchApi } from "@/settings/axiosConfig";
 import { IApiResponse } from "@/utils/common";
 import { useQuery } from "@tanstack/react-query";
 
@@ -15,12 +15,12 @@ export interface IProfile {
   };
 }
 export const useGetProfile = () => {
-  const api = useApiService();
+
 
   return useQuery({
     queryKey: ["get-profile"],
     queryFn: async () => {
-      const res = await api.get<IApiResponse<IProfile>>(`/shops/get-profile`);
+      const res = await fetchApi.get<IApiResponse<IProfile>>(`/shops/get-profile`);
       return res.data.data;
     },
     staleTime: 0, // داده‌ها بلافاصله stale می‌شن

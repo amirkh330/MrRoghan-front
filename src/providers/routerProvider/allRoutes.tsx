@@ -111,12 +111,12 @@ export const allRoutes: Array<RouteObject> = [
       <PrivateRoute element={<ShopDashboard />} acceptRole={RoleEnum.SHOP} />
     ),
   },
-  {
-    path: RouteConst.shopProfile,
-    element: (
-      <PrivateRoute element={<ShopProfile />} acceptRole={RoleEnum.SHOP} />
-    ),
-  },
+  // {
+  //   path: RouteConst.shopProfile,
+  //   element: (
+  //     <PrivateRoute element={<ShopProfile />} acceptRole={RoleEnum.SHOP} />
+  //   ),
+  // },
   {
     path: RouteConst.shopCreateOrder,
     element: (

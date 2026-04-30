@@ -1,4 +1,4 @@
-import { useApiService } from "@/settings/axiosConfig";
+import { fetchApi } from "@/settings/axiosConfig";
 import { IApiResponse } from "@/utils/common";
 import { useMutation } from "@tanstack/react-query";
 
@@ -16,13 +16,13 @@ export interface ICreateOrderDto {
 }
 
 export const useCreateOrder = () => {
-  const api = useApiService();
+
 
   return useMutation({
     mutationFn: async (
       payload: ICreateOrderDto
     ): Promise<IApiResponse<any>> => {
-      const res = await api.post<IApiResponse<any>>("/orders/create", payload);
+      const res = await fetchApi.post<IApiResponse<any>>("/orders/create", payload);
       return res.data;
     },
   });

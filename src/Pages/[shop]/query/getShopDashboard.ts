@@ -1,4 +1,4 @@
-import { useApiService } from "@/settings/axiosConfig";
+import { fetchApi } from "@/settings/axiosConfig";
 import { IApiResponse } from "@/utils/common";
 import { useQuery } from "@tanstack/react-query";
 
@@ -11,14 +11,11 @@ export interface IShopDashboard {
   monthIncome: number;
 }
 export const useGetShopDashboard = () => {
-  const callApi = useApiService();
-
   return useQuery({
     queryKey: ["shop-dashboard"],
     queryFn: async () => {
-      const res = await callApi.get<IApiResponse<IShopDashboard>>(
-        "/shops/dashboard"
-      );
+      const res =
+        await fetchApi.get<IApiResponse<IShopDashboard>>("/shops/dashboard");
       return res.data.data;
     },
   });
